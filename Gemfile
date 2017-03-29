@@ -50,10 +50,6 @@ gem 'cancancan'
 # Use kaminari for pagination
 gem 'kaminari'
 
-# Use swagger docs
-gem 'swagger-docs'
-
-
 gem 'rest-client'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
