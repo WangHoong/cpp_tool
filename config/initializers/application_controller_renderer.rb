@@ -4,3 +4,5 @@
 #   http_host: 'example.org',
 #   https: false
 # )
+
+ActiveModel::Serializer.config.adapter = :json
