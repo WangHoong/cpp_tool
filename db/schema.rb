@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170330110818) do
 
-  create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name"
     t.integer  "country_id",                                            comment: "国籍"
     t.string   "country"
