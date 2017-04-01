@@ -12,9 +12,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
       render json: {status: 401, error: "Incorrect email or password"}, status: :unauthorized
     end
   end
-
-
-
+ 
 
   private
   def session_params
