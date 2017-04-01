@@ -10,26 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330110818) do
+ActiveRecord::Schema.define(version: 20170331110140) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "country_id",                                            comment: "国籍"
-    t.string   "country"
-    t.string   "avatar",                      default: "",              comment: "个人写真"
-    t.integer  "provider_id",                                           comment: "版权方ID"
-    t.date     "uploaded_at"
-    t.integer  "upload_method",                                         comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
-    t.string   "label"
-    t.string   "website",                                               comment: "网站"
-    t.text     "biography",     limit: 65535,                           comment: "艺人介绍"
-    t.integer  "genre_id",                                              comment: "曲风"
-    t.integer  "postal_code",                                           comment: "邮政编码"
-    t.string   "contact",                                               comment: "联系方式"
-    t.string   "alias",                                                 comment: "别名"
+    t.string   "country_name"
+    t.integer  "gender_type"
+    t.integer  "label_id",                                              comment: "唱片公司ID"
+    t.string   "label_name"
+    t.text     "biography",      limit: 65535,                          comment: "艺人介绍"
+    t.integer  "status",                       default: 1,              comment: "0删除 ，1未删除"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.string   "operator",                                              comment: "操作员"
+    t.integer  "approve_status",               default: 0, null: false, comment: "0到审批 ,1审批通过，2审批未通过"
     t.index ["name"], name: "index_artists_on_name", using: :btree
+  end
+
+  create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "continent_id",               comment: "对应七大陆continent表的id"
+    t.string  "name",                       comment: "英文常用标准名称，主要用于显示"
+    t.string  "lower_name",                 comment: "对应于英文标准名称的小写，主要用于搜索比较"
+    t.string  "country_code",               comment: "英文缩写名称，全大写"
+    t.string  "full_name",                  comment: "英文标准名称全称"
+    t.string  "cname",                      comment: "中文常用标准名称，通常简称"
+    t.string  "full_cname",                 comment: "中文全称名称，非缩写"
+    t.text    "remark",       limit: 65535, comment: "备注字段，保留"
   end
 
 end

@@ -3,18 +3,14 @@ class CreateArtists < ActiveRecord::Migration[5.0]
     create_table :artists do |t|
       t.string   "name"
       t.integer  "country_id",                                                                             comment: "国籍"
-      t.string   "country"
-      t.string   "avatar",                      default: "",                                               comment: "个人写真"
-      t.integer  "provider_id",                                                                            comment: "版权方ID"
-      t.date     "uploaded_at"
-      t.integer  "upload_method",                                                                          comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
-      t.string   "label"
-      t.string   "website",                                                                                comment: "网站"
+      t.string   "country_name"
+      t.integer  "gender_type"                                                                                  comment: "0男，1女，2组合"
+      t.integer  "label_id",                                                                               comment: "唱片公司ID"
+      t.string   "label_name"
       t.text     "biography",     limit: 65535,                                                            comment: "艺人介绍"
-      t.integer  "genre_id",                                                                               comment: "曲风"
-      t.integer  "postal_code",                                                                            comment: "邮政编码"
-      t.string   "contact",                                                                                comment: "联系方式"
-      t.string   "alias",                                                                                  comment: "别名"
+      t.integer  "status"                       ,default: 1,                                               comment: "0删除 ，1未删除"
+      t.string   "operator"                                                                                comment: "操作员"
+      t.integer  "approve_status"               ,default: 0,                                               comment: "0待审批 ,1审批通过，2审批未通过"
       t.timestamps
     end
       add_index :artists, :name

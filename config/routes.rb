@@ -1,3 +1,7 @@
 Rails.application.routes.draw do
-  resources :artists
+    scope '/api' do
+      scope '/v1' do
+        resources :artists
+      end
+    end
 end
