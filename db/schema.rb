@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405040317) do
+ActiveRecord::Schema.define(version: 20170405102144) do
 
-  create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
     t.string   "upc",                                comment: "商品统一编码，universal product code"
     t.integer  "catalog_number",                     comment: "专辑编号"
@@ -41,22 +41,27 @@ ActiveRecord::Schema.define(version: 20170405040317) do
     t.string   "complication"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.string   "label_id",                           comment: "唱片公司 id"
+    t.string   "primary_artist",                     comment: "主唱"
+    t.integer  "primary_artist_id",                  comment: "主唱ID"
+    t.string   "featuring_artist",                   comment: "伴唱"
+    t.integer  "featuring_artist_id",                comment: "伴唱ID"
     t.index ["name"], name: "index_albums_on_name", using: :btree
   end
 
-  create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "country_id",                               comment: "国籍"
+    t.integer  "country_id",                                            comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                              comment: "0男，1女，2组合"
-    t.integer  "label_id",                                 comment: "唱片公司ID"
+    t.integer  "gender_type",                                           comment: "0男，1女，2组合"
+    t.integer  "label_id",                                              comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",    limit: 65535,             comment: "艺人介绍"
-    t.integer  "status",                       default: 1, comment: "0删除 ，1未删除"
-    t.string   "operator",                                 comment: "操作员"
-    t.integer  "approve_status",               default: 0, comment: "0待审批 ,1审批通过，2审批未通过"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "description",    limit: 65535,                          comment: "艺人介绍"
+    t.integer  "status",                       default: 1,              comment: "0删除 ，1未删除"
+    t.string   "operator",                                              comment: "操作员"
+    t.integer  "approve_status",               default: 0,              comment: "0待审批 ,1审批通过，2审批未通过"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
 
@@ -65,7 +70,7 @@ ActiveRecord::Schema.define(version: 20170405040317) do
     t.string "en_name", comment: "英文名字"
   end
 
-  create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "continent_id",               comment: "对应七大陆continent表的id"
     t.string  "name",                       comment: "英文常用标准名称，主要用于显示"
     t.string  "lower_name",                 comment: "对应于英文标准名称的小写，主要用于搜索比较"
@@ -76,7 +81,7 @@ ActiveRecord::Schema.define(version: 20170405040317) do
     t.text    "remark",       limit: 65535, comment: "备注字段，保留"
   end
 
-  create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
     t.text     "description", limit: 65535
     t.integer  "artist_id"
@@ -89,7 +94,7 @@ ActiveRecord::Schema.define(version: 20170405040317) do
     t.index ["artist_id"], name: "index_tracks_on_artist_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
     t.string   "email"
     t.string   "phone"
