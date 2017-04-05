@@ -1,10 +1,10 @@
-class ArtistsController < ApplicationController
+class Api::V1::ArtistsController < Api::V1::BaseController
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @artists = Artist.recent.page(page).per(size)
-    render json: @artists, meta: meta_attributes(@artists)
+    render json: @artists, meta: page_info(@artists)
   end
 
   # Get /artists/:id
