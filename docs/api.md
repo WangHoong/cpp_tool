@@ -48,7 +48,7 @@
 
 # Part1 用户管理
 
-## 1、用户登录接口
+## 1.1、用户登录接口
 
 ### HTTP请求
 
@@ -74,7 +74,7 @@ password| 是   | Password|
 }
 ```
 
-## 2、用户列表接口
+## 1.2、用户列表接口
 
 ### HTTP请求
 
@@ -110,7 +110,7 @@ users:[
 ```
 
 
-## 2、新建用户接口
+## 1.3、新建用户接口
 
 ### HTTP请求
 
@@ -148,7 +148,7 @@ user[role_ids][] |是 | 角色列表|
 ```
 
 
-## 3、修改用户接口
+## 1.4、修改用户接口
 
 ### HTTP请求
 
@@ -185,7 +185,7 @@ user[role_ids][] |是 | 角色列表|
 ```
 
 
-## 4、查看用户接口
+## 1.5、查看用户接口
 
 ### HTTP请求
 
@@ -211,7 +211,7 @@ user[role_ids][] |是 | 角色列表|
 ```
 
 
-## 5、删除用户接口
+## 1.6、删除用户接口
 
 ### HTTP请求
 
@@ -235,9 +235,9 @@ user[role_ids][] |是 | 角色列表|
     status
   }
 ```
-# Part2 角色管理
+# Part2 角色管理
 
-## 2.1、角色列表接口
+## 2.1、角色列表接口
 
 ### HTTP请求
 
@@ -262,7 +262,7 @@ roles:[
 ]
 ```
 
-## 2.2、新建角色接口
+## 2.2、新建角色接口
 
 ### HTTP请求
 
@@ -285,7 +285,7 @@ roles:[
 ```
 
 
-## 2.3、修改角色接口
+## 2.3、修改角色接口
 
 ### HTTP请求
 
@@ -308,14 +308,14 @@ roles:[
 ```
 
 
-## 2.4、删除角色接口
+## 2.4、删除角色接口
 
 ### HTTP请求
 
-`DELETE /api/v1/roles/:id`
+`DELETE /api/v1/roles/:id`
 
 ### Request 请求参数
 
 ```shell
-  curl -i -X DELETE --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
+  curl -i -X DELETE --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
 ```
