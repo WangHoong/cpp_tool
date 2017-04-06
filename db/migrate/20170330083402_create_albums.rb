@@ -8,7 +8,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.integer  "catalog_tier",                                    comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
       t.integer  "language",                                        comment: "语言"
       t.integer  "genre",                                           comment: "曲风"
-      t.string   "label"
+      t.string   "label",                                           comment: "唱片公司名称"
       t.datetime "original_release_date",                           comment: "最初发行日期"
       t.string   "p_line_copyright",                                comment: "℗ "
       t.string   "c_line_copyright",                                comment: "©"
@@ -29,6 +29,6 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "complication"
       t.timestamps
     end
-      add_index :albums, :name
+    add_index :albums, :name
   end
 end
