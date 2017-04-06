@@ -90,8 +90,20 @@ ActiveRecord::Schema.define(version: 20170406075955) do
     t.string  "module_name"
     t.integer "parent_id",   default: 0
     t.integer "sort",        default: 0, comment: "排序"
-    t.string  "rule_type",               comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b\b)"
+    t.string  "rule_type",               comment: "权限类型(1:查询权限;2:编辑权限;3:审核)"
     t.integer "status",      default: 1
+  end
+
+  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "target_id",                comment: "目标ID"
+    t.string   "target_type",              comment: "目标类型"
+    t.string   "url",                      comment: "资源url"
+    t.integer  "status"
+    t.string   "native_name",              comment: "资源原始名称"
+    t.integer  "field",                    comment: "个人资源区分"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

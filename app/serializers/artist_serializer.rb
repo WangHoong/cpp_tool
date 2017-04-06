@@ -1,9 +1,10 @@
 class ArtistSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :country,
              :gender_type,
              :description,
              :operator,
-             :approve_status
+             :approve_status,
+             :country,
+             :resources
 end
