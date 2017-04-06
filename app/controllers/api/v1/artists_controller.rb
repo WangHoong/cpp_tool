@@ -14,7 +14,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Put /artists/:id
   def update
-    if @artist = get_artist.update_attributes(artist_params)
+    if @artist = get_artist.update(artist_params)
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
@@ -40,12 +40,21 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     end
   end
 
-
+  # Put /artists/approve
+  def approve
+    @artists = get_artist_by_ids
+    @artists.update_all(approve_status: :agree, updated_at: DateTime.now)
+		render json: @artists
+  end
 
   private
   def get_artist
     Artist.includes(:country, :resources).find(params[:id])
   end
+
+  def get_artist_by_ids
+		Artist.where(id: params[:artist_ids])
+	end
 
   def artist_params
     params
@@ -58,7 +67,9 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :description,
             :label_id,
             :label_name,
-            resources_attributes: [:url, :native_name, :field]
+            :not_through_reason,
+            :approve_status,
+            resources_attributes: [:id, :url, :native_name, :field, :status]
         )
   end
 end
