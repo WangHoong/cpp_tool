@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405040317) do
+ActiveRecord::Schema.define(version: 20170405072136) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -46,17 +46,17 @@ ActiveRecord::Schema.define(version: 20170405040317) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                               comment: "国籍"
+    t.integer  "country_id",                                            comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                              comment: "0男，1女，2组合"
-    t.integer  "label_id",                                 comment: "唱片公司ID"
+    t.integer  "gender_type",                                           comment: "0男，1女，2组合"
+    t.integer  "label_id",                                              comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",    limit: 65535,             comment: "艺人介绍"
-    t.integer  "status",                       default: 1, comment: "0删除 ，1未删除"
-    t.string   "operator",                                 comment: "操作员"
-    t.integer  "approve_status",               default: 0, comment: "0待审批 ,1审批通过，2审批未通过"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "description",    limit: 65535,                          comment: "艺人介绍"
+    t.integer  "status",                       default: 1,              comment: "0删除 ，1未删除"
+    t.string   "operator",                                              comment: "操作员"
+    t.integer  "approve_status",               default: 0,              comment: "0待审批 ,1审批通过，2审批未通过"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
 
@@ -74,6 +74,18 @@ ActiveRecord::Schema.define(version: 20170405040317) do
     t.string  "cname",                      comment: "中文常用标准名称，通常简称"
     t.string  "full_cname",                 comment: "中文全称名称，非缩写"
     t.text    "remark",       limit: 65535, comment: "备注字段，保留"
+  end
+
+  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "target_id",                comment: "目标ID"
+    t.string   "target_type",              comment: "目标类型"
+    t.string   "url",                      comment: "资源url"
+    t.integer  "status"
+    t.string   "native_name",              comment: "资源原始名称"
+    t.integer  "field",                    comment: "个人资源区分"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 
   create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

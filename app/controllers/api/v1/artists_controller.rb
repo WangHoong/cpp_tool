@@ -9,8 +9,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Get /artists/:id
   def show
-    @artist = get_artist
-    render json: @artist
+    render json:  get_artist
   end
 
   # Put /artists/:id
@@ -45,7 +44,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   private
   def get_artist
-    Artist.includes(:country).find(params[:id])
+    Artist.includes(:country, :resources).find(params[:id])
   end
 
   def artist_params
@@ -56,9 +55,10 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :country_id,
             :country_name,
             :gender_type,
-            :biography,
+            :description,
             :label_id,
-            :label_name
+            :label_name,
+            resources_attributes: [:url, :native_name, :field]
         )
   end
 end
