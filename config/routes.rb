@@ -11,7 +11,11 @@ Rails.application.routes.draw do
           resources :roles, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy]
-          resources :artists, only: [:index, :create, :show, :update, :destroy]
+          resources :artists, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+        			put :approve
+        		end
+          end
 
     end #api
   end #v1
