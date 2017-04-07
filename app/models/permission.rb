@@ -5,7 +5,13 @@ class Permission < ApplicationRecord
   belongs_to :permission_group
 
   default_scope -> { where(status: :enabled) }
-	default_scope -> { order('sort ASC') }
+	default_scope -> { order('id ASC') }
   validates :name, presence: :name
 
+ 
+
+	class_attribute :as_list_json_options
+	self.as_list_json_options={
+			only: [:id, :name]
+	}
 end

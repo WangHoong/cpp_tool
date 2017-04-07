@@ -2,17 +2,17 @@ class Api::V1::RolesController < Api::V1::BaseController
 
   def index
     page = params.fetch(:page, 1).to_i
-    size = params[:size]
+    size = params[:size] || 10
     @roles = Role.order(id: :desc)
     @roles = @roles.where(name: params[:q]) if params[:q]
     @roles = @roles.page(page).per(size)
-    render json: {roles: @roles, meta: page_info(@roles) }
+    render json: {roles: @roles.as_json(only: [:id, :name,:status]), meta: page_info(@roles).merge!({size: size})}
   end
 
 
   def show
     @role = Role.find(params[:id])
-    render json: {role: @role}
+    render json: {role: @role.as_json(Role.as_json_options)}
   end
 
   def update

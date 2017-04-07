@@ -123,10 +123,10 @@ users:[
 user[email]  |   是  | Emial|
 user[name] | 是   | name|
 user[password] | 是   | password|
-user[address] | 是   | 地址|
-user[status] | 是   | 状态|
-user[phone] | 是   | 手机|
-user[avatar_url] | 是   | 头像|
+user[address] | 是   |地址|
+user[status] | 是   |状态|
+user[phone] | 是   |手机|
+user[avatar_url] | 是   |头像|
 user[role_ids][] |是 | 角色列表|
 
 
@@ -162,8 +162,8 @@ user[email]  |   是  | Emial|
 user[name] | 是   | name|
 user[address] | 是   | 地址|
 user[status] | 是   | 状态|
-user[phone] | 是   | 手机|
-user[avatar_url] | 是   | 头像|
+user[phone] | 是   |手机|
+user[avatar_url] | 是   |头像|
 user[role_ids][] |是 | 角色列表|
 
 
@@ -270,8 +270,15 @@ roles:[
 
 ### Request 请求参数
 
+参数名 | 是否必需 | 描述
+-----| --------| -------
+role[name] | 是   | name|
+role[status] | 是   | 状态|
+role[permission_ids][] |是 | 功能列表|
+
+
 ```shell
-  curl -i -X POST  -d "role[name]=sdfdf&role[status]=0"--header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles
+  curl -i -X POST  -d "role[name]=sdfdf&role[status]=0&role[permission_ids][]=1"--header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles
 ```
 ### Response 响应
 
@@ -293,8 +300,14 @@ roles:[
 
 ### Request 请求参数
 
+参数名 | 是否必需 | 描述
+-----| --------| -------
+role[name] | 是   | name|
+role[status] | 是   | 状态|
+role[permission_ids][] |是 | 功能列表|
+
 ```shell
-  curl -i -X PUT  -d "role[name]=sdfdf&role[status]=0"--header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
+  curl -i -X PUT  -d "role[name]=sdfdf&role[status]=0&role[permission_ids][]=1&&role[permission_ids][]=2"--header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
 ```
 ### Response 响应
 
@@ -308,7 +321,36 @@ roles:[
 ```
 
 
-## 2.4、删除角色接口
+## 2.4、查看角色接口
+
+### HTTP请求
+
+`GET /api/v1/roles/:id`
+
+```shell
+  curl -i -X GET  --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
+```
+### Response 响应
+
+> 响应数据:
+
+```json
+  role: {   
+    name,
+    status,
+    permissions: [{
+      {"id":1,
+      "name":"用户查看",
+      "display_name":"查看"
+      'status':1
+      'rule_type': 1 权限类型(1:查询权限;2:编辑权限;3:审核)
+    },
+    ..
+    ]
+  }
+```
+
+## 2.5、删除角色接口
 
 ### HTTP请求
 
@@ -319,6 +361,45 @@ roles:[
 ```shell
   curl -i -X DELETE --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
 ```
+## 2.6、功能列表接口
+
+### HTTP请求
+
+`GET /api/v1/permission_groups`
+
+### Request 请求参数
+
+```shell
+  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/permission_groups
+```
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "groups":
+   [{"id":1,
+     "name":"系统管理",
+     "subclass":[{
+       "id":5,
+       "name":"用户管理",
+       "permissions": [{
+               "id":1,"name":"用户查看",
+               "display_name":"查看",
+               "module_name":"User",
+               "status":"enabled",
+               "rule_type":1
+              },
+           ]},
+         ....
+      ]}
+    ]
+  }
+
+```
+
+
 # Part3 艺人管理
 
 ## 3.1. 创建艺人接口

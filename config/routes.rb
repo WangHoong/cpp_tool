@@ -8,6 +8,7 @@ Rails.application.routes.draw do
               get :current
             end
           end
+          resources :permission_groups, only: [:index]
           resources :roles, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy]

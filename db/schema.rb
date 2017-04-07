@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20170406112318) do
     t.integer  "catalog_tier",                       comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
     t.integer  "language",                           comment: "语言"
     t.integer  "genre",                              comment: "曲风"
-    t.string   "label",                              comment: "唱片公司名称"
+    t.string   "label"
     t.datetime "original_release_date",              comment: "最初发行日期"
     t.string   "p_line_copyright",                   comment: "℗ "
     t.string   "c_line_copyright",                   comment: "©"
@@ -51,18 +51,21 @@ ActiveRecord::Schema.define(version: 20170406112318) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                comment: "国籍"
-    t.string   "country_name"
-    t.integer  "gender_type",                                               comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                  comment: "唱片公司ID"
-    t.string   "label_name"
-    t.text     "description",        limit: 65535,                          comment: "艺人介绍"
-    t.integer  "status",                           default: 1,              comment: "0删除 ，1未删除"
-    t.string   "operator",                                                  comment: "操作员"
-    t.integer  "approve_status",                   default: 0,              comment: "0待审批 ,1审批通过，2审批未通过"
-    t.text     "not_through_reason", limit: 65535,                          comment: "未通过原因"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.integer  "country_id",                               comment: "国籍"
+    t.string   "country"
+    t.string   "avatar",                                   comment: "个人写真"
+    t.integer  "provider_id",                              comment: "版权方ID"
+    t.date     "uploaded_at"
+    t.integer  "upload_method",                            comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
+    t.string   "label"
+    t.string   "website",                                  comment: "网站"
+    t.text     "biography",     limit: 65535,              comment: "艺人介绍"
+    t.integer  "genre_id",                                 comment: "曲风"
+    t.integer  "postal_code",                              comment: "邮政编码"
+    t.string   "contact",                                  comment: "联系方式"
+    t.string   "alias",                                    comment: "别名"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
 
@@ -84,6 +87,7 @@ ActiveRecord::Schema.define(version: 20170406112318) do
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
+    t.integer  "parent_id",  default: 0
     t.integer  "sort",       default: 0,              comment: "排序"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -92,12 +96,11 @@ ActiveRecord::Schema.define(version: 20170406112318) do
   create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "module_name"
-    t.integer  "parent_id"
-    t.integer  "sort",        default: 0,              comment: "排序"
-    t.string   "rule_type",                            comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
-    t.integer  "status",      default: 1
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "permission_group_id"
+    t.integer  "status",              default: 1
+    t.integer  "rule_type",           default: 1,              comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "permissions_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -108,14 +111,14 @@ ActiveRecord::Schema.define(version: 20170406112318) do
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "target_id",                            comment: "目标ID"
-    t.string   "target_type",                          comment: "目标类型"
-    t.string   "url",                                  comment: "资源url"
-    t.integer  "status",      default: 1,              comment: "0删除 ，1未删除"
-    t.string   "native_name",                          comment: "资源原始名称"
-    t.integer  "field",                                comment: "个人资源区分"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "target_id",                comment: "目标ID"
+    t.string   "target_type",              comment: "目标类型"
+    t.string   "url",                      comment: "资源url"
+    t.integer  "status"
+    t.string   "native_name",              comment: "资源原始名称"
+    t.integer  "field",                    comment: "个人资源区分"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 
