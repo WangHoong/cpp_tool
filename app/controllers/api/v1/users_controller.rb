@@ -1,27 +1,25 @@
 class Api::V1::UsersController < Api::V1::BaseController
   #skip_load_and_authorize_resource
-  #skip_before_action :authenticate_user! ,:only=>[:create]
+
   def index
     page = params.fetch(:page, 1).to_i
-    size = params[:size]
+    size = params[:size] || 10
     @users = User.recent
     @users = @users.db_query(:name, params[:q]) if params[:q]
     @users = @users.where(status: params[:status]) if params[:status]
     @users = @users.page(page).per(size)
-    render json: @users, meta: page_info(@users)
+    render json: {users: @users.as_json(User.as_list_json_options), meta: page_info(@users).merge!({size: size})}
   end
 
 
   def show
-    @user = User.includes(:roles).find(params[:id])
-    render json: @user
+    @user = User.find(params[:id])
+    render json: {user: @user.as_json(User.as_list_json_options)}
   end
-
-
 
   def update
     @user = get_user
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -40,11 +38,12 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def destroy
     get_user.destroy
+    head :ok
   end
 
 
   def current
-    render json: current_user||{}, serializer: UserDetailSerializer
+    render json: {user: current_user.as_json(User.as_list_json_options)}
   end
 
 
@@ -65,14 +64,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.fetch(:user, {})
-        .permit(
-            :name,
-            :email,
-            :address,
-            :avatar_url,
-            :status,
-            :password
-            )
+    params.require(:user).permit(:name,:email,:address,:avatar_url,:status,:password,:role_ids=>[])
   end
+
 end
