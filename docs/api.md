@@ -114,7 +114,7 @@ users:[
 
 ### HTTP请求
 
-`POST /api/v1/users`
+`POST /api/v1/users`
 
 ### Request 请求参数
 

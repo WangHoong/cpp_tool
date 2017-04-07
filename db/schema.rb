@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170406095309) do
+ActiveRecord::Schema.define(version: 20170406112318) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -95,12 +95,19 @@ ActiveRecord::Schema.define(version: 20170406095309) do
   create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "module_name"
-    t.integer  "permission_group_id"
-    t.integer  "sort",                default: 0,              comment: "排序"
-    t.string   "rule_type",                                    comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
-    t.integer  "status",              default: 1
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "parent_id"
+    t.integer  "sort",        default: 0,              comment: "排序"
+    t.string   "rule_type",                            comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
+    t.integer  "status",      default: 1
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "permissions_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "role_id"
+    t.integer "permission_id"
+    t.index ["permission_id"], name: "index_roles_permissions_on_permission_id", using: :btree
+    t.index ["role_id"], name: "index_roles_permissions_on_role_id", using: :btree
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
