@@ -8,7 +8,7 @@ class Role < ApplicationRecord
   class_attribute :as_json_options
   self.as_json_options={
       only: [:id, :name,:status],
-      include: {permissions: {only: [:id,:name,:display_name,:module_name,:rule_type,:status]}}
+      include: {permissions: {only: [:id,:name,:display_name,:rule_type]}}
 
   }
 end

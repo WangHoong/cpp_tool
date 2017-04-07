@@ -365,12 +365,12 @@ role[permission_ids][] |是 | 功能列表|
 
 ### HTTP请求
 
-`GET /api/v1/permission_groups`
+`GET /api/v1/roles/:role_id/permissions`
 
 ### Request 请求参数
 
 ```shell
-  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/permission_groups
+  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:role_id/permissions
 ```
 ### Response 响应
 
@@ -385,12 +385,17 @@ role[permission_ids][] |是 | 功能列表|
        "id":5,
        "name":"用户管理",
        "permissions": [{
-               "id":1,"name":"用户查看",
+               "id":1,
+               "name":"用户查看",
                "display_name":"查看",
-               "module_name":"User",
-               "status":"enabled",
-               "rule_type":1
+               "is_selectd" : true
               },
+              {
+                "id":2,
+                "name":"用户编辑",
+                "display_name":"编辑",
+                "is_selectd" : true
+               },
            ]},
          ....
       ]}
