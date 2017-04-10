@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170406112318) do
+ActiveRecord::Schema.define(version: 20170410075724) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -69,6 +69,47 @@ ActiveRecord::Schema.define(version: 20170406112318) do
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
 
+  create_table "assets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.string   "filename"
+    t.string   "url"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "authorized_businesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "business_id",                                                 comment: "业务名称"
+    t.string   "business_type",             default: "Business"
+    t.integer  "target_id",                                                   comment: "授权书ID"
+    t.string   "target_type",   limit: 100,                                   comment: "授权书类型"
+    t.integer  "lyrics_point",                                                comment: "词比例"
+    t.integer  "tune_point",                                                  comment: "曲比例"
+    t.string   "divided_point", limit: 100,                                   comment: "分成比例"
+    t.integer  "areas_count",               default: 0
+    t.integer  "is_define",     limit: 1,   default: 0,                       comment: "是否自定义分成比例"
+    t.string   "define_point",  limit: 100,                                   comment: "自定义分成比例"
+    t.boolean  "is_whole",                  default: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  create_table "authorized_businesses_areas", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "authorized_business_id", comment: "授权业务"
+    t.integer "authorized_area_id",     comment: "区域"
+    t.index ["authorized_area_id"], name: "authorized_area_id", using: :btree
+    t.index ["authorized_business_id"], name: "authorized_business_id", using: :btree
+  end
+
+  create_table "authorized_ranges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+  end
+
+  create_table "banks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "account_no"
+  end
+
   create_table "continents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cn_name", comment: "中文名字"
     t.string "en_name", comment: "英文名字"
@@ -85,6 +126,38 @@ ActiveRecord::Schema.define(version: 20170406112318) do
     t.text    "remark",       limit: 65535, comment: "备注字段，保留"
   end
 
+  create_table "cp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "contract_id",                           comment: "合约"
+    t.integer  "currency_id",                           comment: "货币"
+    t.integer  "account_id",                            comment: "账号ID"
+    t.datetime "start_time",                            comment: "开始时间"
+    t.datetime "end_time",                              comment: "结算时间"
+    t.integer  "tracks_count", default: 0,              comment: "授权歌曲数量"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "cp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "contract_no",                                                                       comment: "合约编号"
+    t.string   "project_no",                                                                        comment: "项目编号"
+    t.integer  "publisher_id",                                                                      comment: "版权方"
+    t.integer  "department_id",                                                                     comment: "部门"
+    t.datetime "start_time",                                                                        comment: "合约开始时间"
+    t.datetime "end_time",                                                                          comment: "合约结束时间"
+    t.boolean  "allow_overdue",                                        default: false,              comment: "是否永久有效"
+    t.integer  "pay_type",                                             default: 0,                  comment: "预付方式"
+    t.decimal  "pay_amount",                  precision: 10, scale: 2, default: "0.0",              comment: "预付金额"
+    t.integer  "tracks_count",                                         default: 0,                  comment: "全部授权歌曲数量"
+    t.text     "desc",          limit: 65535
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
+  end
+
+  create_table "departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "name"
+    t.integer "type", default: 0, comment: "0:sp,1:cp"
+  end
+
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "parent_id",  default: 0
@@ -95,6 +168,7 @@ ActiveRecord::Schema.define(version: 20170406112318) do
 
   create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
+    t.string   "display_name"
     t.string   "module_name"
     t.integer  "permission_group_id"
     t.integer  "status",              default: 1

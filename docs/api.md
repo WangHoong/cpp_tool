@@ -361,7 +361,7 @@ role[permission_ids][] |是 | 功能列表|
 ```shell
   curl -i -X DELETE --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
 ```
-## 2.6、功能列表接口
+## 2.6、角色功能列表接口
 
 ### HTTP请求
 

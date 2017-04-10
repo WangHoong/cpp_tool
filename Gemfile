@@ -59,6 +59,8 @@ gem 'sidekiq'
 #定时任务
 gem 'sidetiq'
 
+gem 'audited'
+
 # Revenue processing status
 gem 'state_machines'
 gem 'state_machines-activerecord'
