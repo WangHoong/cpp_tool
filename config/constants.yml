@@ -24,7 +24,6 @@ default: &default
     industrial:         工业
     religious:          宗教音乐
     children:           儿歌
-    quyi:               中国曲艺
     chinese_opera:      中国戏曲
     redsong:            社会主义特色
     dōjin:              同人音乐

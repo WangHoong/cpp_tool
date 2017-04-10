@@ -10,7 +10,7 @@ Rails.application.routes.draw do
           end
 
           resources :roles, only: [:index, :create, :show, :update, :destroy] do
-            resources :permissions, only: [:index]            
+            resources :permissions, only: [:index]
           end
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy]
@@ -18,6 +18,14 @@ Rails.application.routes.draw do
             collection do
         			put :approve
         		end
+          end
+
+          resources :constants, only: [] do
+            collection do
+              get :genres
+              get :album_types
+              get :artist_types
+            end
           end
 
     end #api
