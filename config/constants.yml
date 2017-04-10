@@ -1,0 +1,45 @@
+default: &default
+  genres:
+    pop:                流行
+    rock:               摇滚
+    metal:              金属
+    folk:               民谣
+    punk:               朋克
+    core:               核
+    hip_pop:            Hip Hop
+    electronic:         电子
+    country:            乡村
+    blues:              布鲁斯
+    jazz:               爵士
+    reggae:             雷鬼
+    funk:               放克
+    soul:               灵魂音乐
+    avantgarde:         先锋音乐
+    darkwave:           暗潮
+    gothic:             哥特
+    light:              轻音乐
+    world:              世界音乐
+    new_age:            新世纪
+    ethno:              民族音乐
+    industrial:         工业
+    religious:          宗教音乐
+    children:           儿歌
+    chinese_opera:      中国戏曲
+    redsong:            社会主义特色
+    dōjin:              同人音乐
+    classical:          古典
+    soundtrack:         原声音乐
+    function_music:     功能音乐
+  album_types:
+    recording:          录音室专辑
+    ep:                 EP
+    live:               现场专辑
+  artist_types:
+    individual:         个人
+    band:               乐队
+
+development:
+  <<: *default
+
+test:
+  <<: *default

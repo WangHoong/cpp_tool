@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
           namespace :cp do
             resources :contracts do
-              resources :authorizes,  except: [:create,:update]  
+              resources :authorizes,  except: [:create,:update]
             end
           end
 
@@ -26,6 +26,13 @@ Rails.application.routes.draw do
         		end
           end
 
+          resources :constants, only: [] do
+            collection do
+              get :genres
+              get :album_types
+              get :artist_types
+            end
+          end
 
     end #api
   end #v1
