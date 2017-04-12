@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
     # Authorization related methods and callbacks
     #include CanCan::ControllerAdditions
     #include ActionController::Cookies
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
     # load_and_authorize_resource
 
     attr_accessor :current_user
