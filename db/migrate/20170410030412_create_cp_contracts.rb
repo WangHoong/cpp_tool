@@ -3,7 +3,7 @@ class CreateCpContracts < ActiveRecord::Migration[5.0]
     create_table :cp_contracts do |t|
       t.string   "contract_no",                                                                comment: "合约编号"
       t.string   "project_no",                                                                 comment: "项目编号"
-      t.integer  "publisher_id",                                                               comment: "版权方"
+      t.integer  "provider_id",                                                               comment: "版权方"
       t.integer  "department_id",                                                              comment: "部门"
       t.datetime "start_time",                                                                 comment: "合约开始时间"
       t.datetime "end_time",                                                                   comment: "合约结束时间"

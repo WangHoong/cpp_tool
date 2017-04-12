@@ -65,6 +65,9 @@ gem 'audited'
 gem 'state_machines'
 gem 'state_machines-activerecord'
 
+# 软删除
+gem 'acts_as_paranoid', '~> 0.5.0'
+
 #日志输出
 gem 'awesome_print'
 gem 'rails_semantic_logger'

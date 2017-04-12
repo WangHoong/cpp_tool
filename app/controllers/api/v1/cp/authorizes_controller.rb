@@ -4,7 +4,7 @@ class Cp::AuthorizesController < ApplicationController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @authorizes =  @contract.authorizes.includes(:contract,:currency,:account,:authorized_businesses,:contract_files).recent.page(page).per(size)
+    @authorizes =  @contract.authorizes.includes(:contract,:currency,:account,:authorized_businesses,:assets).recent.page(page).per(size)
     render json: @authorizes, meta: page_info(@authorizes),root: "cp_authorizes"
   end
 
@@ -22,7 +22,7 @@ class Cp::AuthorizesController < ApplicationController
   def areas
     @authorize =  get_authorize
     @business =  @authorize.authorized_businesses.find(params[:business_id])
-    render json:  @business.authorized_areas 
+    render json:  @business.authorized_areas
   end
 
 
