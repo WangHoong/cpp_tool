@@ -65,6 +65,9 @@ gem 'audited'
 gem 'state_machines'
 gem 'state_machines-activerecord'
 
+# 软删除
+gem 'acts_as_paranoid', '~> 0.5.0'
+
 #日志输出
 gem 'awesome_print'
 gem 'rails_semantic_logger'
@@ -85,3 +88,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'acts_as_paranoid', '~> 0.5.0'

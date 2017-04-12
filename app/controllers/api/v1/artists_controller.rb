@@ -36,7 +36,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Delete /artists/:id
   def destroy
     get_artist
-    if @artist.update_attributes(status: :disabled)
+    if @artist.destroy
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
