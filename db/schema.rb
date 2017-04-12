@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.integer  "tune_point",                                                  comment: "曲比例"
     t.string   "divided_point", limit: 100,                                   comment: "分成比例"
     t.integer  "areas_count",               default: 0
-    t.integer  "is_define",     limit: 1,   default: 0,                       comment: "是否自定义分成比例"
+    t.boolean  "is_define",                 default: false,                   comment: "是否自定义分成比例"
     t.string   "define_point",  limit: 100,                                   comment: "自定义分成比例"
     t.boolean  "is_whole",                  default: false
     t.datetime "created_at",                                     null: false
@@ -157,7 +157,6 @@ ActiveRecord::Schema.define(version: 20170410075724) do
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "parent_id",  default: 0
     t.integer  "sort",       default: 0,              comment: "排序"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -165,9 +164,9 @@ ActiveRecord::Schema.define(version: 20170410075724) do
 
   create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "display_name"
     t.string   "module_name"
     t.integer  "permission_group_id"
+    t.integer  "sort",                default: 0,              comment: "排序"
     t.string   "rule_type",                                    comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
     t.integer  "status",              default: 1
     t.datetime "created_at",                      null: false

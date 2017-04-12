@@ -1,4 +1,5 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
+
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
@@ -9,12 +10,13 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Get /artists/:id
   def show
-    render json:  get_artist
+    render json: get_artist
   end
 
   # Put /artists/:id
   def update
-    if @artist = get_artist.update(artist_params)
+    get_artist
+    if @artist.update(artist_params)
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
@@ -33,7 +35,8 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Delete /artists/:id
   def destroy
-    if @artist = get_artist.update_attributes(status: :disabled)
+    get_artist
+    if @artist.update_attributes(status: :disabled)
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
@@ -49,7 +52,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   private
   def get_artist
-    Artist.includes(:country, :resources).find(params[:id])
+    @artist ||= Artist.includes(:country, :resources).find(params[:id])
   end
 
   def get_artist_by_ids

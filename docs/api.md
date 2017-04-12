@@ -56,10 +56,10 @@
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-email  |  是   | Emial|
-password| 是   | Password|
+| 参数名      | 是否必需 | 描述       |
+| -------- | ---- | -------- |
+| email    | 是    | Emial    |
+| password | 是    | Password |
 
 ```shell
   curl -i -X POST -d "email=test@topdmc.com&password=123456"  --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/sessions
@@ -82,11 +82,11 @@ password| 是   | Password|
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-email  |  否  | Emial|
-name| 否   | name|
-status | 否   | 状态|
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| email  | 否    | Emial |
+| name   | 否    | name  |
+| status | 否    | 状态    |
 
 
 ```shell
@@ -118,16 +118,16 @@ users:[
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-user[email]  |   是  | Emial|
-user[name] | 是   | name|
-user[password] | 是   | password|
-user[address] | 是   |地址|
-user[status] | 是   |状态|
-user[phone] | 是   |手机|
-user[avatar_url] | 是   |头像|
-user[role_ids][] |是 | 角色列表|
+| 参数名              | 是否必需 | 描述       |
+| ---------------- | ---- | -------- |
+| user[email]      | 是    | Emial    |
+| user[name]       | 是    | name     |
+| user[password]   | 是    | password |
+| user[address]    | 是    | 地址       |
+| user[status]     | 是    | 状态       |
+| user[phone]      | 是    | 手机       |
+| user[avatar_url] | 是    | 头像       |
+| user[role_ids][] | 是    | 角色列表     |
 
 
 ```shell
@@ -156,15 +156,15 @@ user[role_ids][] |是 | 角色列表|
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-user[email]  |   是  | Emial|
-user[name] | 是   | name|
-user[address] | 是   | 地址|
-user[status] | 是   | 状态|
-user[phone] | 是   |手机|
-user[avatar_url] | 是   |头像|
-user[role_ids][] |是 | 角色列表|
+| 参数名              | 是否必需 | 描述    |
+| ---------------- | ---- | ----- |
+| user[email]      | 是    | Emial |
+| user[name]       | 是    | name  |
+| user[address]    | 是    | 地址    |
+| user[status]     | 是    | 状态    |
+| user[phone]      | 是    | 手机    |
+| user[avatar_url] | 是    | 头像    |
+| user[role_ids][] | 是    | 角色列表  |
 
 
 ```shell
@@ -270,11 +270,11 @@ roles:[
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-role[name] | 是   | name|
-role[status] | 是   | 状态|
-role[permission_ids][] |是 | 功能列表|
+| 参数名                    | 是否必需 | 描述   |
+| ---------------------- | ---- | ---- |
+| role[name]             | 是    | name |
+| role[status]           | 是    | 状态   |
+| role[permission_ids][] | 是    | 功能列表 |
 
 
 ```shell
@@ -300,11 +300,11 @@ role[permission_ids][] |是 | 功能列表|
 
 ### Request 请求参数
 
-参数名 | 是否必需 | 描述
------| --------| -------
-role[name] | 是   | name|
-role[status] | 是   | 状态|
-role[permission_ids][] |是 | 功能列表|
+| 参数名                    | 是否必需 | 描述   |
+| ---------------------- | ---- | ---- |
+| role[name]             | 是    | name |
+| role[status]           | 是    | 状态   |
+| role[permission_ids][] | 是    | 功能列表 |
 
 ```shell
   curl -i -X PUT  -d "role[name]=sdfdf&role[status]=0&role[permission_ids][]=1&&role[permission_ids][]=2"--header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:id
@@ -415,19 +415,19 @@ role[permission_ids][] |是 | 功能列表|
 
 ### Request 请求参数
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| artist     | 是    | 标志是艺人    |
-| name     | 是    | 艺人名称    |
-| country_id | 否    | 国家ID |
-| country_name | 否    | 国家名称 |
-| gender_type | 否    | 性别 [:male,:female,:team]|
-| description | 否    | 备注 |
-| label_id | 否    | 唱片公司ID |
-| label_name | 否    | 唱片公司名称 |
-| resources_attributes_url | 否    | 资源URL |
-| resources_attributes_native_name | 否    | 文件原始名称 |
-| resources_attributes_field | 否    | 个人资源区分 |
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| artist                           | 是    | 标志是艺人                    |
+| name                             | 是    | 艺人名称                     |
+| country_id                       | 否    | 国家ID                     |
+| country_name                     | 否    | 国家名称                     |
+| gender_type                      | 否    | 性别 [:male,:female,:team] |
+| description                      | 否    | 备注                       |
+| label_id                         | 否    | 唱片公司ID                   |
+| label_name                       | 否    | 唱片公司名称                   |
+| resources_attributes_url         | 否    | 资源URL                    |
+| resources_attributes_native_name | 否    | 文件原始名称                   |
+| resources_attributes_field       | 否    | 个人资源区分                   |
 
 #### 请求示例
 `post /api/v1/artists`
@@ -501,9 +501,9 @@ role[permission_ids][] |是 | 功能列表|
 ### Request 请求参数
 
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| id     | 是    | 艺人ID    |
+| 参数名  | 是否必需 | 描述   |
+| ---- | ---- | ---- |
+| id   | 是    | 艺人ID |
 
 #### 请求示例
 
@@ -514,7 +514,52 @@ role[permission_ids][] |是 | 功能列表|
 > 响应数据:
 
 ```json
-true
+{
+  "artist": {
+    "id": 4,
+    "name": "333333",
+    "gender_type": "female",
+    "description": "aaaaaaaaaaaaaa",
+    "operator": null,
+    "approve_status": "todo",
+    "not_through_reason": null,
+    "status": "disabled",
+    "country": {
+      "id": 1,
+      "continent_id": 1,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "resources": [
+      {
+        "id": 6,
+        "target_id": 4,
+        "target_type": "Artist",
+        "url": "aaaaadd44444ssssaa,,.ssa",
+        "status": "enabled",
+        "native_name": "ddaalllllll",
+        "field": 0,
+        "created_at": "2017-04-11T18:12:27.000+08:00",
+        "updated_at": "2017-04-11T18:12:27.000+08:00"
+      },
+      {
+        "id": 7,
+        "target_id": 4,
+        "target_type": "Artist",
+        "url": "aaaaadd44444ssssaa,,.ssa",
+        "status": "enabled",
+        "native_name": "ddaalllllll",
+        "field": 0,
+        "created_at": "2017-04-11T18:12:27.000+08:00",
+        "updated_at": "2017-04-11T18:12:27.000+08:00"
+      }
+    ]
+  }
 ```
 ## 3.3. 更新艺人接口
 
@@ -524,29 +569,32 @@ true
 
 ### Request 请求参数
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| id     | 是    | 艺人ID    |
-| artist     | 是   | 标志是艺人    |
-| name     | 否    | 艺人名称    |
-| country_id | 否    | 国家ID |
-| country_name | 否    | 国家名称 |
-| gender_type | 否    | 性别 [:male,:female,:team]|
-| description | 否    | 备注 |
-| label_id | 否    | 唱片公司ID |
-| label_name | 否    | 唱片公司名称 |
-| resources_attributes_id | 否    | 资源id |
-| resources_attributes_url | 否    | 资源URL |
-| resources_attributes_native_name | 否    | 文件原始名称 |
-| resources_attributes_field | 否    | 个人资源区分 |
-| resources_attributes_status | 否    | 是否删除资源文件[:disabled,:enabled] |
+| 参数名                              | 是否必需 | 描述                           |
+| -------------------------------- | ---- | ---------------------------- |
+| id                               | 是    | 艺人ID                         |
+| artist                           | 是    | 标志是艺人                        |
+| name                             | 否    | 艺人名称                         |
+| country_id                       | 否    | 国家ID                         |
+| country_name                     | 否    | 国家名称                         |
+| gender_type                      | 否    | 性别 [:male,:female,:team]     |
+| description                      | 否    | 备注                           |
+| label_id                         | 否    | 唱片公司ID                       |
+| label_name                       | 否    | 唱片公司名称                       |
+| resources_attributes_id          | 否    | 资源id                         |
+| resources_attributes_url         | 否    | 资源URL                        |
+| resources_attributes_native_name | 否    | 文件原始名称                       |
+| resources_attributes_field       | 否    | 个人资源区分                       |
+| resources_attributes_status      | 否    | 是否删除资源文件[:disabled,:enabled] |
+
+**注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据**
 
 #### 请求示例
-`put /api/v1/artists/8`
+
+`put /api/v1/artists/3`
 ```json
 {
 	"artist":{
-		"name":"277777779922",
+		"name":"277777rrrrr779922",
 		"country_id":"1",
 		"country_name":"吧2222222",
 		"gender_type":"female",
@@ -554,7 +602,7 @@ true
 		"label_id":"1",
 		"label_name":"d777ddaaa99",
 		"resources_attributes":[{
-			"id":15,
+			"id":4,
 			"url":"aaaaadd777799sjjajajajajahahasssaa,,.ssa",
 			"native_name":"ddaalll77llll",
       "field":"ss",
@@ -563,13 +611,70 @@ true
 	}
 
 }
-
+```
 ### Response 响应
 
 > 响应数据:
 
 ```json
-true
+{
+  "artist": {
+    "id": 3,
+    "name": "277777rrrrr779922",
+    "gender_type": "female",
+    "description": "aaaa777799aaaaaaaaaa",
+    "operator": null,
+    "approve_status": "todo",
+    "not_through_reason": null,
+    "status": "enabled",
+    "country": {
+      "id": 1,
+      "continent_id": 1,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "resources": [
+      {
+        "target_id": 3,
+        "id": 4,
+        "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
+        "native_name": "ddaalll77llll",
+        "field": 0,
+        "status": "disabled",
+        "target_type": "Artist",
+        "created_at": "2017-04-11T18:11:52.000+08:00",
+        "updated_at": "2017-04-12T12:25:05.000+08:00"
+      },
+      {
+        "id": 5,
+        "target_id": 3,
+        "target_type": "Artist",
+        "url": "aaaaadd44444ssssaa,,.ssa",
+        "status": "enabled",
+        "native_name": "ddaalllllll",
+        "field": 0,
+        "created_at": "2017-04-11T18:11:52.000+08:00",
+        "updated_at": "2017-04-11T18:11:52.000+08:00"
+      },
+      {
+        "id": 8,
+        "target_id": 3,
+        "target_type": "Artist",
+        "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
+        "status": "enabled",
+        "native_name": "ddaalll77llll",
+        "field": 0,
+        "created_at": "2017-04-12T12:16:06.000+08:00",
+        "updated_at": "2017-04-12T12:16:06.000+08:00"
+      }
+    ]
+  }
+}
 ```
 ## 3.4. 查询艺人列表接口
 
@@ -580,10 +685,10 @@ true
 ### Request 请求参数
 
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| size     | 是    | 每页显示的条数    |
-| page     | 否    | 第几页    |
+| 参数名  | 是否必需 | 描述      |
+| ---- | ---- | ------- |
+| size | 是    | 每页显示的条数 |
+| page | 否    | 第几页     |
 
 #### 请求示例
 
@@ -722,9 +827,9 @@ true
 ### Request 请求参数
 
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| id     | 是    | 艺人ID    |
+| 参数名  | 是否必需 | 描述   |
+| ---- | ---- | ---- |
+| id   | 是    | 艺人ID |
 
 #### 请求示例
 
@@ -780,9 +885,9 @@ true
 ### Request 请求参数
 
 
-| 参数名      | 是否必需 | 描述       |
-| -------- | ---- | -------- |
-| artist_ids     | 是    | 艺人ID数组    |
+| 参数名        | 是否必需 | 描述     |
+| ---------- | ---- | ------ |
+| artist_ids | 是    | 艺人ID数组 |
 
 #### 请求示例
 
