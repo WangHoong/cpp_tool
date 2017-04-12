@@ -17,6 +17,9 @@ Rails.application.routes.draw do
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :providers, only: [:index, :create, :show, :update, :destroy]
           resources :roles, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+              get :permissions
+            end
             resources :permissions, only: [:index]
           end
           resources :tracks, only: [:index, :create, :show, :update, :destroy]

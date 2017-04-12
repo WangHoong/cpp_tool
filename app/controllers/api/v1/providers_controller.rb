@@ -6,13 +6,13 @@ class Api::V1::ProvidersController < Api::V1::BaseController
     @providers = Provider.order(id: :desc)
     @providers = @providers.where(name: params[:q]) if params[:q]
     @providers = @providers.page(page).per(size)
-    render json: {providers: @providers.as_json(only: [:id, :name,:property,:data_type]), meta: page_info(@providers).merge!({size: size})}
+    render json: {providers: @providers.as_json(Provider.as_list_json_options), meta: page_info(@providers).merge!({size: size})}
   end
 
 
   def show
     @provider = get_provider
-    render json: {provider: @provider.as_json(Provider.as_json_options)}
+    render json: {provider: @provider.as_json(Provider.as_list_json_options)}
   end
 
   def update
