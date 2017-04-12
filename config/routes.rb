@@ -14,7 +14,8 @@ Rails.application.routes.draw do
               get :current
             end
           end
-
+          resources :dsps, only: [:index, :create, :show, :update, :destroy]
+          resources :providers, only: [:index, :create, :show, :update, :destroy]
           resources :roles, only: [:index, :create, :show, :update, :destroy] do
             resources :permissions, only: [:index]
           end

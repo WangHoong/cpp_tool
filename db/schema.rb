@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170410075724) do
+ActiveRecord::Schema.define(version: 20170412034256) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.integer  "catalog_tier",                       comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
     t.integer  "language",                           comment: "语言"
     t.integer  "genre",                              comment: "曲风"
-    t.string   "label",                              comment: "唱片公司名称"
+    t.string   "label"
     t.datetime "original_release_date",              comment: "最初发行日期"
     t.string   "p_line_copyright",                   comment: "℗ "
     t.string   "c_line_copyright",                   comment: "©"
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20170410075724) do
   create_table "cp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "contract_no",                                                                       comment: "合约编号"
     t.string   "project_no",                                                                        comment: "项目编号"
-    t.integer  "publisher_id",                                                                      comment: "版权方"
+    t.integer  "provider_id",                                                                      comment: "版权方"
     t.integer  "department_id",                                                                     comment: "部门"
     t.datetime "start_time",                                                                        comment: "合约开始时间"
     t.datetime "end_time",                                                                          comment: "合约结束时间"
@@ -155,6 +155,19 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.integer "type", default: 0, comment: "0:sp,1:cp"
   end
 
+  create_table "dsps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name",          limit: 100
+    t.integer  "department_id"
+    t.boolean  "is_agent",                    default: false
+    t.string   "contact"
+    t.string   "address"
+    t.string   "tel"
+    t.string   "email"
+    t.text     "desc",          limit: 65535
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+  end
+
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "parent_id",  default: 0
@@ -168,8 +181,8 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.string   "display_name"
     t.string   "module_name"
     t.integer  "permission_group_id"
-    t.string   "rule_type",                                    comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
     t.integer  "status",              default: 1
+    t.integer  "rule_type",           default: 1,              comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
@@ -179,6 +192,23 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.integer "permission_id"
     t.index ["permission_id"], name: "index_roles_permissions_on_permission_id", using: :btree
     t.index ["role_id"], name: "index_roles_permissions_on_role_id", using: :btree
+  end
+
+  create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name",       limit: 100
+    t.string   "property",                            comment: "属性"
+    t.string   "data_type",                           comment: "数据类型"
+    t.string   "contact",                             comment: "联系人"
+    t.string   "tel",                                 comment: "联系人"
+    t.string   "address",                             comment: "地址"
+    t.string   "email",                               comment: "\beamil"
+    t.string   "bank_name",                           comment: "开户行"
+    t.string   "account_no",                          comment: "账户"
+    t.string   "user_name",                           comment: "账户名"
+    t.integer  "cycle",                               comment: "结算周期"
+    t.datetime "start_time",                          comment: "结算开始时间"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -205,6 +235,36 @@ ActiveRecord::Schema.define(version: 20170410075724) do
     t.integer "role_id"
     t.index ["role_id"], name: "index_roles_users_on_role_id", using: :btree
     t.index ["user_id"], name: "index_roles_users_on_user_id", using: :btree
+  end
+
+  create_table "sp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "contract_id",                                         comment: "合约"
+    t.integer  "currency_id",                                         comment: "货币"
+    t.integer  "bank_id",                                             comment: "银行名称"
+    t.string   "account_no",     limit: 100,                          comment: "账号"
+    t.datetime "start_time",                                          comment: "开始时间"
+    t.datetime "end_time",                                            comment: "结算时间"
+    t.integer  "authorize_type",                                      comment: "授权类型"
+    t.integer  "tracks_count",               default: 0,              comment: "歌曲数量"
+    t.integer  "company_count",              default: 0,              comment: "授权公司数量"
+    t.string   "tracks_file",                                         comment: "授权歌曲报表文件"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "sp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "department_id",                            comment: "单位部门"
+    t.integer  "dsp_id",                                   comment: "渠道"
+    t.string   "project_no",      limit: 100,              comment: "项目编号"
+    t.string   "contract_no",     limit: 100,              comment: "合约编号"
+    t.string   "signing_company",                          comment: "签约公司"
+    t.datetime "start_time",                               comment: "合约开始时间"
+    t.datetime "end_time",                                 comment: "合约结算时间"
+    t.integer  "pay_type",                                 comment: "支付类型"
+    t.integer  "pay_amount",                               comment: "预付金额"
+    t.string   "desc",                                     comment: "描述"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < Api::V1::BaseController
-  skip_load_and_authorize_resource
+  #skip_load_and_authorize_resource
   skip_before_action :authenticate_user!
 
   def create
@@ -12,7 +12,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
       render json: {status: 401, error: "Incorrect email or password"}, status: :unauthorized
     end
   end
- 
+
 
   private
   def session_params
