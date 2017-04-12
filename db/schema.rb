@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20170412034256) do
   create_table "cp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "contract_no",                                                                       comment: "合约编号"
     t.string   "project_no",                                                                        comment: "项目编号"
-    t.integer  "provider_id",                                                                      comment: "版权方"
+    t.integer  "provider_id",                                                                       comment: "版权方"
     t.integer  "department_id",                                                                     comment: "部门"
     t.datetime "start_time",                                                                        comment: "合约开始时间"
     t.datetime "end_time",                                                                          comment: "合约结束时间"
@@ -196,19 +196,19 @@ ActiveRecord::Schema.define(version: 20170412034256) do
 
   create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name",       limit: 100
-    t.string   "property",                            comment: "属性"
-    t.string   "data_type",                           comment: "数据类型"
-    t.string   "contact",                             comment: "联系人"
-    t.string   "tel",                                 comment: "联系人"
-    t.string   "address",                             comment: "地址"
-    t.string   "email",                               comment: "\beamil"
-    t.string   "bank_name",                           comment: "开户行"
-    t.string   "account_no",                          comment: "账户"
-    t.string   "user_name",                           comment: "账户名"
-    t.integer  "cycle",                               comment: "结算周期"
-    t.datetime "start_time",                          comment: "结算开始时间"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "property",               default: 0,              comment: "属性0:个人1：公司"
+    t.string   "data_type",                                       comment: "数据类型0:未知1:\b自有2:对外"
+    t.string   "contact",                                         comment: "联系人"
+    t.string   "tel",                                             comment: "联系电话"
+    t.string   "address",                                         comment: "地址"
+    t.string   "email",                                           comment: "\beamil"
+    t.string   "bank_name",                                       comment: "开户行"
+    t.string   "account_no",                                      comment: "账户"
+    t.string   "user_name",                                       comment: "账户名"
+    t.integer  "cycle",                                           comment: "结算周期"
+    t.datetime "start_time",                                      comment: "结算开始时间"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
