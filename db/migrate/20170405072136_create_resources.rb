@@ -10,5 +10,6 @@ class CreateResources < ActiveRecord::Migration[5.0]
       t.timestamps
     end
       add_index :resources, [:target_type, :target_id]
+      add_index :resources, :status
   end
 end

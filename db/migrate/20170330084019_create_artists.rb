@@ -15,5 +15,6 @@ class CreateArtists < ActiveRecord::Migration[5.0]
       t.timestamps
     end
       add_index :artists, :name
+      add_index :artists, :status
   end
 end
