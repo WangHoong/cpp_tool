@@ -766,25 +766,26 @@ roles:[
 {
   "artists": [
     {
-      "id": 1,
-      "name": "222222",
+      "id": 2,
+      "name": "2777adadadadjjjjjjj79922",
       "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
+      "description": "aaaa777799aaaaaaaaaa",
       "operator": null,
       "approve_status": "agree",
       "not_through_reason": null,
+      "deleted": false,
       "country": null,
       "resources": [
         {
-          "id": 1,
-          "target_id": 1,
+          "id": 2,
+          "target_id": 2,
           "target_type": "Artist",
-          "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": "enabled",
-          "native_name": "ddaalllllll",
+          "url": "1111111,,.ssa",
+          "deleted": false,
+          "native_name": "sssss",
           "field": 0,
-          "created_at": "2017-04-06T18:20:33.000+08:00",
-          "updated_at": "2017-04-06T18:20:33.000+08:00"
+          "created_at": "2017-04-13T16:42:18.000+08:00",
+          "updated_at": "2017-04-13T16:42:18.000+08:00"
         }
       ]
     }

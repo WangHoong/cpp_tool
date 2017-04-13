@@ -15,10 +15,8 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Put /artists/:id
   def update
-    puts artist_params.to_h
-    puts '==================='
     get_artist
-    if @artist.update_attributes(artist_params)
+    if @artist.update(artist_params)
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
@@ -48,7 +46,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Put /artists/approve
   def approve
     @artists = get_artist_by_ids
-    @artists.update_all(approve_status: :agree, not_through_reason: nil)
+    @artists.update(approve_status: :agree)
 		render json: @artists
   end
 

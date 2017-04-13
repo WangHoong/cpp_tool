@@ -7,4 +7,12 @@ class Artist < ApplicationRecord
 	has_many :resources, as: :target, :dependent => :destroy
 	accepts_nested_attributes_for :resources, :allow_destroy => true
 	scope :recent, -> { order('id DESC') }
+
+	before_save :update_approve_status_modified
+
+	private
+
+	def update_approve_status_modified
+		self.not_through_reason = nil if approve_status == 'agree'
+	end
 end
