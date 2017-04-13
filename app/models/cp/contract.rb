@@ -1,5 +1,6 @@
 class Cp::Contract < ApplicationRecord
   self.table_name=:cp_contracts
+  acts_as_paranoid :column => 'deleted', :column_type => 'boolean'
   audited
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize' :dependent => :destroy
@@ -12,6 +13,7 @@ class Cp::Contract < ApplicationRecord
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
   enum pay_type: [:default,:divide,:undivide]
+  enum status: [:default,:agree,:disagree]
 
   validates_presence_of :authorizes
 

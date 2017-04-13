@@ -46,7 +46,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Put /artists/approve
   def approve
     @artists = get_artist_by_ids
-    @artists.update_all(approve_status: :agree, updated_at: DateTime.now)
+    @artists.update_all(approve_status: :agree)
 		render json: @artists
   end
 

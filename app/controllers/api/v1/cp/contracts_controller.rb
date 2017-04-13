@@ -48,6 +48,11 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     render  json: {status: 200}, status: :ok
   end
 
+  def verify
+      @contracts =  Contract.where(id: params[:contract_ids])
+      @contracts.update_all(status: :agree)
+  end
+
   private
 
   def get_contract
@@ -63,6 +68,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :end_time,
             :allow_overdue,
             :desc,
+            :status,
+            :deleted,
             :pay_type,
             :pay_amount,
             :assets => [:id,:url,:filename,:_destroy],
