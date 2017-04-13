@@ -3,7 +3,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @contracts = Cp::Contract.accessible_by(current_ability).recent
+    @contracts = Cp::Contract.all#accessible_by(current_ability).recent
     @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like ?","%#{provider}%") if provider.present?
     @contracts = @contracts.db_query(:contract_no, params[:contract_no]) if params[:contract_no].present?
     @contracts = @contracts.db_query(:project_no, params[:project_no]) if params[:project_no].present?
@@ -69,7 +69,6 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :allow_overdue,
             :desc,
             :status,
-            :deleted,
             :pay_type,
             :pay_amount,
             :assets => [:id,:url,:filename,:_destroy],

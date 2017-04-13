@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412034256) do
+ActiveRecord::Schema.define(version: 20170413041907) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -59,18 +59,19 @@ ActiveRecord::Schema.define(version: 20170412034256) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                    comment: "国籍"
+    t.integer  "country_id",                                                   comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                                                   comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                      comment: "唱片公司ID"
+    t.integer  "gender_type",                                                  comment: "0男，1女，2组合"
+    t.integer  "label_id",                                                     comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",        limit: 65535,                              comment: "艺人介绍"
-    t.boolean  "status",                           default: false,              comment: "1删除 ，0未删除"
-    t.string   "operator",                                                      comment: "操作员"
-    t.integer  "approve_status",                   default: 0,                  comment: "0待审批 ,1审批通过，2审批未通过"
-    t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.text     "description",        limit: 65535,                             comment: "艺人介绍"
+    t.boolean  "deleted",                          default: true, null: false, comment: "0:未删除1:删除 "
+    t.string   "operator",                                                     comment: "操作员"
+    t.integer  "approve_status",                   default: 0,                 comment: "0待审批 ,1审批通过，2审批未通过"
+    t.text     "not_through_reason", limit: 65535,                             comment: "未通过原因"
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
 
@@ -81,6 +82,29 @@ ActiveRecord::Schema.define(version: 20170412034256) do
     t.string   "url"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["target_id", "target_type"], name: "index_assets_on_target_id_and_target_type", using: :btree
+  end
+
+  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "auditable_id"
+    t.string   "auditable_type"
+    t.integer  "associated_id"
+    t.string   "associated_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.string   "username"
+    t.string   "action"
+    t.text     "audited_changes", limit: 65535
+    t.integer  "version",                       default: 0
+    t.string   "comment"
+    t.string   "remote_address"
+    t.string   "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_id", "associated_type"], name: "associated_index", length: { associated_type: 25 }, using: :btree
+    t.index ["auditable_id", "auditable_type"], name: "auditable_index", length: { auditable_type: 25 }, using: :btree
+    t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid", length: { request_uuid: 30 }, using: :btree
+    t.index ["user_id", "user_type"], name: "user_index", length: { user_type: 25 }, using: :btree
   end
 
   create_table "authorized_businesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -153,6 +177,8 @@ ActiveRecord::Schema.define(version: 20170412034256) do
     t.integer  "pay_type",                                             default: 0,                  comment: "预付方式"
     t.decimal  "pay_amount",                  precision: 10, scale: 2, default: "0.0",              comment: "预付金额"
     t.integer  "tracks_count",                                         default: 0,                  comment: "全部授权歌曲数量"
+    t.integer  "status",                                               default: 0,                  comment: "0:未审核1:通过2:未通过"
+    t.boolean  "deleted",                                              default: false,              comment: "0:未删除1:删除"
     t.text     "desc",          limit: 65535
     t.datetime "created_at",                                                           null: false
     t.datetime "updated_at",                                                           null: false
@@ -220,14 +246,15 @@ ActiveRecord::Schema.define(version: 20170412034256) do
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "target_id",                            comment: "目标ID"
-    t.string   "target_type",                          comment: "目标类型"
-    t.string   "url",                                  comment: "资源url"
-    t.integer  "status",      default: 1,              comment: "0删除 ，1未删除"
-    t.string   "native_name",                          comment: "资源原始名称"
-    t.integer  "field",                                comment: "个人资源区分"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "target_id",                                comment: "目标ID"
+    t.string   "target_type",                              comment: "目标类型"
+    t.string   "native_name",                              comment: "资源原始名称"
+    t.string   "url",                                      comment: "资源url"
+    t.integer  "field",                                    comment: "个人资源区分"
+    t.boolean  "deleted",     default: false,              comment: "1删除0:未删除"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
     t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 
