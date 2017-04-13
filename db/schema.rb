@@ -14,42 +14,36 @@ ActiveRecord::Schema.define(version: 20170413041907) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "upc",                                comment: "商品统一编码，universal product code"
-    t.integer  "catalog_number",                     comment: "专辑编号"
-    t.integer  "format",                             comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
-    t.integer  "catalog_tier",                       comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
-    t.integer  "language",                           comment: "语言"
-    t.integer  "genre",                              comment: "曲风"
-    t.string   "label"
-    t.datetime "original_release_date",              comment: "最初发行日期"
-    t.string   "p_line_copyright",                   comment: "℗ "
-    t.string   "c_line_copyright",                   comment: "©"
-    t.boolean  "has_explict",                        comment: "是否包含限制内容，0:no,1:yes,2:clean"
-    t.string   "cover",                              comment: "专辑封面"
-    t.integer  "provider_id",                        comment: "版权方ID"
+    t.string   "upc",                                            comment: "商品统一编码，universal product code"
+    t.integer  "catalog_number",                                 comment: "专辑编号"
+    t.integer  "format",                                         comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
+    t.integer  "catalog_tier",                                   comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
+    t.integer  "language_id",                                    comment: "语言"
+    t.integer  "genre_id",                                       comment: "曲风"
+    t.integer  "label_id",                                       comment: "唱片公司ID"
+    t.datetime "original_release_date",                          comment: "最初发行日期"
+    t.string   "p_line_copyright",                               comment: "℗ "
+    t.string   "c_line_copyright",                               comment: "©"
+    t.boolean  "has_explict",                                    comment: "是否包含限制内容，0:no,1:yes,2:clean"
+    t.integer  "provider",                                       comment: "版权方ID"
     t.datetime "uploaded_at"
-    t.integer  "upload_method",                      comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
-    t.integer  "uploader_id",                        comment: "版权方上传经手人"
-    t.string   "release_version",                    comment: "发行版本"
-    t.integer  "total_volume",                       comment: "专辑曲目数量"
-    t.string   "display_artist",                     comment: "艺人显示"
-    t.integer  "sub_genre",                          comment: "子曲风"
-    t.date     "recording_year",                     comment: "录音时间"
-    t.string   "record_location",                    comment: "录音地点"
-    t.integer  "alternative_genre",                  comment: "另类曲风"
-    t.integer  "alternative_sub_genre",              comment: "另类子曲风"
-    t.string   "complication"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.string   "label_id",                           comment: "唱片公司 id"
-    t.string   "primary_artist",                     comment: "主唱"
-    t.integer  "primary_artist_id",                  comment: "主唱ID"
-    t.string   "featuring_artist",                   comment: "伴唱"
-    t.integer  "featuring_artist_id",                comment: "伴唱ID"
+    t.integer  "upload_method",                                  comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
+    t.integer  "uploader",                                       comment: "版权方上传经手人"
+    t.string   "release_version",                                comment: "发行版本"
+    t.integer  "total_volume",                                   comment: "专辑曲目数量"
+    t.string   "display_artist",                                 comment: "艺人显示"
+    t.integer  "sub_genre",                                      comment: "子曲风"
+    t.date     "recording_year",                                 comment: "录音时间"
+    t.string   "record_location",                                comment: "录音地点"
+    t.integer  "status",                default: 0,              comment: "专辑状态 0: 待审核，1: 已审核"
+    t.datetime "deleted_at",                                     comment: "删除时间"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.index ["name"], name: "index_albums_on_name", using: :btree
+    t.index ["status"], name: "index_albums_on_status", using: :btree
   end
 
-  create_table "artist_associations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "artist_associations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "association_id"
     t.integer  "artist_id"
     t.string   "association_type"
@@ -59,18 +53,18 @@ ActiveRecord::Schema.define(version: 20170413041907) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                   comment: "国籍"
+    t.integer  "country_id",                                                    comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                                                  comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                     comment: "唱片公司ID"
+    t.integer  "gender_type",                                                   comment: "0男，1女，2组合"
+    t.integer  "label_id",                                                      comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",        limit: 65535,                             comment: "艺人介绍"
-    t.boolean  "deleted",                          default: true, null: false, comment: "0:未删除1:删除 "
-    t.string   "operator",                                                     comment: "操作员"
-    t.integer  "approve_status",                   default: 0,                 comment: "0待审批 ,1审批通过，2审批未通过"
-    t.text     "not_through_reason", limit: 65535,                             comment: "未通过原因"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.text     "description",        limit: 65535,                              comment: "艺人介绍"
+    t.boolean  "deleted",                          default: false, null: false, comment: "true删除,false未删除"
+    t.string   "operator",                                                      comment: "操作员"
+    t.integer  "approve_status",                   default: 0,                  comment: "0待审批 ,1审批通过，2审批未通过"
+    t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
@@ -85,7 +79,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.index ["target_id", "target_type"], name: "index_assets_on_target_id_and_target_type", using: :btree
   end
 
-  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "auditable_id"
     t.string   "auditable_type"
     t.integer  "associated_id"
@@ -116,7 +110,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.integer  "tune_point",                                                  comment: "曲比例"
     t.string   "divided_point", limit: 100,                                   comment: "分成比例"
     t.integer  "areas_count",               default: 0
-    t.integer  "is_define",     limit: 1,   default: 0,                       comment: "是否自定义分成比例"
+    t.boolean  "is_define",                 default: false,                   comment: "是否自定义分成比例"
     t.string   "define_point",  limit: 100,                                   comment: "自定义分成比例"
     t.boolean  "is_whole",                  default: false
     t.datetime "created_at",                                     null: false
@@ -178,7 +172,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.decimal  "pay_amount",                  precision: 10, scale: 2, default: "0.0",              comment: "预付金额"
     t.integer  "tracks_count",                                         default: 0,                  comment: "全部授权歌曲数量"
     t.integer  "status",                                               default: 0,                  comment: "0:未审核1:通过2:未通过"
-    t.boolean  "deleted",                                              default: false,              comment: "0:未删除1:删除"
+    t.integer  "deleted",                                              default: 0,                  comment: "1:删除0:未删除"
     t.text     "desc",          limit: 65535
     t.datetime "created_at",                                                           null: false
     t.datetime "updated_at",                                                           null: false
@@ -189,7 +183,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.integer "type", default: 0, comment: "0:sp,1:cp"
   end
 
-  create_table "dsps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "dsps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",          limit: 100
     t.integer  "department_id"
     t.boolean  "is_agent",                    default: false
@@ -212,11 +206,10 @@ ActiveRecord::Schema.define(version: 20170413041907) do
 
   create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "display_name"
     t.string   "module_name"
     t.integer  "permission_group_id"
+    t.string   "rule_type",                                    comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
     t.integer  "status",              default: 1
-    t.integer  "rule_type",           default: 1,              comment: "权限类型(1:查询权限;2:编辑权限;3:审核\b)"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
@@ -228,7 +221,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.index ["role_id"], name: "index_roles_permissions_on_role_id", using: :btree
   end
 
-  create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",       limit: 100
     t.integer  "property",               default: 0,              comment: "属性0:个人1：公司"
     t.integer  "data_type",              default: 0,              comment: "数据类型0:未知1:\b自有2:对外"
@@ -248,10 +241,10 @@ ActiveRecord::Schema.define(version: 20170413041907) do
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "target_id",                                comment: "目标ID"
     t.string   "target_type",                              comment: "目标类型"
-    t.string   "native_name",                              comment: "资源原始名称"
     t.string   "url",                                      comment: "资源url"
+    t.boolean  "deleted",     default: false, null: false, comment: "true删除,false未删除"
+    t.string   "native_name",                              comment: "资源原始名称"
     t.integer  "field",                                    comment: "个人资源区分"
-    t.boolean  "deleted",     default: false,              comment: "1删除0:未删除"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
@@ -272,7 +265,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.index ["user_id"], name: "index_roles_users_on_user_id", using: :btree
   end
 
-  create_table "sp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "sp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "contract_id",                                         comment: "合约"
     t.integer  "currency_id",                                         comment: "货币"
     t.integer  "bank_id",                                             comment: "银行名称"
@@ -287,7 +280,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "sp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "sp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "department_id",                            comment: "单位部门"
     t.integer  "dsp_id",                                   comment: "渠道"
     t.string   "project_no",      limit: 100,              comment: "项目编号"

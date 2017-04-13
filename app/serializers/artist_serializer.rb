@@ -6,7 +6,7 @@ class ArtistSerializer < ActiveModel::Serializer
              :operator,
              :approve_status,
              :not_through_reason,
-             :status,
+             :deleted,
              :country,
              :resources
 end
