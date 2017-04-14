@@ -799,7 +799,7 @@ roles:[
 
 # Part6 版权方管理
 
-## 6.1、版权方列表接口
+## 6.1、版权方列表接口
 
 ### HTTP请求
 
@@ -821,8 +821,7 @@ roles:[
     {
       "id": 2,
       "name": "test",
-      "property": 0,
-      "data_type": 0,
+      "property": "company",
       "contact": "sdfdfd",
       "tel": null,
       "address": "fdsfsdfsdf",
@@ -842,7 +841,7 @@ roles:[
 }
 ```
 
-## 6.2、新建版权方
+## 6.2、新建版权方
 
 ### HTTP请求
 
@@ -853,7 +852,7 @@ roles:[
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | name   | 是    | name  |
-| property  | 是     | 属性 |
+| property  | 是  | 属性 个人:personal公司:company|
 | contact | 否    | 联系人   |
 | tel | 否    | 电话   |
 | address | 否    | 联系地址   |
@@ -871,7 +870,7 @@ roles:[
   "provider":
   {   
     "name": "eeeee",
-    "property", 1
+    "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
     "tel" : '323233232',
@@ -896,10 +895,10 @@ roles:[
   "provider":
   {   
     "name": "eeeee",
-    "property", 1
+    "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232'
+    "tel" : "323233232"
     "contact": "ddsdd"
     "status" : "agree"
   }
@@ -907,7 +906,7 @@ roles:[
 ```
 
 
-## 6.3、修改版权方
+## 6.3、修改版权方
 
 ### HTTP请求
 
@@ -918,7 +917,7 @@ roles:[
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | name   | 是    | name  |
-| property  | 是     | 属性 |
+| property  | 是  | 属性 个人:personal公司:company|
 | contact | 否    | 联系人   |
 | tel | 否    | 电话   |
 | address | 否    | 联系地址   |
@@ -936,10 +935,10 @@ roles:[
   "provider":
   {   
     "name": "eeeee",
-    "property", 1
+    "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232',
+    "tel" : "323233232",
     "contact": "ddsdd",
     "status" : "agree",
     "cycle": "一周",
@@ -961,7 +960,7 @@ roles:[
   "provider":
   {   
     "name": "eeeee",
-    "property", 1
+    "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
     "tel" : '323233232'
@@ -973,7 +972,7 @@ roles:[
 
 
 
-## 6.4、版权方详情
+## 6.4、版权方详情
 
 ### HTTP请求
 
@@ -988,18 +987,18 @@ roles:[
   "provider":
   {   
     "name": "eeeee",
-    "property", 1
+    "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232'
-    "contact": "ddsdd"
+    "tel" : "323233232",
+    "contact": "ddsdd",
     "status" : "agree"
   }
 }
 ```
 
 
-## 6.5、删除版权方
+## 6.5、删除版权方
 
 ### HTTP请求
 
@@ -1011,11 +1010,11 @@ roles:[
  NULL
 
 
-## 6.6、批量通过版权方
+## 6.6、批量通过版权方
 
 ### HTTP请求
 
-`POST  /api/v1/providers/verify`
+`POST  /api/v1/providers/verify`
 
 ### Request 请求参数
 
@@ -1028,7 +1027,7 @@ roles:[
 
 ```json
 {
- provider_ids: [1,2]
+ "provider_ids": [1,2]
 }
 
 ```
@@ -1038,7 +1037,7 @@ roles:[
 > 响应数据:
 null
 
-## 6.7、批量通过版权方
+## 6.7、批量通过版权方
 
 ### HTTP请求
 
@@ -1055,8 +1054,8 @@ null
 
 ```json
 {
- provider_ids: [1,2],
- reason: "dddd"
+ "provider_ids": [1,2],
+ "reason": "dddd"
 }
 
 ```

@@ -1,6 +1,7 @@
 class Provider < ApplicationRecord
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum status: [:todo,:agree,:disagree]
+	enum property: [:personal,:company]
 	validates :name, presence: true
 
 	class_attribute :as_list_json_options
