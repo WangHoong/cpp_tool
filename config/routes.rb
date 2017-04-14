@@ -15,7 +15,11 @@ Rails.application.routes.draw do
             end
           end
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
-          resources :providers, only: [:index, :create, :show, :update, :destroy]
+          resources :providers, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+              post :unverify,:verify
+            end
+          end
           resources :roles, only: [:index, :create, :show, :update, :destroy] do
             collection do
               get :permissions
@@ -26,7 +30,7 @@ Rails.application.routes.draw do
           resources :albums, only: [:index, :create, :show, :update, :destroy]
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
-        			put :approve
+        			post :approve
         		end
           end
 

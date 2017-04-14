@@ -13,6 +13,7 @@ class CreateCpContracts < ActiveRecord::Migration[5.0]
       t.integer  "tracks_count",                                               default: 0,     comment: "全部授权歌曲数量"
       t.integer  "status",                                                     default: 0,     comment: "0:未审核1:通过2:未通过"
       t.integer  "deleted",                                                     default: 0,     comment: "1:删除0:未删除"
+      t.string   "reason",                                                                            comment: "未通过原因"
       t.text     "desc"
       t.timestamps
     end

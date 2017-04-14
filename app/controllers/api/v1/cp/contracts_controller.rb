@@ -49,14 +49,27 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   end
 
   def verify
-      @contracts =  Contract.where(id: params[:contract_ids])
-      @contracts.update_all(status: :agree)
+      @contracts = get_contract_list
+      if @contracts.update_all(status: :agree)
+          head :ok
+      end
+  end
+
+  def unverify
+      @contracts = get_contract_list
+      if @contracts.update_all(status: :disagree,reason: params[:reason])
+          head :ok
+      end
   end
 
   private
 
   def get_contract
      Contract.find(params[:id])
+  end
+
+  def get_contract_list
+      Contract.where(id: params[:contract_ids])
   end
 
   def contract_params
@@ -69,6 +82,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :allow_overdue,
             :desc,
             :status,
+            :reason,
             :pay_type,
             :pay_amount,
             :assets => [:id,:url,:filename,:_destroy],

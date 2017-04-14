@@ -38,6 +38,19 @@ class Api::V1::ProvidersController < Api::V1::BaseController
     head :ok
   end
 
+  def verify
+      @providers =  Provider.where(id: params[:provider_ids])
+      if @providers.update_all(status: :agree)
+          head :ok
+      end
+  end
+
+  def unverify
+      @providers =  Provider.where(id: params[:provider_ids])
+      if @providers.update_all(status: :disagree,reason: params[:reason])
+          head :ok
+      end
+  end
 
   private
   def get_provider
@@ -45,6 +58,6 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def provider_params
-    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:bank_name,:account_no,:user_name,:cycle,:start_time)
+    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
   end
 end
