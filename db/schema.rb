@@ -55,22 +55,24 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.string   "association_type"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.index ["artist_id"], name: "artist_id", using: :btree
+    t.index ["association_id"], name: "association_id", using: :btree
   end
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                   comment: "国籍"
+    t.integer  "country_id",                                                    comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                                                  comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                     comment: "唱片公司ID"
+    t.integer  "gender_type",                                                   comment: "0男，1女，2组合"
+    t.integer  "label_id",                                                      comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",        limit: 65535,                             comment: "艺人介绍"
-    t.boolean  "deleted",                          default: true, null: false, comment: "0:未删除1:删除 "
-    t.string   "operator",                                                     comment: "操作员"
-    t.integer  "approve_status",                   default: 0,                 comment: "0待审批 ,1审批通过，2审批未通过"
-    t.text     "not_through_reason", limit: 65535,                             comment: "未通过原因"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.text     "description",        limit: 65535,                              comment: "艺人介绍"
+    t.boolean  "deleted",                          default: false, null: false, comment: "0:未删除1:删除 "
+    t.string   "operator",                                                      comment: "操作员"
+    t.integer  "approve_status",                   default: 0,                  comment: "0待审批 ,1审批通过，2审批未通过"
+    t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
@@ -231,13 +233,13 @@ ActiveRecord::Schema.define(version: 20170413041907) do
   create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name",       limit: 100
     t.integer  "property",               default: 0,              comment: "属性0:个人1：公司"
-    t.integer  "data_type",              default: 0,              comment: "数据类型0:未知1:\b自有2:对外"
+    t.integer  "data_type",              default: 0,              comment: "数据类型0:未知1:自有2:对外"
     t.string   "contact",                                         comment: "联系人"
     t.string   "tel",                                             comment: "联系电话"
     t.string   "address",                                         comment: "地址"
-    t.string   "email",                                           comment: "\beamil"
+    t.string   "email",                                           comment: "eamil"
     t.string   "bank_name",                                       comment: "开户行"
-    t.string   "account_no",                                      comment: "\b\b卡号"
+    t.string   "account_no",                                      comment: "卡号"
     t.string   "user_name",                                       comment: "账户名"
     t.integer  "cycle",                                           comment: "结算周期"
     t.datetime "start_time",                                      comment: "结算开始时间"
@@ -321,7 +323,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.string   "phone"
     t.text     "address",         limit: 65535
     t.string   "avatar_url"
-    t.integer  "status",                        default: 0
+    t.integer  "status",                        default: 0,              comment: "0:未审核1:审核通过2:未通过"
     t.string   "password_digest"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false

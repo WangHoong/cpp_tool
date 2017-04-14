@@ -49,18 +49,7 @@ class Cp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
-   #cp合约授权状态
-   def status
-      if end_time <= Time.now.months_since(3)
-        return 'near'
-      elsif start_time <=Time.now && end_time >= Time.now
-        return 'valid'
-      elsif end_time <= Time.now
-        return 'due'
-      elsif start_time > Time.now
-         return 'unvalid'
-      end
-   end
+   
 
 
 end

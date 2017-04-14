@@ -481,8 +481,8 @@ roles:[
         "id": 24,
         "target_id": 8,
         "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": null,
+        "url": "aaaaadd44444ssssaassa",
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
         "created_at": "2017-04-06T17:48:40.000+08:00",
@@ -523,7 +523,7 @@ roles:[
     "operator": null,
     "approve_status": "todo",
     "not_through_reason": null,
-    "status": "disabled",
+    "deleted": false,
     "country": {
       "id": 1,
       "continent_id": 1,
@@ -541,7 +541,7 @@ roles:[
         "target_id": 4,
         "target_type": "Artist",
         "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
         "created_at": "2017-04-11T18:12:27.000+08:00",
@@ -552,7 +552,7 @@ roles:[
         "target_id": 4,
         "target_type": "Artist",
         "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
         "created_at": "2017-04-11T18:12:27.000+08:00",
@@ -586,7 +586,7 @@ roles:[
 | resources_attributes_field       | 否    | 个人资源区分                       |
 | resources_attributes_status      | 否    | 是否删除资源文件[:disabled,:enabled] |
 
-**注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据**
+注意⚠️更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据
 
 #### 请求示例
 
@@ -606,7 +606,7 @@ roles:[
 			"url":"aaaaadd777799sjjajajajajahahasssaa,,.ssa",
 			"native_name":"ddaalll77llll",
       "field":"ss",
-      "status":"disabled"
+      "deleted": false
 		}]
 	}
 
@@ -626,7 +626,7 @@ roles:[
     "operator": null,
     "approve_status": "todo",
     "not_through_reason": null,
-    "status": "enabled",
+    "deleted": false,
     "country": {
       "id": 1,
       "continent_id": 1,
@@ -645,7 +645,7 @@ roles:[
         "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
         "native_name": "ddaalll77llll",
         "field": 0,
-        "status": "disabled",
+        "deleted": false,
         "target_type": "Artist",
         "created_at": "2017-04-11T18:11:52.000+08:00",
         "updated_at": "2017-04-12T12:25:05.000+08:00"
@@ -655,22 +655,11 @@ roles:[
         "target_id": 3,
         "target_type": "Artist",
         "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
         "created_at": "2017-04-11T18:11:52.000+08:00",
         "updated_at": "2017-04-11T18:11:52.000+08:00"
-      },
-      {
-        "id": 8,
-        "target_id": 3,
-        "target_type": "Artist",
-        "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
-        "status": "enabled",
-        "native_name": "ddaalll77llll",
-        "field": 0,
-        "created_at": "2017-04-12T12:16:06.000+08:00",
-        "updated_at": "2017-04-12T12:16:06.000+08:00"
       }
     ]
   }
@@ -726,7 +715,7 @@ roles:[
           "target_id": 5,
           "target_type": "Artist",
           "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": null,
+          "deleted": false,
           "native_name": "ddaalllllll",
           "field": null,
           "created_at": "2017-04-06T12:05:45.000+08:00",
@@ -737,80 +726,15 @@ roles:[
           "target_id": 5,
           "target_type": "Artist",
           "url": "aaaaadd555552ssssaa,,.ssa",
-          "status": null,
+          "deleted": false,
           "native_name": null,
           "field": 1,
-          "created_at": "2017-04-06T12:05:45.000+08:00",
-          "updated_at": "2017-04-06T12:05:45.000+08:00"
-        },
-        {
-          "id": 11,
-          "target_id": 5,
-          "target_type": "Artist",
-          "url": "aaaaad666663sssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": null,
           "created_at": "2017-04-06T12:05:45.000+08:00",
           "updated_at": "2017-04-06T12:05:45.000+08:00"
         }
       ]
     },
-    {
-      "id": 4,
-      "name": "222222",
-      "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
-      "operator": null,
-      "approve_status": "todo",
-      "not_through_reason": null,
-      "country": {
-        "id": 1,
-        "continent_id": 2,
-        "name": "xx",
-        "lower_name": "xx",
-        "country_code": "11",
-        "full_name": "x",
-        "cname": "xxxxx",
-        "full_cname": "xxxxxxxx",
-        "remark": "xxxxxxx"
-      },
-      "resources": [
-        {
-          "id": 6,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": null,
-          "native_name": "ddaalllllll",
-          "field": null,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
-        },
-        {
-          "id": 7,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaadd555552ssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": 1,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
-        },
-        {
-          "id": 8,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaad666663sssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": null,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
-        }
-      ]
-    }
+
   ],
   "meta": {
     "page": 2,
@@ -865,12 +789,12 @@ roles:[
         "target_id": 8,
         "target_type": "Artist",
         "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": null,
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
         "created_at": "2017-04-06T17:48:40.000+08:00",
         "updated_at": "2017-04-06T17:48:40.000+08:00"
-      }
+      },
     ]
   }
 }
@@ -920,7 +844,7 @@ roles:[
           "target_id": 1,
           "target_type": "Artist",
           "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": "enabled",
+          "deleted": false,
           "native_name": "ddaalllllll",
           "field": 0,
           "created_at": "2017-04-06T18:20:33.000+08:00",

@@ -7,7 +7,7 @@ class Cp::Authorize < ApplicationRecord
   has_many :assets, as: :target, :dependent => :destroy
   accepts_nested_attributes_for :authorized_businesses,  :allow_destroy => true
   accepts_nested_attributes_for :assets,:allow_destroy => true
-  default_scope -> { includes(:assets,:authorized_businesses,:currency,:account) }
+  #default_scope -> { includes(:assets,:authorized_businesses,:currency,:account) }
   scope :recent, -> { order('authorizes.id DESC') }
 
 
