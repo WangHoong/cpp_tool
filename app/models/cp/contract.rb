@@ -1,6 +1,6 @@
 class Cp::Contract < ApplicationRecord
   self.table_name=:cp_contracts
-  acts_as_paranoid :column => 'deleted', :column_type => 'string', :deleted_value => 1
+  acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
@@ -49,7 +49,7 @@ class Cp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
-   
+
 
 
 end

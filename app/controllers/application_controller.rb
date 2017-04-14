@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
     # before_action :authenticate_user!
     # load_and_authorize_resource
 
-    attr_accessor :current_user
+    #attr_accessor :current_user
     # catch all authorization failed exceptions
     rescue_from CanCan::AccessDenied do |exception|
         render json: {status: 403, error: exception}, status: :forbidden

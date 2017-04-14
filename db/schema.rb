@@ -323,10 +323,11 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.string   "phone"
     t.text     "address",         limit: 65535
     t.string   "avatar_url"
-    t.integer  "status",                        default: 0,              comment: "0:未审核1:审核通过2:未通过"
+    t.integer  "status",                        default: 0,                  comment: "0:未审核1:审核通过2:未通过"
+    t.boolean  "deleted",                       default: false
     t.string   "password_digest"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.index ["email"], name: "index_users_on_email", using: :btree
   end
 

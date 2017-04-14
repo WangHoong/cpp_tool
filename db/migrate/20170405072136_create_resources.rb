@@ -4,7 +4,7 @@ class CreateResources < ActiveRecord::Migration[5.0]
       t.integer  "target_id",                                                                             comment: "目标ID"
       t.string   "target_type",                                                                           comment: "目标类型"
       t.string   "url",                                                                                   comment: "资源url"
-      t.integer  "deleted",                         default: 0,                                           comment: "1删除 0未删除"
+      t.boolean  "deleted",      default: false,                                     comment: "true删除,false未删除"
       t.string   "native_name",                                                                           comment: "资源原始名称"
       t.integer  "field",                                                                                 comment: "个人资源区分"
       t.timestamps

@@ -46,7 +46,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Put /artists/approve
   def approve
     @artists = get_artist_by_ids
-    @artists.update_all(approve_status: :agree)
+    @artists.update(approve_status: :agree)
 		render json: @artists
   end
 
@@ -72,7 +72,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :label_name,
             :not_through_reason,
             :approve_status,
-            resources_attributes: [:id, :url, :native_name, :field, :status]
+            resources_attributes: [:id, :url, :native_name, :field, :_destroy]
         )
   end
 end
