@@ -3,26 +3,26 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @contracts = Cp::Contract.all#accessible_by(current_ability).recent
-    @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like ?","%#{provider}%") if provider.present?
+    provider = params[:provider_name]
+    @contracts = ::Cp::Contract.recent#accessible_by(current_ability).recent
+    @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like?","%#{provider}%") if provider.present?
     @contracts = @contracts.db_query(:contract_no, params[:contract_no]) if params[:contract_no].present?
     @contracts = @contracts.db_query(:project_no, params[:project_no]) if params[:project_no].present?
     @contracts = @contracts.date_between(params[:status]) if  params[:status].present?
-    @contracts = @contracts.joins("LEFT JOIN authorizes ON authorizes.contract_id = cp_contracts.id").auth_between(params[:auth_status]) if params[:auth_status].present?
-    @contracts = @contracts.includes(:authorizes,:audits,:authorize_valids,:authorize_dues).page(page).per(size)
+    @contracts = @contracts.includes(:authorizes,:provider,:audits,:authorize_valids,:authorize_dues).page(page).per(size)
 
-    render json: @contracts, meta: page_info(@contracts)
+    render json: {contracts: @contracts.as_json(::Cp::Contract.as_list_json_options)}, meta: page_info(@contracts)
   end
 
 
   def show
-    @contracts = get_contract
-    render json: @contract
+    @contract = get_contract
+    render json: {contract: @contract.as_json(::Cp::Contract.as_list_json_options)}
   end
 
 
   def create
-    @contract = Cp::Contract.new(contract_params)
+    @contract = ::Cp::Contract.new(contract_params)
     if @contract.save
       render json: @contract
     else
@@ -65,11 +65,11 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   private
 
   def get_contract
-     Contract.find(params[:id])
+     ::Cp::Contract.find(params[:id])
   end
 
   def get_contract_list
-      Contract.where(id: params[:contract_ids])
+      ::Cp::Contract.where(id: params[:contract_ids])
   end
 
   def contract_params

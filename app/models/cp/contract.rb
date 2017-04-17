@@ -6,9 +6,8 @@ class Cp::Contract < ApplicationRecord
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
   has_many :authorize_dues, -> {where('cp_authorizes.end_time <?',Time.now)},class_name: 'Cp::Authorize'
-
   has_many :assets, as: :target, :dependent => :destroy
-
+  belongs_to :provider
   accepts_nested_attributes_for :assets ,   :allow_destroy => true
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
@@ -17,7 +16,7 @@ class Cp::Contract < ApplicationRecord
 
   validates_presence_of :authorizes
 
-  scope :recent, -> { order('contracts.id DESC') }
+  scope :recent, -> { order('cp_contracts.id DESC') }
   scope :date_between, lambda{ |status|
                              case status
                              when 'valid'   #有效
@@ -48,6 +47,14 @@ class Cp::Contract < ApplicationRecord
    def authorize_due_cnt
       authorize_dues.size
    end
+
+   class_attribute :as_list_json_options
+   self.as_list_json_options={
+       only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status, :created_at, :updated_at],
+       include: {
+         provider: {only: [:id,:name]}
+       }
+   }
 
 
 
