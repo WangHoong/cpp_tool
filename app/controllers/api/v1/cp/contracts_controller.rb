@@ -52,6 +52,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :agree)
           head :ok
+      else
+          render json: @contract.errors, status: :unprocessable_entity
       end
   end
 
@@ -59,6 +61,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :disagree,reason: params[:reason])
           head :ok
+      else
+        render json: @contract.errors, status: :unprocessable_entity
       end
   end
 

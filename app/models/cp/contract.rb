@@ -48,12 +48,26 @@ class Cp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
+   def provider_name
+     self.provider.name
+   end
+
+   def  contract_status
+     if end_time <= Time.now.months_since(3)
+      return 'near'
+    elsif start_time <=Time.now && end_time >= Time.now
+      return 'valid'
+    elsif end_time <= Time.now
+      return 'due'
+     elsif start_time > Time.now
+       return 'unvalid'
+     end
+   end
+
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status, :created_at, :updated_at],
-       include: {
-         provider: {only: [:id,:name]}
-       }
+       metheds: [:provider_name,:contract_status]
    }
 
 
