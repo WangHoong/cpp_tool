@@ -873,7 +873,7 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232',
+    "tel" : "323233232",
     "contact": "ddsdd",
     "status" : "agree",
     "cycle": "一周",
@@ -898,8 +898,8 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : "323233232"
-    "contact": "ddsdd"
+    "tel" : "323233232",
+    "contact": "ddsdd",
     "status" : "agree"
   }
 }
@@ -917,7 +917,7 @@ roles:[
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | name   | 是    | name  |
-| property  | 是  | 属性 个人:personal公司:company|
+| property  | 是  | 属性 个人:personal公司:company|
 | contact | 否    | 联系人   |
 | tel | 否    | 电话   |
 | address | 否    | 联系地址   |
@@ -972,11 +972,11 @@ roles:[
 
 
 
-## 6.4、版权方详情
+## 6.4、版权方详情
 
 ### HTTP请求
 
-`GET  /api/v1/providers/1`
+`GET  /api/v1/providers/1`
 
 ### Response 响应
 
@@ -1041,7 +1041,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/providers/verify`
+`POST  /api/v1/providers/verify`
 
 ### Request 请求参数
 

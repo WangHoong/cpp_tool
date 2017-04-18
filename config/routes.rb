@@ -35,6 +35,8 @@ Rails.application.routes.draw do
         			post :approve
         		end
           end #artists
+
+          resources :reports
           resources :constants, only: [] do
             collection do
               get :genres
