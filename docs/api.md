@@ -830,7 +830,8 @@ roles:[
       "account_no": null,
       "user_name": null,
       "cycle": null,
-      "start_time": null
+      "start_time": null,
+      "status": "todo:待确定,agree:通过,disagree:未通过"
     }
   ],
   "meta": {
@@ -862,6 +863,7 @@ roles:[
 | user_name | 否    | 账户名   |
 | cycle | 否    | 结算周期   |
 | start_time | 否    | 结算开始时间   |
+| status | 否    | todo:待确定,agree:通过,disagree:未通过   |
 
 ### Request 请求
 
@@ -1075,6 +1077,12 @@ null
 
 ### Request 请求参数
 
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_no   | 是    | 合约编号  |
+| provider_name  |  是    |  版权方 |
+| project_no  |  是    |  版权方 |
+| contract_status  |  是    |  合约状态(valid:有效,near:快到期,due:过期,unvalid:未生效) |
 
 ```shell
   curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/contracts
@@ -1093,8 +1101,8 @@ null
       "provider_name": "sdfdfd",
       "authorize_valid_cnt": "有效授权数量",
       "authorize_due_cnt": "过期授权数量",
-      "status" : "状态",
-      "contract_status" : "合约状态",
+      "status" : "状态",
+      "contract_status" : "合约状态",
       "updated_at": "2017-04",
       "start_time": null,
       "end_time": null
@@ -1175,7 +1183,7 @@ null
 
 
 
-## 7.4、合约详情
+## 7.4、合约详情
 
 ### HTTP请求
 
@@ -1206,7 +1214,7 @@ null
 ```
 
 
-## 7.5、删除合约
+## 7.5、删除合约
 
 ### HTTP请求
 
@@ -1218,7 +1226,7 @@ null
  NULL
 
 
-## 7.6、批量通过合约
+## 7.6、批量通过合约
 
 ### HTTP请求
 
@@ -1245,11 +1253,11 @@ null
 > 响应数据:
 null
 
-## 7.7、批量通过合约
+## 7.7、批量不通过合约
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/verify`
+`POST  /api/v1/contracts/unverify`
 
 ### Request 请求参数
 
