@@ -4,7 +4,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "name"
       t.string   "upc",                                             comment: "商品统一编码，universal product code"
       t.integer  "catalog_number",                                  comment: "专辑编号"
-      t.integer  "format",                                          comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
+      t.string   "format",                                          comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
       t.integer  "catalog_tier",                                    comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
       t.integer  "language_id",                                     comment: "语言"
       t.integer  "genre_id",                                        comment: "曲风"

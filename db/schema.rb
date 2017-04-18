@@ -10,35 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412034256) do
+ActiveRecord::Schema.define(version: 20170418083549) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "upc",                                            comment: "商品统一编码，universal product code"
-    t.integer  "catalog_number",                                 comment: "专辑编号"
-    t.integer  "format",                                         comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
-    t.integer  "catalog_tier",                                   comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
-    t.integer  "language_id",                                    comment: "语言"
-    t.integer  "genre_id",                                       comment: "曲风"
-    t.integer  "label_id",                                       comment: "唱片公司ID"
-    t.datetime "original_release_date",                          comment: "最初发行日期"
-    t.string   "p_line_copyright",                               comment: "℗ "
-    t.string   "c_line_copyright",                               comment: "©"
-    t.boolean  "has_explict",                                    comment: "是否包含限制内容，0:no,1:yes,2:clean"
-    t.integer  "provider",                                       comment: "版权方ID"
+    t.string   "upc",                                                       comment: "商品统一编码，universal product code"
+    t.integer  "catalog_number",                                            comment: "专辑编号"
+    t.integer  "format",                                                    comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
+    t.integer  "catalog_tier",                                              comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
+    t.integer  "language_id",                                               comment: "语言"
+    t.string   "genre",                 limit: 50,                          comment: "曲风"
+    t.integer  "label_id",                                                  comment: "唱片公司ID"
+    t.datetime "original_release_date",                                     comment: "最初发行日期"
+    t.string   "p_line_copyright",                                          comment: "℗ "
+    t.string   "c_line_copyright",                                          comment: "©"
+    t.boolean  "has_explict",                                               comment: "是否包含限制内容，0:no,1:yes,2:clean"
+    t.integer  "provider",                                                  comment: "版权方ID"
     t.datetime "uploaded_at"
-    t.integer  "upload_method",                                  comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
-    t.integer  "uploader",                                       comment: "版权方上传经手人"
-    t.string   "release_version",                                comment: "发行版本"
-    t.integer  "total_volume",                                   comment: "专辑曲目数量"
-    t.string   "display_artist",                                 comment: "艺人显示"
-    t.integer  "sub_genre",                                      comment: "子曲风"
-    t.date     "recording_year",                                 comment: "录音时间"
-    t.string   "record_location",                                comment: "录音地点"
-    t.integer  "status",                default: 0,              comment: "z专辑状态 0: 待审核，1: 已审核"
-    t.datetime "deleted_at",                                     comment: "删除时间"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.integer  "upload_method",                                             comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
+    t.integer  "uploader",                                                  comment: "版权方上传经手人"
+    t.string   "release_version",                                           comment: "发行版本"
+    t.integer  "total_volume",                                              comment: "专辑曲目数量"
+    t.string   "display_artist",                                            comment: "艺人显示"
+    t.integer  "sub_genre",                                                 comment: "子曲风"
+    t.date     "recording_year",                                            comment: "录音时间"
+    t.string   "record_location",                                           comment: "录音地点"
+    t.integer  "status",                           default: 0,              comment: "z专辑状态 0: 待审核，1: 已审核"
+    t.datetime "deleted_at",                                                comment: "删除时间"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.index ["name"], name: "index_albums_on_name", using: :btree
     t.index ["status"], name: "index_albums_on_status", using: :btree
   end
@@ -171,6 +171,10 @@ ActiveRecord::Schema.define(version: 20170412034256) do
     t.text     "desc",          limit: 65535
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", comment: "语言名称"
   end
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

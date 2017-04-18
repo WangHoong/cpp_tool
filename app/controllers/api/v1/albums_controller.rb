@@ -43,7 +43,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   private
   def get_album
-    Album.find(params[:id])
+    Album.includes(:language).find(params[:id])
   end
   def album_params
     params
