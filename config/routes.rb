@@ -34,6 +34,8 @@ Rails.application.routes.draw do
         		end
           end
 
+          resources :reports
+
           resources :constants, only: [] do
             collection do
               get :genres
