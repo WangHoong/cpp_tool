@@ -1,0 +1,12 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#  bundle exec sidekiq -C config/sidekiq.yml -d
+#   sidekiqctl stop tmp/pids/sidekiq.pid
+---
+:verbose: true
+:pidfile: ./tmp/pids/sidekiq.pid
+:logfile: ./log/sidekiq.log
+:concurrency: 1
+:timeout: 30
+:queues:
+  - [report, 1]

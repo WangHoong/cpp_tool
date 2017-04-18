@@ -15,7 +15,9 @@ class Api::V1::ReportsController < Api::V1::BaseController
 
   def create
     @report = Report.new(report_params)
+
     if @report.save
+      ReportWorker.perform_async(@report.id)
       render json: @report
     else
       render json: @report.errors, status: :unprocessable_entity
