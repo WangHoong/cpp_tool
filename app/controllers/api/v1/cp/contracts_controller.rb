@@ -74,6 +74,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   def contract_params
     post = params.require(:contract).permit(
+            :provider_id,
             :department_id,
             :contract_no,
             :project_no,

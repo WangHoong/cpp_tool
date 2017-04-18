@@ -4,7 +4,5 @@ class PermissionGroup < ApplicationRecord
   has_many :subclass, class_name: 'PermissionGroup',foreign_key: :parent_id
 
 
-
-
-
+ 
 end

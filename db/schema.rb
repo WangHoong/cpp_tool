@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170413041907) do
+ActiveRecord::Schema.define(version: 20170418070507) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.index ["target_id", "target_type"], name: "index_assets_on_target_id_and_target_type", using: :btree
   end
 
-  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "auditable_id"
     t.string   "auditable_type"
     t.integer  "associated_id"
@@ -107,6 +107,12 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
     t.index ["request_uuid"], name: "index_audits_on_request_uuid", length: { request_uuid: 30 }, using: :btree
     t.index ["user_id", "user_type"], name: "user_index", length: { user_type: 25 }, using: :btree
+  end
+
+  create_table "authorized_areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "authorized_businesses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -234,7 +240,6 @@ ActiveRecord::Schema.define(version: 20170413041907) do
   create_table "providers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name",       limit: 100
     t.integer  "property",               default: 0,                  comment: "属性0:个人1：公司"
-    t.integer  "data_type",              default: 0,                  comment: "数据类型0:未知1:自有2:对外"
     t.string   "contact",                                             comment: "联系人"
     t.string   "tel",                                                 comment: "联系电话"
     t.string   "address",                                             comment: "地址"
@@ -242,7 +247,7 @@ ActiveRecord::Schema.define(version: 20170413041907) do
     t.string   "bank_name",                                           comment: "开户行"
     t.string   "account_no",                                          comment: "卡号"
     t.string   "user_name",                                           comment: "账户名"
-    t.integer  "cycle",                                               comment: "结算周期"
+    t.string   "cycle",                                               comment: "结算周期"
     t.datetime "start_time",                                          comment: "结算开始时间"
     t.integer  "status",                 default: 0,                  comment: "0未审核1审核通过2未通过"
     t.boolean  "deleted",                default: false,              comment: "0未删除1删除"
