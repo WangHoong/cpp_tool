@@ -1126,19 +1126,24 @@ null
 
 
 ```json
-  {
-    "contract": {
-      "provider_id":2,"department_id":1,
-      "project_no":"32323",
-      "contract_no":"32323",
-      "start_time":"2016-11-17","end_time":"2017-12-17",
-      "allow_overdue":false,"pay_type":"default","pay_amount":10,"desc":"dfdfdfsss",
-      "assets":[{"url":"333","filename":"nasss"}],"authorizes":[{"currency_id":1,"account_id":1,
-      "start_time":"2016-11-17","end_time":"2016-12-17","assets":[{"url":"ddd","filename":"nasss"}],
-     "authorized_businesses":[{"business_id":1,"business_type":"AuthorizedRange","is_whole":0,"divided_point":50,"authorized_area_ids":[124]}]
-       }]
+    {"contract":
+	     {
+	      "provider_id":2,
+	     "department_id":1,
+         "project_no":"32323",
+         "contract_no":"32323",
+         "start_time":"2016-11-17","end_time":"2017-12-17",
+         "allow_overdue":false,"pay_type":"default",
+         "pay_amount":10,"desc":"dfdfdfsss",
+         "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+         "authorizes_attributes":[{"currency_id":1,"account_id":1,
+         "start_time":"2016-11-17","end_time":"2016-12-17",
+          "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+          "authorized_businesses_attributes":[{"authorized_range_id":1,"divided_point":50,
+          "authorized_area_ids":[124]}]
+          }]
       }
-     }
+}
 
 ```
 
