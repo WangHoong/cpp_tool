@@ -830,7 +830,8 @@ roles:[
       "account_no": null,
       "user_name": null,
       "cycle": null,
-      "start_time": null
+      "start_time": null,
+      "status": "todo:待确定,agree:通过,disagree:未通过"
     }
   ],
   "meta": {
@@ -862,6 +863,7 @@ roles:[
 | user_name | 否    | 账户名   |
 | cycle | 否    | 结算周期   |
 | start_time | 否    | 结算开始时间   |
+| status | 否    | todo:待确定,agree:通过,disagree:未通过   |
 
 ### Request 请求
 
@@ -873,7 +875,7 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232',
+    "tel" : "323233232",
     "contact": "ddsdd",
     "status" : "agree",
     "cycle": "一周",
@@ -898,8 +900,8 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : "323233232"
-    "contact": "ddsdd"
+    "tel" : "323233232",
+    "contact": "ddsdd",
     "status" : "agree"
   }
 }
@@ -917,7 +919,7 @@ roles:[
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | name   | 是    | name  |
-| property  | 是  | 属性 个人:personal公司:company|
+| property  | 是  | 属性 个人:personal公司:company|
 | contact | 否    | 联系人   |
 | tel | 否    | 电话   |
 | address | 否    | 联系地址   |
@@ -972,11 +974,11 @@ roles:[
 
 
 
-## 6.4、版权方详情
+## 6.4、版权方详情
 
 ### HTTP请求
 
-`GET  /api/v1/providers/1`
+`GET  /api/v1/providers/1`
 
 ### Response 响应
 
@@ -1041,7 +1043,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/providers/verify`
+`POST  /api/v1/providers/verify`
 
 ### Request 请求参数
 
@@ -1055,6 +1057,220 @@ null
 ```json
 {
  "provider_ids": [1,2],
+ "reason": "dddd"
+}
+
+```
+### Response 响应
+
+> 响应数据:
+null
+
+
+# Part7 合约管理
+
+## 7.1、合约列表接口
+
+### HTTP请求
+
+`GET /api/v1/providers`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_no   | 是    | 合约编号  |
+| provider_name  |  是    |  版权方 |
+| project_no  |  是    |  版权方 |
+| contract_status  |  是    |  合约状态(valid:有效,near:快到期,due:过期,unvalid:未生效) |
+
+```shell
+  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/contracts
+```
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "contracts": [
+    {
+      "id": 2,
+      "contract_no": "test",
+      "project_no": "company",
+      "provider_name": "sdfdfd",
+      "authorize_valid_cnt": "有效授权数量",
+      "authorize_due_cnt": "过期授权数量",
+      "status" : "状态",
+      "contract_status" : "合约状态",
+      "updated_at": "2017-04",
+      "start_time": null,
+      "end_time": null
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "total": 1,
+    "size": 10
+  }
+}
+```
+
+## 7.2、新建合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts`
+
+### Request 请求参数
+
+
+```json
+  {
+    "contract": {
+      "provider_id":2,"department_id":1,
+      "project_no":"32323",
+      "contract_no":"32323",
+      "start_time":"2016-11-17","end_time":"2017-12-17",
+      "allow_overdue":false,"pay_type":"default","pay_amount":10,"desc":"dfdfdfsss",
+      "assets":[{"url":"333","filename":"nasss"}],"authorizes":[{"currency_id":1,"account_id":1,
+      "start_time":"2016-11-17","end_time":"2016-12-17","assets":[{"url":"ddd","filename":"nasss"}],
+     "authorized_businesses":[{"business_id":1,"business_type":"AuthorizedRange","is_whole":0,"divided_point":50,"authorized_area_ids":[124]}]
+       }]
+      }
+     }
+
+```
+
+### Response 响应
+
+> 响应数据:
+ null
+
+## 7.3、修改合约
+
+### HTTP请求
+
+`PUT  /api/v1/contracts/1`
+
+### Request 请求参数
+
+
+```json
+  {
+    "contract": {
+            "id":28,"provider_id":1,"project_no":"32323","contract_no":"32323",
+            "signing_company":"32aa","start_time":"2016-11-17",
+            "end_time":"2016-12-17","allow_overdue":false,
+            "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss",
+            "contract_files":[{"id":177,"url":"333","filename":"nasss"}],
+            "authorizes":[{"id":29,"currency_id":1,"account_id":1,
+                "start_time":"2016-11-17","end_time":"2016-12-17",
+                "contract_files":[{"id":176,"url":"ddd","filename":"nasss"}],
+                "authorized_businesses":[{"id":93,"business_id":1,
+                "business_type":"AuthorizedRange","is_whole":0,"divided_point":50,
+                "authorized_area_ids":[124]}]
+            }]
+          }
+ }
+
+```
+
+### Response 响应
+
+> 响应数据:
+ null
+
+
+
+## 7.4、合约详情
+
+### HTTP请求
+
+`GET  /api/v1/contracts/1`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "contract": {
+          "id":28,"provider_id":1,"provider_name":"版权方",
+          "project_no":"ssss","contract_no":"sssss",
+          "signing_company":"32aa","start_time":"2016-11-17",
+          "end_time":"2016-12-17","allow_overdue":false,
+          "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss","reason":"dddd",
+          "contract_files":[{"id":177,"url":"333","filename":"nasss"}],
+          "authorizes":[{"id":29,"currency_id":1,"account_id":1,
+              "start_time":"2016-11-17","end_time":"2016-12-17",
+              "contract_files":[{"id":176,"url":"ddd","filename":"nasss"}],
+              "authorized_businesses":[{"id":93,"business_id":1,
+              "business_type":"AuthorizedRange","is_whole":0,"divided_point":50,
+              "authorized_area_ids":[124]}]
+          }]
+        }
+}
+```
+
+
+## 7.5、删除合约
+
+### HTTP请求
+
+`DELETE  /api/v1/contracts/1`
+
+### Response 响应
+
+> 响应数据:
+ NULL
+
+
+## 7.6、批量通过合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts/verify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_ids   | 是    | 版权方ids  |
+
+
+### Request 请求
+
+```json
+{
+ "contract_ids": [1,2]
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+null
+
+## 7.7、批量不通过合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts/unverify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_ids   | 是    | 版权方ids  |
+| reason  |  是    |  未通过原因 |
+
+### Request 请求
+
+```json
+{
+ "contract_ids": [1,2],
  "reason": "dddd"
 }
 

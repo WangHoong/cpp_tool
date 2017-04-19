@@ -8,7 +8,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like?","%#{provider}%") if provider.present?
     @contracts = @contracts.db_query(:contract_no, params[:contract_no]) if params[:contract_no].present?
     @contracts = @contracts.db_query(:project_no, params[:project_no]) if params[:project_no].present?
-    @contracts = @contracts.date_between(params[:status]) if  params[:status].present?
+    @contracts = @contracts.date_between(params[:contract_status]) if  params[:contract_status].present?
     @contracts = @contracts.includes(:authorizes,:provider,:audits,:authorize_valids,:authorize_dues).page(page).per(size)
 
     render json: {contracts: @contracts.as_json(::Cp::Contract.as_list_json_options)}, meta: page_info(@contracts)
@@ -52,6 +52,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :agree)
           head :ok
+      else
+          render json: @contract.errors, status: :unprocessable_entity
       end
   end
 
@@ -59,6 +61,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :disagree,reason: params[:reason])
           head :ok
+      else
+        render json: @contract.errors, status: :unprocessable_entity
       end
   end
 
