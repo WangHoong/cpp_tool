@@ -6,9 +6,9 @@ threads 2, 3
 workers 1
 port 4000
 #项目名
-app_name         = "cpp_tool"
+app_name         = "cpp-tool"
 #项目路径
-application_path = "/Users/bjlx/project/cpp-tool"
+application_path = "/srv/www/cpp-tool"
 #这里一定要配置为项目路径下地current
 directory "#{application_path}"
 
