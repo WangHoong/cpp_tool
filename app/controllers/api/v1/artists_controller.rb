@@ -72,7 +72,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :label_name,
             :not_through_reason,
             :approve_status,
-            resources_attributes: [:id, :url, :native_name, :field, :_destroy]
+            artist_resources_attributes: [:id, :field, :_destroy, resource_attributes: [:id, :url, :native_name]]
         )
   end
 end

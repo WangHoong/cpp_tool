@@ -4,8 +4,9 @@ class Artist < ApplicationRecord
 	enum approve_status: [:todo,:agree,:disagree]
 	validates :name, presence: true
 	belongs_to :country
-	has_many :resources, as: :target, :dependent => :destroy
-	accepts_nested_attributes_for :resources, :allow_destroy => true
+	has_many :artist_resources
+	has_many :resources, through: :artist_resources, :dependent => :destroy
+	accepts_nested_attributes_for :artist_resources, :allow_destroy => true
 	scope :recent, -> { order('id DESC') }
 
 
