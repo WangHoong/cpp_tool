@@ -2,7 +2,10 @@ class AlbumSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
     :genre,
-    :format
+    :format,
+    :label,
+    :release_version,
+    :remark
 
   has_many :primary_artists
   has_many :featuring_artists

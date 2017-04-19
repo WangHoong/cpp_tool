@@ -8,7 +8,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.integer  "catalog_tier",                                    comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
       t.integer  "language_id",                                     comment: "语言"
       t.integer  "genre_id",                                        comment: "曲风"
-      t.integer  "label_id",                                        comment: "唱片公司ID"
+      t.string   "label",                                           comment: "唱片公司"
       t.datetime "original_release_date",                           comment: "最初发行日期"
       t.string   "p_line_copyright",                                comment: "℗ "
       t.string   "c_line_copyright",                                comment: "©"
@@ -23,6 +23,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.integer  "sub_genre",                                       comment: "子曲风"
       t.date     "recording_year",                                  comment: "录音时间"
       t.string   "record_location",                                 comment: "录音地点"
+      t.text     "remark"                                           comment: "备注"
       t.integer  "status",        index: true, default: 0,          comment: "专辑状态 0: 待审核，1: 已审核"
       t.datetime "deleted_at",                                      comment: "删除时间"
       t.timestamps

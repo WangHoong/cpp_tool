@@ -38,6 +38,14 @@ class Api::V1::RolesController < Api::V1::BaseController
     head :ok
   end
 
+  def permissions
+    @groups = PermissionGroup.includes(:subclass,:permissions).recent.where(parent_id: 0)
+    groups = []
+    @groups.each do |group|
+       groups << {id: group.id,name: group.name,subclass: group.subclass.includes(:permissions).map{|m| Hash[{id: m.id,name: m.name,permissions: m.permissions.map{|n| Hash[{id: n.id,display_name: n.display_name,name: n.name}]}}]}}
+    end
+    render json: {groups: groups}
+  end
 
   private
   def get_role

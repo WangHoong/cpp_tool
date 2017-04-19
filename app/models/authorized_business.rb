@@ -2,7 +2,7 @@ class AuthorizedBusiness < ApplicationRecord
     belongs_to :business_type, polymorphic: true
 
     has_and_belongs_to_many :authorized_areas, join_table:'authorized_businesses_areas'
-    default_scope -> { includes(:business,:authorized_areas) }
+    #default_scope -> { includes(:business,:authorized_areas) }
 
 
 

@@ -458,35 +458,26 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 8,
+    "id": 2,
     "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "operator": null,
     "approve_status": "todo",
     "not_through_reason": null,
-    "country": {
-      "id": 1,
-      "continent_id": 2,
-      "name": "xx",
-      "lower_name": "xx",
-      "country_code": "11",
-      "full_name": "x",
-      "cname": "xxxxx",
-      "full_cname": "xxxxxxxx",
-      "remark": "xxxxxxx"
-    },
+    "deleted": false,
+    "country": null,
     "resources": [
       {
-        "id": 24,
-        "target_id": 8,
+        "id": 1,
+        "target_id": 2,
         "target_type": "Artist",
         "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": null,
+        "deleted": false,
         "native_name": "ddaalllllll",
         "field": 0,
-        "created_at": "2017-04-06T17:48:40.000+08:00",
-        "updated_at": "2017-04-06T17:48:40.000+08:00"
+        "created_at": "2017-04-13T16:05:54.000+08:00",
+        "updated_at": "2017-04-13T16:05:54.000+08:00"
       }
     ]
   }
@@ -516,50 +507,18 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 4,
-    "name": "333333",
+    "id": 2,
+    "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "operator": null,
     "approve_status": "todo",
     "not_through_reason": null,
-    "status": "disabled",
-    "country": {
-      "id": 1,
-      "continent_id": 1,
-      "name": "Cameroon",
-      "lower_name": "the republic of cameroon",
-      "country_code": "CMR",
-      "full_name": "the Republic of Cameroon",
-      "cname": "喀麦隆",
-      "full_cname": "喀麦隆共和国",
-      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
-    },
-    "resources": [
-      {
-        "id": 6,
-        "target_id": 4,
-        "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
-        "native_name": "ddaalllllll",
-        "field": 0,
-        "created_at": "2017-04-11T18:12:27.000+08:00",
-        "updated_at": "2017-04-11T18:12:27.000+08:00"
-      },
-      {
-        "id": 7,
-        "target_id": 4,
-        "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
-        "native_name": "ddaalllllll",
-        "field": 0,
-        "created_at": "2017-04-11T18:12:27.000+08:00",
-        "updated_at": "2017-04-11T18:12:27.000+08:00"
-      }
-    ]
+    "deleted": true,
+    "country": null,
+    "resources": []
   }
+}
 ```
 ## 3.3. 更新艺人接口
 
@@ -580,13 +539,15 @@ roles:[
 | description                      | 否    | 备注                           |
 | label_id                         | 否    | 唱片公司ID                       |
 | label_name                       | 否    | 唱片公司名称                       |
+| not_through_reason               | 否    | 审批未通过原因                       |
+| approve_status                   | 否    | :agree,:disagree                       |
 | resources_attributes_id          | 否    | 资源id                         |
 | resources_attributes_url         | 否    | 资源URL                        |
 | resources_attributes_native_name | 否    | 文件原始名称                       |
 | resources_attributes_field       | 否    | 个人资源区分                       |
-| resources_attributes_status      | 否    | 是否删除资源文件[:disabled,:enabled] |
+| resources_attributes__destroy    | 否    | 是否删除资源文件[true,false] |
 
-**注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据**
+ 注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据,当不删除resources里面数据时候_destroy 为false或不传此参数
 
 #### 请求示例
 
@@ -594,19 +555,21 @@ roles:[
 ```json
 {
 	"artist":{
-		"name":"277777rrrrr779922",
+		"name":"2777adadadadjjjjjjj79922",
 		"country_id":"1",
 		"country_name":"吧2222222",
 		"gender_type":"female",
 		"description":"aaaa777799aaaaaaaaaa",
 		"label_id":"1",
 		"label_name":"d777ddaaa99",
+    "approve_status": "agree",
+    "not_through_reason": null,
 		"resources_attributes":[{
-			"id":4,
-			"url":"aaaaadd777799sjjajajajajahahasssaa,,.ssa",
-			"native_name":"ddaalll77llll",
-      "field":"ss",
-      "status":"disabled"
+			"id":1,
+			"url":"111111dadasdasdaasadaddad11",
+			"native_name":"dd",
+    		"field":"ss",
+    	    "_destroy":true
 		}]
 	}
 
@@ -619,60 +582,16 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 3,
-    "name": "277777rrrrr779922",
+    "id": 2,
+    "name": "2777adadadadjjjjjjj79922",
     "gender_type": "female",
     "description": "aaaa777799aaaaaaaaaa",
     "operator": null,
-    "approve_status": "todo",
-    "not_through_reason": null,
-    "status": "enabled",
-    "country": {
-      "id": 1,
-      "continent_id": 1,
-      "name": "Cameroon",
-      "lower_name": "the republic of cameroon",
-      "country_code": "CMR",
-      "full_name": "the Republic of Cameroon",
-      "cname": "喀麦隆",
-      "full_cname": "喀麦隆共和国",
-      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
-    },
-    "resources": [
-      {
-        "target_id": 3,
-        "id": 4,
-        "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
-        "native_name": "ddaalll77llll",
-        "field": 0,
-        "status": "disabled",
-        "target_type": "Artist",
-        "created_at": "2017-04-11T18:11:52.000+08:00",
-        "updated_at": "2017-04-12T12:25:05.000+08:00"
-      },
-      {
-        "id": 5,
-        "target_id": 3,
-        "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": "enabled",
-        "native_name": "ddaalllllll",
-        "field": 0,
-        "created_at": "2017-04-11T18:11:52.000+08:00",
-        "updated_at": "2017-04-11T18:11:52.000+08:00"
-      },
-      {
-        "id": 8,
-        "target_id": 3,
-        "target_type": "Artist",
-        "url": "aaaaadd777799sjjajajajajahahasssaa,,.ssa",
-        "status": "enabled",
-        "native_name": "ddaalll77llll",
-        "field": 0,
-        "created_at": "2017-04-12T12:16:06.000+08:00",
-        "updated_at": "2017-04-12T12:16:06.000+08:00"
-      }
-    ]
+    "approve_status": "disagree",
+    "not_through_reason": "不给过111",
+    "deleted": false,
+    "country": null,
+    "resources": []
   }
 }
 ```
@@ -702,119 +621,69 @@ roles:[
 {
   "artists": [
     {
-      "id": 5,
-      "name": "222222",
+      "id": 4,
+      "name": "2222wwwwwwww22",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
       "operator": null,
       "approve_status": "todo",
       "not_through_reason": null,
-      "country": {
-        "id": 1,
-        "continent_id": 2,
-        "name": "xx",
-        "lower_name": "xx",
-        "country_code": "11",
-        "full_name": "x",
-        "cname": "xxxxx",
-        "full_cname": "xxxxxxxx",
-        "remark": "xxxxxxx"
-      },
+      "deleted": false,
+      "country": null,
       "resources": [
         {
-          "id": 9,
-          "target_id": 5,
+          "id": 3,
+          "target_id": 4,
           "target_type": "Artist",
-          "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": null,
-          "native_name": "ddaalllllll",
-          "field": null,
-          "created_at": "2017-04-06T12:05:45.000+08:00",
-          "updated_at": "2017-04-06T12:05:45.000+08:00"
-        },
-        {
-          "id": 10,
-          "target_id": 5,
-          "target_type": "Artist",
-          "url": "aaaaadd555552ssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": 1,
-          "created_at": "2017-04-06T12:05:45.000+08:00",
-          "updated_at": "2017-04-06T12:05:45.000+08:00"
-        },
-        {
-          "id": 11,
-          "target_id": 5,
-          "target_type": "Artist",
-          "url": "aaaaad666663sssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": null,
-          "created_at": "2017-04-06T12:05:45.000+08:00",
-          "updated_at": "2017-04-06T12:05:45.000+08:00"
+          "url": "aaaaadd44423123123144ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "ddaal31313131llllll",
+          "field": 0,
+          "created_at": "2017-04-13T16:43:44.000+08:00",
+          "updated_at": "2017-04-13T16:43:44.000+08:00"
         }
       ]
     },
     {
-      "id": 4,
+      "id": 3,
       "name": "222222",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
       "operator": null,
       "approve_status": "todo",
       "not_through_reason": null,
-      "country": {
-        "id": 1,
-        "continent_id": 2,
-        "name": "xx",
-        "lower_name": "xx",
-        "country_code": "11",
-        "full_name": "x",
-        "cname": "xxxxx",
-        "full_cname": "xxxxxxxx",
-        "remark": "xxxxxxx"
-      },
+      "deleted": false,
+      "country": null,
       "resources": [
         {
-          "id": 6,
-          "target_id": 4,
+          "id": 2,
+          "target_id": 3,
           "target_type": "Artist",
-          "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": null,
-          "native_name": "ddaalllllll",
-          "field": null,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
-        },
-        {
-          "id": 7,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaadd555552ssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": 1,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
-        },
-        {
-          "id": 8,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaad666663sssssaa,,.ssa",
-          "status": null,
-          "native_name": null,
-          "field": null,
-          "created_at": "2017-04-06T12:03:41.000+08:00",
-          "updated_at": "2017-04-06T12:03:41.000+08:00"
+          "url": "1111111,,.ssa",
+          "deleted": false,
+          "native_name": "sssss",
+          "field": 0,
+          "created_at": "2017-04-13T16:42:18.000+08:00",
+          "updated_at": "2017-04-13T16:42:18.000+08:00"
         }
       ]
+    },
+    {
+      "id": 2,
+      "name": "2777adadadadjjjjjjj79922",
+      "gender_type": "female",
+      "description": "aaaa777799aaaaaaaaaa",
+      "operator": null,
+      "approve_status": "disagree",
+      "not_through_reason": "不给过111",
+      "deleted": false,
+      "country": null,
+      "resources": []
     }
   ],
   "meta": {
-    "page": 2,
-    "total": 7
+    "page": 1,
+    "total": 3
   }
 }
 ```
@@ -841,35 +710,26 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 8,
-    "name": "222222",
+    "id": 2,
+    "name": "2777adadadadjjjjjjj79922",
     "gender_type": "female",
-    "description": "aaaaaaaaaaaaaa",
+    "description": "aaaa777799aaaaaaaaaa",
     "operator": null,
-    "approve_status": "todo",
-    "not_through_reason": null,
-    "country": {
-      "id": 1,
-      "continent_id": 2,
-      "name": "xx",
-      "lower_name": "xx",
-      "country_code": "11",
-      "full_name": "x",
-      "cname": "xxxxx",
-      "full_cname": "xxxxxxxx",
-      "remark": "xxxxxxx"
-    },
+    "approve_status": "disagree",
+    "not_through_reason": "不给过111",
+    "deleted": false,
+    "country": null,
     "resources": [
       {
-        "id": 24,
-        "target_id": 8,
+        "id": 2,
+        "target_id": 2,
         "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "status": null,
-        "native_name": "ddaalllllll",
+        "url": "1111111,,.ssa",
+        "deleted": false,
+        "native_name": "sssss",
         "field": 0,
-        "created_at": "2017-04-06T17:48:40.000+08:00",
-        "updated_at": "2017-04-06T17:48:40.000+08:00"
+        "created_at": "2017-04-13T16:42:18.000+08:00",
+        "updated_at": "2017-04-13T16:42:18.000+08:00"
       }
     ]
   }
@@ -906,28 +766,300 @@ roles:[
 {
   "artists": [
     {
-      "id": 1,
-      "name": "222222",
+      "id": 2,
+      "name": "2777adadadadjjjjjjj79922",
       "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
+      "description": "aaaa777799aaaaaaaaaa",
       "operator": null,
       "approve_status": "agree",
       "not_through_reason": null,
+      "deleted": false,
       "country": null,
       "resources": [
         {
-          "id": 1,
-          "target_id": 1,
+          "id": 2,
+          "target_id": 2,
           "target_type": "Artist",
-          "url": "aaaaadd44444ssssaa,,.ssa",
-          "status": "enabled",
-          "native_name": "ddaalllllll",
+          "url": "1111111,,.ssa",
+          "deleted": false,
+          "native_name": "sssss",
           "field": 0,
-          "created_at": "2017-04-06T18:20:33.000+08:00",
-          "updated_at": "2017-04-06T18:20:33.000+08:00"
+          "created_at": "2017-04-13T16:42:18.000+08:00",
+          "updated_at": "2017-04-13T16:42:18.000+08:00"
         }
       ]
     }
   ]
 }
 ```
+
+
+
+
+
+# Part6 版权方管理
+
+## 6.1、版权方列表接口
+
+### HTTP请求
+
+`GET /api/v1/providers`
+
+### Request 请求参数
+
+
+```shell
+  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/providers
+```
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "providers": [
+    {
+      "id": 2,
+      "name": "test",
+      "property": "company",
+      "contact": "sdfdfd",
+      "tel": null,
+      "address": "fdsfsdfsdf",
+      "email": null,
+      "bank_name": null,
+      "account_no": null,
+      "user_name": null,
+      "cycle": null,
+      "start_time": null
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "total": 1,
+    "size": 10
+  }
+}
+```
+
+## 6.2、新建版权方
+
+### HTTP请求
+
+`POST  /api/v1/providers`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| name   | 是    | name  |
+| property  | 是  | 属性 个人:personal公司:company|
+| contact | 否    | 联系人   |
+| tel | 否    | 电话   |
+| address | 否    | 联系地址   |
+| email | 否    | 邮箱   |
+| bank_name | 否    | 开户行   |
+| account_no | 否    | 结算账户   |
+| user_name | 否    | 账户名   |
+| cycle | 否    | 结算周期   |
+| start_time | 否    | 结算开始时间   |
+
+### Request 请求
+
+```json
+{
+  "provider":
+  {   
+    "name": "eeeee",
+    "property": "company",
+    "email": "fdsfdsf",
+    "address": "fdfdfd",
+    "tel" : '323233232',
+    "contact": "ddsdd",
+    "status" : "agree",
+    "cycle": "一周",
+    "start_time": "2017-04-08",
+    "bank_name": "开户行",
+    "account_no": "结算账户",
+    "user_name": "账户名"
+  }
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "provider":
+  {   
+    "name": "eeeee",
+    "property": "company",
+    "email": "fdsfdsf",
+    "address": "fdfdfd",
+    "tel" : "323233232"
+    "contact": "ddsdd"
+    "status" : "agree"
+  }
+}
+```
+
+
+## 6.3、修改版权方
+
+### HTTP请求
+
+`PUT  /api/v1/providers/1`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| name   | 是    | name  |
+| property  | 是  | 属性 个人:personal公司:company|
+| contact | 否    | 联系人   |
+| tel | 否    | 电话   |
+| address | 否    | 联系地址   |
+| email | 否    | 邮箱   |
+| bank_name | 否    | 开户行   |
+| account_no | 否    | 结算账户   |
+| user_name | 否    | 账户名   |
+| cycle | 否    | 结算周期   |
+| start_time | 否    | 结算开始时间   |
+
+### Request 请求
+
+```json
+{
+  "provider":
+  {   
+    "name": "eeeee",
+    "property": "company",
+    "email": "fdsfdsf",
+    "address": "fdfdfd",
+    "tel" : "323233232",
+    "contact": "ddsdd",
+    "status" : "agree",
+    "cycle": "一周",
+    "start_time": "2017-04-08",
+    "bank_name": "开户行",
+    "account_no": "结算账户",
+    "user_name": "账户名"
+  }
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "provider":
+  {   
+    "name": "eeeee",
+    "property": "company",
+    "email": "fdsfdsf",
+    "address": "fdfdfd",
+    "tel" : '323233232'
+    "contact": "ddsdd"
+    "status" : "agree"
+  }
+}
+```
+
+
+
+## 6.4、版权方详情
+
+### HTTP请求
+
+`GET  /api/v1/providers/1`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "provider":
+  {   
+    "name": "eeeee",
+    "property": "company",
+    "email": "fdsfdsf",
+    "address": "fdfdfd",
+    "tel" : "323233232",
+    "contact": "ddsdd",
+    "status" : "agree"
+  }
+}
+```
+
+
+## 6.5、删除版权方
+
+### HTTP请求
+
+`DELETE  /api/v1/providers/1`
+
+### Response 响应
+
+> 响应数据:
+ NULL
+
+
+## 6.6、批量通过版权方
+
+### HTTP请求
+
+`POST  /api/v1/providers/verify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| provider_ids   | 是    | 版权方ids  |
+
+
+### Request 请求
+
+```json
+{
+ "provider_ids": [1,2]
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+null
+
+## 6.7、批量通过版权方
+
+### HTTP请求
+
+`POST  /api/v1/providers/verify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| provider_ids   | 是    | 版权方ids  |
+| reason  |  是    |  未通过原因 |
+
+### Request 请求
+
+```json
+{
+ "provider_ids": [1,2],
+ "reason": "dddd"
+}
+
+```
+### Response 响应
+
+> 响应数据:
+null

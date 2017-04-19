@@ -4,7 +4,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.recent.page(page).per(size)
+    @artists = Artist.includes(:resources,:country).recent.page(page).per(size)
     render json: @artists, meta: page_info(@artists)
   end
 
@@ -36,7 +36,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Delete /artists/:id
   def destroy
     get_artist
-    if @artist.update_attributes(status: :disabled)
+    if @artist.destroy
     render json: @artist
     else
     render json: @artist.errors, status: :unprocessable_entity
@@ -46,13 +46,13 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Put /artists/approve
   def approve
     @artists = get_artist_by_ids
-    @artists.update_all(approve_status: :agree, updated_at: DateTime.now)
+    @artists.update(approve_status: :agree)
 		render json: @artists
   end
 
   private
   def get_artist
-    @artist ||= Artist.includes(:country, :resources).find(params[:id])
+    @artist ||= Artist.find(params[:id])
   end
 
   def get_artist_by_ids
@@ -72,7 +72,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :label_name,
             :not_through_reason,
             :approve_status,
-            resources_attributes: [:id, :url, :native_name, :field, :status]
+            resources_attributes: [:id, :url, :native_name, :field, :_destroy]
         )
   end
 end

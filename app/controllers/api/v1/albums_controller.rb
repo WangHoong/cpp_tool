@@ -53,10 +53,13 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :language_id,
             :genre,
             :format,
-            :label_id,
+            :label,
+            :remark,
+            :release_version,
             primary_artists_attributes: [:name],
             primary_artist_ids: [],
-            featuring_artist_ids: []
+            featuring_artist_ids: [],
+            resources_attributes: [:id, :url, :native_name, :field, :_destroy]
         )
   end
 end
