@@ -425,9 +425,9 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
-| resources_attributes_url         | 否    | 资源URL                    |
-| resources_attributes_native_name | 否    | 文件原始名称                   |
-| resources_attributes_field       | 否    | 个人资源区分                   |
+| artist_resources_attributes_field       | 否    | 个人资源区分                   |
+| resource_attributes_url         | 否    | 资源URL                    |
+| resource_attributes_native_name | 否    | 文件原始名称                   |
 
 #### 请求示例
 `post /api/v1/artists`
@@ -441,10 +441,12 @@ roles:[
 		"description":"aaaaaaaaaaaaaa",
 		"label_id":"1",
 		"label_name":"dddaaa",
-		"resources_attributes":[{
-			"url":"aaaaadd44444ssssaa,,.ssa",
-			"native_name":"ddaalllllll",
-			"field":"s"
+		"artist_resources_attributes":[{
+			"field":1,
+			"resource_attributes":{
+			"url":"1aaaaadd44444ssssaa,,.ssa",
+			"native_name":"1ddaalllllll"
+		}
 		}]
 	}
 
@@ -458,7 +460,7 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
+    "id": 1,
     "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
@@ -470,14 +472,15 @@ roles:[
     "resources": [
       {
         "id": 1,
-        "target_id": 2,
-        "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "deleted": false,
-        "native_name": "ddaalllllll",
-        "field": 0,
-        "created_at": "2017-04-13T16:05:54.000+08:00",
-        "updated_at": "2017-04-13T16:05:54.000+08:00"
+        "field": 1,
+        "resource": {
+          "id": 1,
+          "url": "1aaaaadd44444ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:39:25.000+08:00"
+        }
       }
     ]
   }
@@ -507,7 +510,7 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
+    "id": 1,
     "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
@@ -541,13 +544,14 @@ roles:[
 | label_name                       | 否    | 唱片公司名称                       |
 | not_through_reason               | 否    | 审批未通过原因                       |
 | approve_status                   | 否    | :agree,:disagree                       |
-| resources_attributes_id          | 否    | 资源id                         |
-| resources_attributes_url         | 否    | 资源URL                        |
-| resources_attributes_native_name | 否    | 文件原始名称                       |
-| resources_attributes_field       | 否    | 个人资源区分                       |
-| resources_attributes__destroy    | 否    | 是否删除资源文件[true,false] |
+| artist_resources_attributes_id          | 否    | 艺人资源id                         |
+| artist_resources_attributes_field       | 否    | 艺人个人资源区分                       |
+| artist_resources_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| resource_attributes_id          | 否    | 资源id                         |
+| resource_attributes_url         | 否    | 资源URL                        |
+| resource_attributes_native_name | 否    | 文件原始名称                       |
 
- 注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据,当不删除resources里面数据时候_destroy 为false或不传此参数
+ 注意⚠️ 更新artist_resources_attributes里面原有数据时候要加入艺人资源id ，如果不加艺人资源id 会创建新的数据,当不删除artist_resources_attributes里面数据时候_destroy 为false或不传此参数
 
 #### 请求示例
 
@@ -555,21 +559,22 @@ roles:[
 ```json
 {
 	"artist":{
-		"name":"2777adadadadjjjjjjj79922",
+		"name":"222222",
 		"country_id":"1",
-		"country_name":"吧2222222",
+		"country_name":"吧333",
 		"gender_type":"female",
-		"description":"aaaa777799aaaaaaaaaa",
+		"description":"aaaaaaaaaaaaaa",
 		"label_id":"1",
-		"label_name":"d777ddaaa99",
-    "approve_status": "agree",
-    "not_through_reason": null,
-		"resources_attributes":[{
+		"label_name":"dddaaa",
+		"artist_resources_attributes":[{
 			"id":1,
-			"url":"111111dadasdasdaasadaddad11",
-			"native_name":"dd",
-    		"field":"ss",
-    	    "_destroy":true
+			"field":223444332,
+      "_destroy":true,
+			"resource_attributes":{
+			"id":1,
+			"url":"344443343aaaaadd44444ssssaa,,.ssa",
+			"native_name":"144ddaalllllll"
+			}
 		}]
 	}
 
@@ -582,16 +587,29 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
-    "name": "2777adadadadjjjjjjj79922",
+    "id": 1,
+    "name": "222222",
     "gender_type": "female",
-    "description": "aaaa777799aaaaaaaaaa",
+    "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "disagree",
-    "not_through_reason": "不给过111",
+    "approve_status": "todo",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
-    "resources": []
+    "resources": [
+      {
+        "id": 1,
+        "field": 222,
+        "resource": {
+          "id": 1,
+          "url": "3aaaaadd44444ssssaa,,.ssa",
+          "native_name": "1ddaalllllll",
+          "deleted": false,
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:55:18.000+08:00"
+        }
+      }
+    ]
   }
 }
 ```
@@ -611,7 +629,7 @@ roles:[
 
 #### 请求示例
 
-`get /api/v1/artists?size=2&page=2`
+`get /api/v1/artists?size=2&page=1`
 
 ### Response 响应
 
@@ -621,31 +639,7 @@ roles:[
 {
   "artists": [
     {
-      "id": 4,
-      "name": "2222wwwwwwww22",
-      "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
-      "operator": null,
-      "approve_status": "todo",
-      "not_through_reason": null,
-      "deleted": false,
-      "country": null,
-      "resources": [
-        {
-          "id": 3,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaadd44423123123144ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "ddaal31313131llllll",
-          "field": 0,
-          "created_at": "2017-04-13T16:43:44.000+08:00",
-          "updated_at": "2017-04-13T16:43:44.000+08:00"
-        }
-      ]
-    },
-    {
-      "id": 3,
+      "id": 1,
       "name": "222222",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
@@ -656,34 +650,23 @@ roles:[
       "country": null,
       "resources": [
         {
-          "id": 2,
-          "target_id": 3,
-          "target_type": "Artist",
-          "url": "1111111,,.ssa",
-          "deleted": false,
-          "native_name": "sssss",
-          "field": 0,
-          "created_at": "2017-04-13T16:42:18.000+08:00",
-          "updated_at": "2017-04-13T16:42:18.000+08:00"
+          "id": 1,
+          "field": 222,
+          "resource": {
+            "id": 1,
+            "url": "3aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "1ddaalllllll",
+            "created_at": "2017-04-19T16:39:25.000+08:00",
+            "updated_at": "2017-04-19T16:55:18.000+08:00"
+          }
         }
       ]
-    },
-    {
-      "id": 2,
-      "name": "2777adadadadjjjjjjj79922",
-      "gender_type": "female",
-      "description": "aaaa777799aaaaaaaaaa",
-      "operator": null,
-      "approve_status": "disagree",
-      "not_through_reason": "不给过111",
-      "deleted": false,
-      "country": null,
-      "resources": []
     }
   ],
   "meta": {
     "page": 1,
-    "total": 3
+    "total": 1
   }
 }
 ```
@@ -710,26 +693,27 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
-    "name": "2777adadadadjjjjjjj79922",
+    "id": 1,
+    "name": "222222",
     "gender_type": "female",
-    "description": "aaaa777799aaaaaaaaaa",
+    "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "disagree",
-    "not_through_reason": "不给过111",
+    "approve_status": "todo",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 2,
-        "target_id": 2,
-        "target_type": "Artist",
-        "url": "1111111,,.ssa",
-        "deleted": false,
-        "native_name": "sssss",
-        "field": 0,
-        "created_at": "2017-04-13T16:42:18.000+08:00",
-        "updated_at": "2017-04-13T16:42:18.000+08:00"
+        "id": 1,
+        "field": 222,
+        "resource": {
+          "id": 1,
+          "url": "3aaaaadd44444ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:55:18.000+08:00"
+        }
       }
     ]
   }
@@ -740,7 +724,7 @@ roles:[
 
 ### HTTP请求
 
-`put /api/v1/artists/approve`
+`post /api/v1/artists/approve`
 
 ### Request 请求参数
 
@@ -766,10 +750,10 @@ roles:[
 {
   "artists": [
     {
-      "id": 2,
-      "name": "2777adadadadjjjjjjj79922",
+      "id": 1,
+      "name": "222222",
       "gender_type": "female",
-      "description": "aaaa777799aaaaaaaaaa",
+      "description": "aaaaaaaaaaaaaa",
       "operator": null,
       "approve_status": "agree",
       "not_through_reason": null,
@@ -777,15 +761,16 @@ roles:[
       "country": null,
       "resources": [
         {
-          "id": 2,
-          "target_id": 2,
-          "target_type": "Artist",
-          "url": "1111111,,.ssa",
-          "deleted": false,
-          "native_name": "sssss",
-          "field": 0,
-          "created_at": "2017-04-13T16:42:18.000+08:00",
-          "updated_at": "2017-04-13T16:42:18.000+08:00"
+          "id": 1,
+          "field": 222,
+          "resource": {
+            "id": 1,
+            "url": "3aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "1ddaalllllll",
+            "created_at": "2017-04-19T16:39:25.000+08:00",
+            "updated_at": "2017-04-19T16:55:18.000+08:00"
+          }
         }
       ]
     }
