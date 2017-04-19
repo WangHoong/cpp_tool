@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170418070507) do
+ActiveRecord::Schema.define(version: 20170419035446) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -252,7 +252,13 @@ ActiveRecord::Schema.define(version: 20170418070507) do
     t.datetime "updated_at",                             null: false
   end
 
+  create_table "report_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "resource_id"
+    t.integer "report_id"
+  end
+
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
     t.integer  "dsp_id"
     t.date     "start_time"
     t.date     "end_time"
@@ -263,17 +269,19 @@ ActiveRecord::Schema.define(version: 20170418070507) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
+    t.index ["user_id"], name: "index_reports_on_user_id", using: :btree
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "target_id",                            comment: "目标ID"
-    t.string   "target_type",                          comment: "目标类型"
-    t.string   "url",                                  comment: "资源url"
-    t.integer  "status",      default: 1,              comment: "0删除 ，1未删除"
-    t.string   "native_name",                          comment: "资源原始名称"
-    t.integer  "field",                                comment: "个人资源区分"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "target_id",                                comment: "目标ID"
+    t.string   "target_type",                              comment: "目标类型"
+    t.string   "url",                                      comment: "资源url"
+    t.boolean  "deleted",     default: false,              comment: "true删除,false未删除"
+    t.string   "native_name",                              comment: "资源原始名称"
+    t.integer  "field",                                    comment: "个人资源区分"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
     t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 

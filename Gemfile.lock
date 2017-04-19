@@ -195,6 +195,10 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    roo (2.7.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
+    rubyzip (1.2.1)
     semantic_logger (4.0.0)
       concurrent-ruby (~> 1.0)
     sidekiq (4.2.10)
@@ -269,6 +273,7 @@ DEPENDENCIES
   rails (~> 5.0.1)
   rails_semantic_logger
   rest-client
+  roo
   sidekiq
   sidetiq
   spring

@@ -5,5 +5,7 @@ class ReportWorker
   def perform(report_id)
     @report = Report.find report_id
     # analyse report
+
+    ReportAnalyser.parse @report
   end
 end
