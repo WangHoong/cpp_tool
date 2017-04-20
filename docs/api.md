@@ -1111,19 +1111,24 @@ null
 
 
 ```json
-  {
-    "contract": {
-      "provider_id":2,"department_id":1,
-      "project_no":"32323",
-      "contract_no":"32323",
-      "start_time":"2016-11-17","end_time":"2017-12-17",
-      "allow_overdue":false,"pay_type":"default","pay_amount":10,"desc":"dfdfdfsss",
-      "assets":[{"url":"333","filename":"nasss"}],"authorizes":[{"currency_id":1,"account_id":1,
-      "start_time":"2016-11-17","end_time":"2016-12-17","assets":[{"url":"ddd","filename":"nasss"}],
-     "authorized_businesses":[{"business_id":1,"business_type":"AuthorizedRange","is_whole":0,"divided_point":50,"authorized_area_ids":[124]}]
-       }]
+    {"contract":
+	     {
+	      "provider_id":2,
+	     "department_id":1,
+         "project_no":"32323",
+         "contract_no":"32323",
+         "start_time":"2016-11-17","end_time":"2017-12-17",
+         "allow_overdue":false,"pay_type":"default",
+         "pay_amount":10,"desc":"dfdfdfsss",
+         "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+         "authorizes_attributes":[{"currency_id":1,"account_id":1,
+         "start_time":"2016-11-17","end_time":"2016-12-17",
+          "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+          "authorized_businesses_attributes":[{"authorized_range_id":1,"divided_point":50,
+          "authorized_area_ids":[124]}]
+          }]
       }
-     }
+}
 
 ```
 
@@ -1142,23 +1147,25 @@ null
 
 
 ```json
-  {
-    "contract": {
-            "id":28,"provider_id":1,"project_no":"32323","contract_no":"32323",
-            "signing_company":"32aa","start_time":"2016-11-17",
-            "end_time":"2016-12-17","allow_overdue":false,
-            "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss",
-            "contract_files":[{"id":177,"url":"333","filename":"nasss"}],
-            "authorizes":[{"id":29,"currency_id":1,"account_id":1,
-                "start_time":"2016-11-17","end_time":"2016-12-17",
-                "contract_files":[{"id":176,"url":"ddd","filename":"nasss"}],
-                "authorized_businesses":[{"id":93,"business_id":1,
-                "business_type":"AuthorizedRange","is_whole":0,"divided_point":50,
-                "authorized_area_ids":[124]}]
-            }]
-          }
- }
-
+{"contract":
+   {
+    "id":2
+    "provider_id":2,
+   "department_id":1,
+     "project_no":"32323",
+     "contract_no":"32323",
+     "start_time":"2016-11-17","end_time":"2017-12-17",
+     "allow_overdue":false,"pay_type":"default",
+     "pay_amount":10,"desc":"dfdfdfsss",
+     "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+     "authorizes_attributes":[{"id":2,"currency_id":1,"account_id":1,
+     "start_time":"2016-11-17","end_time":"2016-12-17",
+      "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+      "authorized_businesses_attributes":[{"id":2,"authorized_range_id":1,"divided_point":50,
+      "authorized_area_ids":[124]}]
+      }]
+  }
+}
 ```
 
 ### Response 响应

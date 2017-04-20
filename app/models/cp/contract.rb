@@ -2,19 +2,21 @@ class Cp::Contract < ApplicationRecord
   self.table_name=:cp_contracts
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited
+  belongs_to :provider
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
   has_many :authorize_dues, -> {where('cp_authorizes.end_time <?',Time.now)},class_name: 'Cp::Authorize'
-  has_many :assets, as: :target, :dependent => :destroy
-  belongs_to :provider
-  accepts_nested_attributes_for :assets ,   :allow_destroy => true
+  #has_many :assets, as: :target, :dependent => :destroy
+  has_many :contract_resources, as: :target, :dependent => :destroy
+	has_many :resources, through: :contract_resources, :dependent => :destroy
+	accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
   enum pay_type: [:default,:divide,:undivide]
   enum status: [:todo,:agree,:disagree]
 
-  validates_presence_of :authorizes
+  #validates_presence_of :authorizes
 
   scope :recent, -> { order('cp_contracts.id DESC') }
   scope :date_between, lambda{ |status|
