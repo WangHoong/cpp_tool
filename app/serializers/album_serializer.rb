@@ -5,10 +5,13 @@ class AlbumSerializer < ActiveModel::Serializer
     :format,
     :label,
     :release_version,
-    :remark
+    :remark,
+    :upc
 
   has_many :primary_artists
   has_many :featuring_artists
+  has_many :songs
+  has_many :images
   belongs_to :language
   class ArtistSerializer < ActiveModel::Serializer
     attributes :id, :name

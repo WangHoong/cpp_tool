@@ -9,7 +9,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Get /albums/:id
   def show
-    render json:  get_album
+    render json: get_album
   end
 
   # Put /albums/:id
@@ -34,17 +34,30 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Delete /albums/:id
   def destroy
-    if @artist = get_album.update_attributes(status: :disabled)
-    render json: @artist
+    @album = get_album
+    if @album.destroy
+    render json: @album
     else
-    render json: @artist.errors, status: :unprocessable_entity
+    render json: @album.errors, status: :unprocessable_entity
     end
+  end
+
+  # Post /albums/approve
+  def approve
+    @albums = get_albums_by_ids
+    @albums.update(status: :agree)
+    render json: @artists
   end
 
   private
   def get_album
-    Album.includes(:language).find(params[:id])
+    Album.find(params[:id])
   end
+
+  def get_albums_by_ids
+    Album.where(id: params[:album_ids])
+  end
+
   def album_params
     params
         .require(:album)
@@ -54,12 +67,13 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :genre,
             :format,
             :label,
+            :upc,
             :remark,
             :release_version,
-            primary_artists_attributes: [:name],
             primary_artist_ids: [],
             featuring_artist_ids: [],
-            resources_attributes: [:id, :url, :native_name, :field, :_destroy]
+            songs_attributes: [:id, :url, :native_name, :_destroy],
+            images_attributes: [:id, :url, :native_name, :_destroy]
         )
   end
 end
