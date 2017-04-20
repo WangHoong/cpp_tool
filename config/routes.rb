@@ -35,7 +35,7 @@ Rails.application.routes.draw do
         			post :approve
         		end
           end #artists
-
+          resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates
           resources :reports
           resources :constants, only: [] do
             collection do

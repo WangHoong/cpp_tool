@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170418104031) do
+ActiveRecord::Schema.define(version: 20170419100119) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -210,6 +210,17 @@ ActiveRecord::Schema.define(version: 20170418104031) do
     t.text     "desc",          limit: 65535
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "exchange_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "currency",                                         comment: "货币"
+    t.string   "settlement_currency",                              comment: "结算货币"
+    t.string   "exchange_ratio",                                   comment: "兑换比例"
+    t.integer  "status",              default: 0,                  comment: "0enabled ,1disabled"
+    t.boolean  "deleted",             default: false,              comment: "true删除,false未删除"
+    t.string   "operator",                                         comment: "操作员"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -1264,3 +1264,199 @@ null
 
 > 响应数据:
 null
+
+# Part8 结算管理
+
+## 8.1. 创建货币接口
+
+### HTTP请求
+
+`post /api/v1/exchange_rates`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| exchange_rate                           | 是    | 标志是货币                    |
+| currency                             | 是    | 货币                     |
+| settlement_currency                       | 是    | 结算货币                    |
+| exchange_ratio                     | 是   |      汇率                |
+| status                      | 是   | 状态 [:enabled, :disabled] |
+| operator                      | 是   | 操作人                       |
+
+#### 请求示例
+`post /api/v1/exchange_rates`
+```json
+{
+	"exchange_rate":{
+		"currency":"韩币",
+		"settlement_currency":"人民币",
+		"exchange_ratio":"1:12",
+		"status":"enabled",
+		"operator":"aasd"
+	}
+
+}
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币",
+  "settlement_currency": "人民币",
+  "exchange_ratio": "1:12",
+  "status": "enabled",
+  "deleted": false,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:13:45.000+08:00"
+}
+```
+## 8.2. 删除货币接口
+
+### HTTP请求
+
+`Delete /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| id                           | 是    | 货币id                    |
+
+#### 请求示例
+`Delete /api/v1/exchange_rates/2`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币",
+  "settlement_currency": "人民币",
+  "exchange_ratio": "1:12",
+  "status": "enabled",
+  "deleted": true,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:13:45.000+08:00"
+}
+```
+
+## 8.3. 更新货币接口
+
+### HTTP请求
+
+`Put /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| exchange_rate                           | 是    | 标志是货币                    |
+| currency                             | 否    | 货币                     |
+| settlement_currency                       | 否    | 结算货币                    |
+| exchange_ratio                     | 否   |      汇率                |
+| status                      | 否   | 状态 [:enabled, :disabled] |
+| operator                      | 否   | 操作人                       |
+
+#### 请求示例
+`post /api/v1/exchange_rates/2`
+```json
+{
+	"exchange_rate":{
+		"currency":"韩币1",
+		"settlement_currency":"人民dddd币1",
+		"exchange_ratio":"1:12",
+		"status":"disabled",
+		"operator":"aasd"
+	}
+
+}
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币1",
+  "settlement_currency": "人民dddd币1",
+  "exchange_ratio": "1:12",
+  "status": "disabled",
+  "operator": "aasd",
+  "deleted": false,
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:28:15.000+08:00"
+}
+```
+## 8.4. 查看货币列表接口
+
+### HTTP请求
+
+`get /api/v1/exchange_rates`
+
+### Request 请求参数
+
+
+#### 请求示例
+`get /api/v1/exchange_rates`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+[
+  {
+    "id": 2,
+    "currency": "韩币11111111",
+    "settlement_currency": "人民dddd币1",
+    "exchange_ratio": "1:12",
+    "status": "disabled",
+    "deleted": false,
+    "operator": "aasd",
+    "created_at": "2017-04-20T12:13:45.000+08:00",
+    "updated_at": "2017-04-20T14:25:41.000+08:00"
+  }
+]
+```
+## 8.5. 查看货币详情接口
+
+### HTTP请求
+
+`get /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| id                           | 是    | 货币ID                    |
+
+#### 请求示例
+`get /api/v1/exchange_rates/2`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币11111111",
+  "settlement_currency": "人民dddd币1",
+  "exchange_ratio": "1:12",
+  "status": "disabled",
+  "deleted": false,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T14:25:41.000+08:00"
+}
+```
