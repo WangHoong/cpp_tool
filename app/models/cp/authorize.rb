@@ -2,12 +2,14 @@ class Cp::Authorize < ApplicationRecord
   self.table_name=:cp_authorizes
   belongs_to :contract
   belongs_to :currency
-
-  has_many :authorized_businesses, as: :target, :dependent => :destroy
-  has_many :assets, as: :target, :dependent => :destroy
+  belongs_to :authorized_range
+  has_many :authorized_businesses
+  has_many :contract_resources, as: :target, :dependent => :destroy
+  has_many :resources, through: :contract_resources, :dependent => :destroy
+  accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorized_businesses,  :allow_destroy => true
-  accepts_nested_attributes_for :assets,:allow_destroy => true
-  #default_scope -> { includes(:assets,:authorized_businesses,:currency,:account) }
+
+
   scope :recent, -> { order('authorizes.id DESC') }
 
 

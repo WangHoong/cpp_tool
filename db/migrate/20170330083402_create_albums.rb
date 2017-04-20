@@ -25,7 +25,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "record_location",                                 comment: "录音地点"
       t.text     "remark",                                          comment: "备注"
       t.integer  "status",        index: true, default: 0,          comment: "专辑状态 0: 待审核，1: 已审核"
-      t.datetime "deleted_at",                                      comment: "删除时间"
+      t.boolean  "deleted",         default: false,                 comment: "true删除,false未删除"
       t.timestamps
     end
     add_index :albums, :name
