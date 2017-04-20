@@ -4,7 +4,7 @@
 environment 'development'
 threads 2, 3
 workers 1
-port 40000
+port 4000
 #项目名
 app_name         = "cpp-tool"
 #项目路径
