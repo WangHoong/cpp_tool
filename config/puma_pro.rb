@@ -8,7 +8,7 @@ port 4000
 #项目名
 app_name         = "cpp-tool"
 #项目路径
-application_path = "/var/www/#{app_name}"
+application_path = "/srv/www/#{app_name}"
 #这里一定要配置为项目路径下地current
 directory "#{application_path}"
 
