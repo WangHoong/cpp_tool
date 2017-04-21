@@ -8,7 +8,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like?","%#{provider}%") if provider.present?
     @contracts = @contracts.db_query(:contract_no, params[:contract_no]) if params[:contract_no].present?
     @contracts = @contracts.db_query(:project_no, params[:project_no]) if params[:project_no].present?
-    @contracts = @contracts.date_between(params[:status]) if  params[:status].present?
+    @contracts = @contracts.date_between(params[:contract_status]) if  params[:contract_status].present?
     @contracts = @contracts.includes(:authorizes,:provider,:audits,:authorize_valids,:authorize_dues).page(page).per(size)
 
     render json: {contracts: @contracts.as_json(::Cp::Contract.as_list_json_options)}, meta: page_info(@contracts)
@@ -52,6 +52,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :agree)
           head :ok
+      else
+          render json: @contract.errors, status: :unprocessable_entity
       end
   end
 
@@ -59,6 +61,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       @contracts = get_contract_list
       if @contracts.update_all(status: :disagree,reason: params[:reason])
           head :ok
+      else
+        render json: @contract.errors, status: :unprocessable_entity
       end
   end
 
@@ -73,7 +77,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   end
 
   def contract_params
-    post = params.require(:contract).permit(
+      params.require(:contract).permit(
             :provider_id,
             :department_id,
             :contract_no,
@@ -86,12 +90,11 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :reason,
             :pay_type,
             :pay_amount,
-            :assets => [:id,:url,:filename,:_destroy],
-            :authorizes => [:id,:contract_id,:currency_id,:account_id,:end_time,:start_time,:_destroy,
-              :authorized_businesses =>[:id,:business_id,:business_type,:divided_point,:is_whole,:_destroy,:areas_count,:authorized_area_ids=>[]],
-              :assets => [:id,:url,:filename,:_destroy]]
+            :contract_resources_attributes => [:id,:field,:_destroy,resource_attributes: [:id,:url,:native_name]],
+            :authorizes_attributes => [:id,:contract_id,:currency_id,:account_id,:end_time,:start_time,:_destroy,
+              :authorized_businesses_attributes =>[:id,:authorized_range_id,:divided_point,:_destroy,:authorized_area_ids=>[]],
+              :contract_resources_attributes => [:id,:field,:_destroy,resource_attributes: [:id,:url,:native_name]]]
         )
-        post.to_h.deep_transform_keys{ |key|['assets','authorizes','authorized_businesses'].include?(key) ? key+'_attributes' : key}
   end
 
 

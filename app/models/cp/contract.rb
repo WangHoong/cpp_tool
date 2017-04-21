@@ -2,19 +2,21 @@ class Cp::Contract < ApplicationRecord
   self.table_name=:cp_contracts
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited
+  belongs_to :provider
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
   has_many :authorize_dues, -> {where('cp_authorizes.end_time <?',Time.now)},class_name: 'Cp::Authorize'
-  has_many :assets, as: :target, :dependent => :destroy
-  belongs_to :provider
-  accepts_nested_attributes_for :assets ,   :allow_destroy => true
+  #has_many :assets, as: :target, :dependent => :destroy
+  has_many :contract_resources, as: :target, :dependent => :destroy
+	has_many :resources, through: :contract_resources, :dependent => :destroy
+	accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
   enum pay_type: [:default,:divide,:undivide]
   enum status: [:todo,:agree,:disagree]
 
-  validates_presence_of :authorizes
+  #validates_presence_of :authorizes
 
   scope :recent, -> { order('cp_contracts.id DESC') }
   scope :date_between, lambda{ |status|
@@ -48,12 +50,26 @@ class Cp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
+   def provider_name
+     self.provider.name
+   end
+
+   def  contract_status
+     if end_time <= Time.now.months_since(3)
+      return 'near'
+    elsif start_time <=Time.now && end_time >= Time.now
+      return 'valid'
+    elsif end_time <= Time.now
+      return 'due'
+     elsif start_time > Time.now
+       return 'unvalid'
+     end
+   end
+
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status, :created_at, :updated_at],
-       include: {
-         provider: {only: [:id,:name]}
-       }
+       metheds: [:provider_name,:contract_status]
    }
 
 

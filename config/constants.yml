@@ -38,6 +38,7 @@ default: &default
     individual:         个人
     band:               乐队
 
+
 development:
   <<: *default
 

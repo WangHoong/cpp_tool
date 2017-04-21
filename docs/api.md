@@ -425,9 +425,9 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
-| resources_attributes_url         | 否    | 资源URL                    |
-| resources_attributes_native_name | 否    | 文件原始名称                   |
-| resources_attributes_field       | 否    | 个人资源区分                   |
+| artist_resources_attributes_field       | 否    | 个人资源区分                   |
+| resource_attributes_url         | 否    | 资源URL                    |
+| resource_attributes_native_name | 否    | 文件原始名称                   |
 
 #### 请求示例
 `post /api/v1/artists`
@@ -441,10 +441,12 @@ roles:[
 		"description":"aaaaaaaaaaaaaa",
 		"label_id":"1",
 		"label_name":"dddaaa",
-		"resources_attributes":[{
-			"url":"aaaaadd44444ssssaa,,.ssa",
-			"native_name":"ddaalllllll",
-			"field":"s"
+		"artist_resources_attributes":[{
+			"field":1,
+			"resource_attributes":{
+			"url":"1aaaaadd44444ssssaa,,.ssa",
+			"native_name":"1ddaalllllll"
+		}
 		}]
 	}
 
@@ -458,7 +460,7 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
+    "id": 1,
     "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
@@ -470,14 +472,15 @@ roles:[
     "resources": [
       {
         "id": 1,
-        "target_id": 2,
-        "target_type": "Artist",
-        "url": "aaaaadd44444ssssaa,,.ssa",
-        "deleted": false,
-        "native_name": "ddaalllllll",
-        "field": 0,
-        "created_at": "2017-04-13T16:05:54.000+08:00",
-        "updated_at": "2017-04-13T16:05:54.000+08:00"
+        "field": 1,
+        "resource": {
+          "id": 1,
+          "url": "1aaaaadd44444ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:39:25.000+08:00"
+        }
       }
     ]
   }
@@ -507,7 +510,7 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
+    "id": 1,
     "name": "222222",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
@@ -541,13 +544,14 @@ roles:[
 | label_name                       | 否    | 唱片公司名称                       |
 | not_through_reason               | 否    | 审批未通过原因                       |
 | approve_status                   | 否    | :agree,:disagree                       |
-| resources_attributes_id          | 否    | 资源id                         |
-| resources_attributes_url         | 否    | 资源URL                        |
-| resources_attributes_native_name | 否    | 文件原始名称                       |
-| resources_attributes_field       | 否    | 个人资源区分                       |
-| resources_attributes__destroy    | 否    | 是否删除资源文件[true,false] |
+| artist_resources_attributes_id          | 否    | 艺人资源id                         |
+| artist_resources_attributes_field       | 否    | 艺人个人资源区分                       |
+| artist_resources_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| resource_attributes_id          | 否    | 资源id                         |
+| resource_attributes_url         | 否    | 资源URL                        |
+| resource_attributes_native_name | 否    | 文件原始名称                       |
 
- 注意⚠️ 更新resources里面原有数据时候要加入ID，如果不加ID会创建新的数据,当不删除resources里面数据时候_destroy 为false或不传此参数
+ 注意⚠️ 更新artist_resources_attributes里面原有数据时候要加入艺人资源id ，如果不加艺人资源id 会创建新的数据,当不删除artist_resources_attributes里面数据时候_destroy 为false或不传此参数
 
 #### 请求示例
 
@@ -555,21 +559,22 @@ roles:[
 ```json
 {
 	"artist":{
-		"name":"2777adadadadjjjjjjj79922",
+		"name":"222222",
 		"country_id":"1",
-		"country_name":"吧2222222",
+		"country_name":"吧333",
 		"gender_type":"female",
-		"description":"aaaa777799aaaaaaaaaa",
+		"description":"aaaaaaaaaaaaaa",
 		"label_id":"1",
-		"label_name":"d777ddaaa99",
-    "approve_status": "agree",
-    "not_through_reason": null,
-		"resources_attributes":[{
+		"label_name":"dddaaa",
+		"artist_resources_attributes":[{
 			"id":1,
-			"url":"111111dadasdasdaasadaddad11",
-			"native_name":"dd",
-    		"field":"ss",
-    	    "_destroy":true
+			"field":223444332,
+      "_destroy":true,
+			"resource_attributes":{
+			"id":1,
+			"url":"344443343aaaaadd44444ssssaa,,.ssa",
+			"native_name":"144ddaalllllll"
+			}
 		}]
 	}
 
@@ -582,16 +587,29 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
-    "name": "2777adadadadjjjjjjj79922",
+    "id": 1,
+    "name": "222222",
     "gender_type": "female",
-    "description": "aaaa777799aaaaaaaaaa",
+    "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "disagree",
-    "not_through_reason": "不给过111",
+    "approve_status": "todo",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
-    "resources": []
+    "resources": [
+      {
+        "id": 1,
+        "field": 222,
+        "resource": {
+          "id": 1,
+          "url": "3aaaaadd44444ssssaa,,.ssa",
+          "native_name": "1ddaalllllll",
+          "deleted": false,
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:55:18.000+08:00"
+        }
+      }
+    ]
   }
 }
 ```
@@ -611,7 +629,7 @@ roles:[
 
 #### 请求示例
 
-`get /api/v1/artists?size=2&page=2`
+`get /api/v1/artists?size=2&page=1`
 
 ### Response 响应
 
@@ -621,31 +639,7 @@ roles:[
 {
   "artists": [
     {
-      "id": 4,
-      "name": "2222wwwwwwww22",
-      "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
-      "operator": null,
-      "approve_status": "todo",
-      "not_through_reason": null,
-      "deleted": false,
-      "country": null,
-      "resources": [
-        {
-          "id": 3,
-          "target_id": 4,
-          "target_type": "Artist",
-          "url": "aaaaadd44423123123144ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "ddaal31313131llllll",
-          "field": 0,
-          "created_at": "2017-04-13T16:43:44.000+08:00",
-          "updated_at": "2017-04-13T16:43:44.000+08:00"
-        }
-      ]
-    },
-    {
-      "id": 3,
+      "id": 1,
       "name": "222222",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
@@ -656,34 +650,23 @@ roles:[
       "country": null,
       "resources": [
         {
-          "id": 2,
-          "target_id": 3,
-          "target_type": "Artist",
-          "url": "1111111,,.ssa",
-          "deleted": false,
-          "native_name": "sssss",
-          "field": 0,
-          "created_at": "2017-04-13T16:42:18.000+08:00",
-          "updated_at": "2017-04-13T16:42:18.000+08:00"
+          "id": 1,
+          "field": 222,
+          "resource": {
+            "id": 1,
+            "url": "3aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "1ddaalllllll",
+            "created_at": "2017-04-19T16:39:25.000+08:00",
+            "updated_at": "2017-04-19T16:55:18.000+08:00"
+          }
         }
       ]
-    },
-    {
-      "id": 2,
-      "name": "2777adadadadjjjjjjj79922",
-      "gender_type": "female",
-      "description": "aaaa777799aaaaaaaaaa",
-      "operator": null,
-      "approve_status": "disagree",
-      "not_through_reason": "不给过111",
-      "deleted": false,
-      "country": null,
-      "resources": []
     }
   ],
   "meta": {
     "page": 1,
-    "total": 3
+    "total": 1
   }
 }
 ```
@@ -710,26 +693,27 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 2,
-    "name": "2777adadadadjjjjjjj79922",
+    "id": 1,
+    "name": "222222",
     "gender_type": "female",
-    "description": "aaaa777799aaaaaaaaaa",
+    "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "disagree",
-    "not_through_reason": "不给过111",
+    "approve_status": "todo",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 2,
-        "target_id": 2,
-        "target_type": "Artist",
-        "url": "1111111,,.ssa",
-        "deleted": false,
-        "native_name": "sssss",
-        "field": 0,
-        "created_at": "2017-04-13T16:42:18.000+08:00",
-        "updated_at": "2017-04-13T16:42:18.000+08:00"
+        "id": 1,
+        "field": 222,
+        "resource": {
+          "id": 1,
+          "url": "3aaaaadd44444ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-19T16:39:25.000+08:00",
+          "updated_at": "2017-04-19T16:55:18.000+08:00"
+        }
       }
     ]
   }
@@ -740,7 +724,7 @@ roles:[
 
 ### HTTP请求
 
-`put /api/v1/artists/approve`
+`post /api/v1/artists/approve`
 
 ### Request 请求参数
 
@@ -766,10 +750,10 @@ roles:[
 {
   "artists": [
     {
-      "id": 2,
-      "name": "2777adadadadjjjjjjj79922",
+      "id": 1,
+      "name": "222222",
       "gender_type": "female",
-      "description": "aaaa777799aaaaaaaaaa",
+      "description": "aaaaaaaaaaaaaa",
       "operator": null,
       "approve_status": "agree",
       "not_through_reason": null,
@@ -777,15 +761,16 @@ roles:[
       "country": null,
       "resources": [
         {
-          "id": 2,
-          "target_id": 2,
-          "target_type": "Artist",
-          "url": "1111111,,.ssa",
-          "deleted": false,
-          "native_name": "sssss",
-          "field": 0,
-          "created_at": "2017-04-13T16:42:18.000+08:00",
-          "updated_at": "2017-04-13T16:42:18.000+08:00"
+          "id": 1,
+          "field": 222,
+          "resource": {
+            "id": 1,
+            "url": "3aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "1ddaalllllll",
+            "created_at": "2017-04-19T16:39:25.000+08:00",
+            "updated_at": "2017-04-19T16:55:18.000+08:00"
+          }
         }
       ]
     }
@@ -830,7 +815,8 @@ roles:[
       "account_no": null,
       "user_name": null,
       "cycle": null,
-      "start_time": null
+      "start_time": null,
+      "status": "todo:待确定,agree:通过,disagree:未通过"
     }
   ],
   "meta": {
@@ -862,6 +848,7 @@ roles:[
 | user_name | 否    | 账户名   |
 | cycle | 否    | 结算周期   |
 | start_time | 否    | 结算开始时间   |
+| status | 否    | todo:待确定,agree:通过,disagree:未通过   |
 
 ### Request 请求
 
@@ -873,7 +860,7 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : '323233232',
+    "tel" : "323233232",
     "contact": "ddsdd",
     "status" : "agree",
     "cycle": "一周",
@@ -898,8 +885,8 @@ roles:[
     "property": "company",
     "email": "fdsfdsf",
     "address": "fdfdfd",
-    "tel" : "323233232"
-    "contact": "ddsdd"
+    "tel" : "323233232",
+    "contact": "ddsdd",
     "status" : "agree"
   }
 }
@@ -917,7 +904,7 @@ roles:[
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | name   | 是    | name  |
-| property  | 是  | 属性 个人:personal公司:company|
+| property  | 是  | 属性 个人:personal公司:company|
 | contact | 否    | 联系人   |
 | tel | 否    | 电话   |
 | address | 否    | 联系地址   |
@@ -972,11 +959,11 @@ roles:[
 
 
 
-## 6.4、版权方详情
+## 6.4、版权方详情
 
 ### HTTP请求
 
-`GET  /api/v1/providers/1`
+`GET  /api/v1/providers/1`
 
 ### Response 响应
 
@@ -1041,7 +1028,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/providers/verify`
+`POST  /api/v1/providers/verify`
 
 ### Request 请求参数
 
@@ -1063,3 +1050,420 @@ null
 
 > 响应数据:
 null
+
+
+# Part7 合约管理
+
+## 7.1、合约列表接口
+
+### HTTP请求
+
+`GET /api/v1/providers`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_no   | 是    | 合约编号  |
+| provider_name  |  是    |  版权方 |
+| project_no  |  是    |  版权方 |
+| contract_status  |  是    |  合约状态(valid:有效,near:快到期,due:过期,unvalid:未生效) |
+
+```shell
+  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/contracts
+```
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "contracts": [
+    {
+      "id": 2,
+      "contract_no": "test",
+      "project_no": "company",
+      "provider_name": "sdfdfd",
+      "authorize_valid_cnt": "有效授权数量",
+      "authorize_due_cnt": "过期授权数量",
+      "status" : "状态",
+      "contract_status" : "合约状态",
+      "updated_at": "2017-04",
+      "start_time": null,
+      "end_time": null
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "total": 1,
+    "size": 10
+  }
+}
+```
+
+## 7.2、新建合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts`
+
+### Request 请求参数
+
+
+```json
+    {"contract":
+	     {
+	      "provider_id":2,
+	     "department_id":1,
+         "project_no":"32323",
+         "contract_no":"32323",
+         "start_time":"2016-11-17","end_time":"2017-12-17",
+         "allow_overdue":false,"pay_type":"default",
+         "pay_amount":10,"desc":"dfdfdfsss",
+         "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+         "authorizes_attributes":[{"currency_id":1,"account_id":1,
+         "start_time":"2016-11-17","end_time":"2016-12-17",
+          "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+          "authorized_businesses_attributes":[{"authorized_range_id":1,"divided_point":50,
+          "authorized_area_ids":[124]}]
+          }]
+      }
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+ null
+
+## 7.3、修改合约
+
+### HTTP请求
+
+`PUT  /api/v1/contracts/1`
+
+### Request 请求参数
+
+
+```json
+{"contract":
+   {
+    "id":2
+    "provider_id":2,
+   "department_id":1,
+     "project_no":"32323",
+     "contract_no":"32323",
+     "start_time":"2016-11-17","end_time":"2017-12-17",
+     "allow_overdue":false,"pay_type":"default",
+     "pay_amount":10,"desc":"dfdfdfsss",
+     "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+     "authorizes_attributes":[{"id":2,"currency_id":1,"account_id":1,
+     "start_time":"2016-11-17","end_time":"2016-12-17",
+      "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+      "authorized_businesses_attributes":[{"id":2,"authorized_range_id":1,"divided_point":50,
+      "authorized_area_ids":[124]}]
+      }]
+  }
+}
+```
+
+### Response 响应
+
+> 响应数据:
+ null
+
+
+
+## 7.4、合约详情
+
+### HTTP请求
+
+`GET  /api/v1/contracts/1`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "contract": {
+          "id":28,"provider_id":1,"provider_name":"版权方",
+          "project_no":"ssss","contract_no":"sssss",
+          "signing_company":"32aa","start_time":"2016-11-17",
+          "end_time":"2016-12-17","allow_overdue":false,
+          "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss","reason":"dddd",
+          "contract_files":[{"id":177,"url":"333","filename":"nasss"}],
+          "authorizes":[{"id":29,"currency_id":1,"account_id":1,
+              "start_time":"2016-11-17","end_time":"2016-12-17",
+              "contract_files":[{"id":176,"url":"ddd","filename":"nasss"}],
+              "authorized_businesses":[{"id":93,"business_id":1,
+              "business_type":"AuthorizedRange","is_whole":0,"divided_point":50,
+              "authorized_area_ids":[124]}]
+          }]
+        }
+}
+```
+
+
+## 7.5、删除合约
+
+### HTTP请求
+
+`DELETE  /api/v1/contracts/1`
+
+### Response 响应
+
+> 响应数据:
+ NULL
+
+
+## 7.6、批量通过合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts/verify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_ids   | 是    | 版权方ids  |
+
+
+### Request 请求
+
+```json
+{
+ "contract_ids": [1,2]
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+null
+
+## 7.7、批量不通过合约
+
+### HTTP请求
+
+`POST  /api/v1/contracts/unverify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| contract_ids   | 是    | 版权方ids  |
+| reason  |  是    |  未通过原因 |
+
+### Request 请求
+
+```json
+{
+ "contract_ids": [1,2],
+ "reason": "dddd"
+}
+
+```
+### Response 响应
+
+> 响应数据:
+null
+
+# Part8 结算管理
+
+## 8.1. 创建货币接口
+
+### HTTP请求
+
+`post /api/v1/exchange_rates`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| exchange_rate                           | 是    | 标志是货币                    |
+| currency                             | 是    | 货币                     |
+| settlement_currency                       | 是    | 结算货币                    |
+| exchange_ratio                     | 是   |      汇率                |
+| status                      | 是   | 状态 [:enabled, :disabled] |
+| operator                      | 是   | 操作人                       |
+
+#### 请求示例
+`post /api/v1/exchange_rates`
+```json
+{
+	"exchange_rate":{
+		"currency":"韩币",
+		"settlement_currency":"人民币",
+		"exchange_ratio":"1:12",
+		"status":"enabled",
+		"operator":"aasd"
+	}
+
+}
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币",
+  "settlement_currency": "人民币",
+  "exchange_ratio": "1:12",
+  "status": "enabled",
+  "deleted": false,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:13:45.000+08:00"
+}
+```
+## 8.2. 删除货币接口
+
+### HTTP请求
+
+`Delete /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| id                           | 是    | 货币id                    |
+
+#### 请求示例
+`Delete /api/v1/exchange_rates/2`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币",
+  "settlement_currency": "人民币",
+  "exchange_ratio": "1:12",
+  "status": "enabled",
+  "deleted": true,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:13:45.000+08:00"
+}
+```
+
+## 8.3. 更新货币接口
+
+### HTTP请求
+
+`Put /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| exchange_rate                           | 是    | 标志是货币                    |
+| currency                             | 否    | 货币                     |
+| settlement_currency                       | 否    | 结算货币                    |
+| exchange_ratio                     | 否   |      汇率                |
+| status                      | 否   | 状态 [:enabled, :disabled] |
+| operator                      | 否   | 操作人                       |
+
+#### 请求示例
+`post /api/v1/exchange_rates/2`
+```json
+{
+	"exchange_rate":{
+		"currency":"韩币1",
+		"settlement_currency":"人民dddd币1",
+		"exchange_ratio":"1:12",
+		"status":"disabled",
+		"operator":"aasd"
+	}
+
+}
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币1",
+  "settlement_currency": "人民dddd币1",
+  "exchange_ratio": "1:12",
+  "status": "disabled",
+  "operator": "aasd",
+  "deleted": false,
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T12:28:15.000+08:00"
+}
+```
+## 8.4. 查看货币列表接口
+
+### HTTP请求
+
+`get /api/v1/exchange_rates`
+
+### Request 请求参数
+
+
+#### 请求示例
+`get /api/v1/exchange_rates`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+[
+  {
+    "id": 2,
+    "currency": "韩币11111111",
+    "settlement_currency": "人民dddd币1",
+    "exchange_ratio": "1:12",
+    "status": "disabled",
+    "deleted": false,
+    "operator": "aasd",
+    "created_at": "2017-04-20T12:13:45.000+08:00",
+    "updated_at": "2017-04-20T14:25:41.000+08:00"
+  }
+]
+```
+## 8.5. 查看货币详情接口
+
+### HTTP请求
+
+`get /api/v1/exchange_rates/:id`
+
+### Request 请求参数
+| 参数名                              | 是否必需 | 描述                       |
+| -------------------------------- | ---- | ------------------------ |
+| id                           | 是    | 货币ID                    |
+
+#### 请求示例
+`get /api/v1/exchange_rates/2`
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "id": 2,
+  "currency": "韩币11111111",
+  "settlement_currency": "人民dddd币1",
+  "exchange_ratio": "1:12",
+  "status": "disabled",
+  "deleted": false,
+  "operator": "aasd",
+  "created_at": "2017-04-20T12:13:45.000+08:00",
+  "updated_at": "2017-04-20T14:25:41.000+08:00"
+}
+```

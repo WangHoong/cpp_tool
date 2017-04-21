@@ -1,6 +1,16 @@
 class Api::V1::BaseController < ApplicationController
 
+  before_action :authenticate_user!
+
+
+
+
   protected
+
+  def authenticate_user!
+    authenticate
+    return unauthenticated! unless @current_user
+  end
 
   def authenticate
     token, options = ActionController::HttpAuthentication::Token.token_and_options(request)

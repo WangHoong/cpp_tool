@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170419035446) do
+ActiveRecord::Schema.define(version: 20170419100119) do
+
+  create_table "album_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "resource_id"
+    t.integer  "album_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -55,6 +63,14 @@ ActiveRecord::Schema.define(version: 20170419035446) do
     t.string   "association_type"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+  end
+
+  create_table "artist_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "artist_id",                comment: "艺人ID"
+    t.integer  "resource_id",              comment: "资源ID"
+    t.integer  "field",                    comment: "个人资源区分"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -149,6 +165,17 @@ ActiveRecord::Schema.define(version: 20170419035446) do
     t.string "en_name", comment: "英文名字"
   end
 
+  create_table "contract_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.integer  "resource_id"
+    t.integer  "field"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["resource_id"], name: "index_contract_resources_on_resource_id", using: :btree
+    t.index ["target_id", "target_type"], name: "index_contract_resources_on_target_id_and_target_type", using: :btree
+  end
+
   create_table "countries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "continent_id",               comment: "对应七大陆continent表的id"
     t.string  "name",                       comment: "英文常用标准名称，主要用于显示"
@@ -206,6 +233,21 @@ ActiveRecord::Schema.define(version: 20170419035446) do
     t.text     "desc",          limit: 65535
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "exchange_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "currency",                                         comment: "货币"
+    t.string   "settlement_currency",                              comment: "结算货币"
+    t.string   "exchange_ratio",                                   comment: "兑换比例"
+    t.integer  "status",              default: 0,                  comment: "0enabled ,1disabled"
+    t.boolean  "deleted",             default: false,              comment: "true删除,false未删除"
+    t.string   "operator",                                         comment: "操作员"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", comment: "语言名称"
   end
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -273,16 +315,12 @@ ActiveRecord::Schema.define(version: 20170419035446) do
   end
 
   create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "target_id",                                comment: "目标ID"
-    t.string   "target_type",                              comment: "目标类型"
     t.string   "url",                                      comment: "资源url"
     t.boolean  "deleted",     default: false,              comment: "true删除,false未删除"
     t.string   "native_name",                              comment: "资源原始名称"
-    t.integer  "field",                                    comment: "个人资源区分"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
-    t.index ["target_type", "target_id"], name: "index_resources_on_target_type_and_target_id", using: :btree
   end
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
