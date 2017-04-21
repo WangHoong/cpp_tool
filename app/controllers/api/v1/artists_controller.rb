@@ -46,8 +46,11 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Put /artists/approve
   def approve
     @artists = get_artist_by_ids
-    @artists.update(approve_status: :agree)
-		render json: @artists
+    if @artists.update(approve_status: :agree)
+      render json: @artists
+    else
+      render json: @artists.errors, status: :unprocessable_entity
+    end
   end
 
   private

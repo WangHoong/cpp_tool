@@ -12,11 +12,11 @@ class ArtistSerializer < ActiveModel::Serializer
 
   def resources
     object.artist_resources.map do |resource|
-      {
-        "id": resource.id,
-        "field": resource.field,
-        "resource": resource.resource
-      }
+      Hash[{
+        id: resource.id,
+        field: resource.field,
+        resource: resource.resource
+      }]
     end
   end
 end

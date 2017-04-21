@@ -35,18 +35,5 @@ class Cp::AuthorizesController < ApplicationController
     @contract.authorizes.find(params[:id])
   end
 
-  def authorize_params
-    params.require(:authorize)
-        .permit(
-            :contract_id,
-            :currency_id,
-            :account_id,
-            :end_time,
-            :start_time,
-            :tracks_count,
-            :track_ids=>[],
-            :authorized_businesses=>[:id,:business_id,:business_type,:divided_point,:is_whole,:_destroy,:authorized_area_ids=>[]],
-            :assets => [:id,:url,:filename,:_destroy]
-           ).transform_keys{ |key| ['authorized_businesses','assets'].include?(key) ? key+'_attributes' : key}
-  end
+   
 end

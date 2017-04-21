@@ -29,13 +29,17 @@ Rails.application.routes.draw do
             resources :permissions, only: [:index]
           end #roles
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
-          resources :albums, only: [:index, :create, :show, :update, :destroy]
+          resources :albums, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+              post :approve
+            end
+          end
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
         			post :approve
         		end
           end #artists
-
+          resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates
           resources :reports
           resources :constants, only: [] do
             collection do
