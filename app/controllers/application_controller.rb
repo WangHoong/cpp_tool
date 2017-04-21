@@ -3,9 +3,9 @@ class ApplicationController < ActionController::API
     # Authorization related methods and callbacks
     #include CanCan::ControllerAdditions
     #include ActionController::Cookies
-    # before_action :authenticate_user!
+    #before_action :authenticate_user!
     # load_and_authorize_resource
-
+    #skip_before_action :verify_authenticity_token
     #attr_accessor :current_user
     # catch all authorization failed exceptions
     rescue_from CanCan::AccessDenied do |exception|
@@ -24,11 +24,6 @@ class ApplicationController < ActionController::API
         page: resources.current_page,
         total: resources.total_count
       }
-    end
-
-    def authenticate_user!
-      authenticate
-      return unauthenticated! unless @current_user
     end
 
     def api_error(opts = {})

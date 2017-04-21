@@ -13,6 +13,12 @@ class Api::V1::SessionsController < Api::V1::BaseController
     end
   end
 
+ def sts
+   @sts =  Bce::Sts.new('159e1bbfc0b044b1b028365d691650c4','eb23d4eb80ac4eb08e2a58d575ed47c7')
+   @sts.get_session_token
+  render json: {status: 401}
+
+ end
 
   private
   def session_params

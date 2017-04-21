@@ -10,7 +10,11 @@ Rails.application.routes.draw do
               resources :authorizes,  except: [:create,:update]
             end
           end #contracts
-          resources :sessions, only: [:create]
+          resources :sessions, only: [:create] do
+            collection do
+              get :sts
+            end
+          end
           resources :users, only: [:index, :create, :show, :update, :destroy]  do
             collection do
               get :current
