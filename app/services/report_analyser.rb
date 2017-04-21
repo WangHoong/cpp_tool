@@ -26,25 +26,31 @@ class ReportAnalyser
 
     # Extend data from 'standard report'
     sheet = xlsx.sheet(0)
+    curr_line = 0
     sheet.each(STD_FIELDS_HASH.merge({clean: true})) do |row|
-      puts row
-      # Check Date
+      curr_line += 1
 
-      # Match track info
-      # Fetch by isrc/track_id/track_name+album_name+artist_name
-      if row['track_id'].present?
-        @track = Track.find row['track_id']
-      elsif row['isrc'].present?
-        @track = Track.find_by_isrc row['isrc']
-      else
-        # use track name
+      if curr_line > 1
+        puts row
+        # Check Date
+        is_valid_date = row[:date].to_s.to_date.between? report.start_time, report.end_time
+
+        # Match track info
+        # Fetch by isrc/track_id/track_name+album_name+artist_name
+        if row[:track_id].present?
+          @track = Track.find row[:track_id]
+        elsif row[:isrc].present?
+          @track = Track.find_by_isrc row[:isrc]
+        else
+          # use track name
+        end
+
+        # Check authorization
+        is_authorized = report.dsp.sp_authorizes.map(&:tracks).include? @track
+
+        # Write to elastic search
+        # data, note, err_message, category, created_at
       end
-
-      # Check authorization
-      # report.dsp.sp_authorizes.map(&:tracks)
-
-      # Write to elastic search
-      # data, note, err_message, category, created_at
 
     end
   end

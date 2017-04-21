@@ -20,6 +20,7 @@ module CppTool
   class Application < Rails::Application
 
     config.autoload_paths += Dir["#{config.root}/app/services/"]
+    config.autoload_paths += Dir["#{config.root}/app/utils/"]
 
     config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
     config.time_zone = 'Beijing'
