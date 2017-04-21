@@ -12,6 +12,14 @@
 
 ActiveRecord::Schema.define(version: 20170419100119) do
 
+  create_table "album_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "resource_id"
+    t.integer  "album_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "upc",                                comment: "商品统一编码，universal product code"
@@ -222,6 +230,10 @@ ActiveRecord::Schema.define(version: 20170419100119) do
     t.string   "operator",                                         comment: "操作员"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+  end
+
+  create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", comment: "语言名称"
   end
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
