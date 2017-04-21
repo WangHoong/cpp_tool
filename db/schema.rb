@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170419082543) do
+ActiveRecord::Schema.define(version: 20170419100119) do
 
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -61,12 +60,11 @@ ActiveRecord::Schema.define(version: 20170419082543) do
   end
 
   create_table "artist_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "artist_id",                                comment: "艺人ID"
-    t.integer  "resource_id",                              comment: "资源ID"
-    t.integer  "field",                                    comment: "个人资源区分"
-    t.boolean  "deleted",     default: false,              comment: "true删除,false未删除"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "artist_id",                comment: "艺人ID"
+    t.integer  "resource_id",              comment: "资源ID"
+    t.integer  "field",                    comment: "个人资源区分"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
