@@ -13,11 +13,10 @@ class Api::V1::SessionsController < Api::V1::BaseController
     end
   end
 
- def sts
-   @sts =  Bce::Sts.new('159e1bbfc0b044b1b028365d691650c4','eb23d4eb80ac4eb08e2a58d575ed47c7')
-   @sts.get_session_token
-  render json: {status: 401}
-
+ def sts_token
+   @sts = Bce::Sts.new(Rails.application.secrets[:bos_ak],Rails.application.secrets[:bos_sk])
+   res = @sts.get_session_token
+   render json: res
  end
 
   private

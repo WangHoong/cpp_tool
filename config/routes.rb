@@ -12,7 +12,7 @@ Rails.application.routes.draw do
           end #contracts
           resources :sessions, only: [:create] do
             collection do
-              get :sts
+              get :sts_token
             end
           end
           resources :users, only: [:index, :create, :show, :update, :destroy]  do
