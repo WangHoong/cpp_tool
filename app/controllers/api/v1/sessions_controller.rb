@@ -12,12 +12,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
       render json: {status: 401, error: "Incorrect email or password"}, status: :unauthorized
     end
   end
-
- def sts_token
-   @sts = Bce::Sts.new(Rails.application.secrets[:bos_ak],Rails.application.secrets[:bos_sk])
-   res = @sts.get_session_token
-   render json: res
- end
+ 
 
   private
   def session_params

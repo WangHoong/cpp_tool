@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
- get '/api/v1/sts_token' => 'api/v1/sessions#sts_token'
-
   namespace :api do
     namespace :v1 do
           namespace :cp do
@@ -12,7 +10,12 @@ Rails.application.routes.draw do
               resources :authorizes,  except: [:create,:update]
             end
           end #contracts
-          resources :sessions, only: [:create] 
+          resources :sessions, only: [:create]
+          resources :sts, only: [] do
+            collection do
+              get :media_token,:ro_token
+            end
+          end
           resources :users, only: [:index, :create, :show, :update, :destroy]  do
             collection do
               get :current

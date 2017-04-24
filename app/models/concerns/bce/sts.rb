@@ -4,12 +4,13 @@ module Bce
     END_POINT = 'https://sts.bj.baidubce.com'
     EXPIRATION = 1800
 
-    def initialize(ak, sk)
+    def initialize(ak, sk,bucket)
       @ak = ak
       @sk = sk
       @expiration   = EXPIRATION
       @endpoint     = END_POINT
       @uri = '/v1/sessionToken'
+      @bucket = bucket
     end
 
     def get_session_token
@@ -18,7 +19,7 @@ module Bce
                   accessControlList: [
                     {
                       service: 'bce:bos',
-                      resource:["sts-bucket-1-140683201300192-1447847972462384520478/*"],
+                      resource:["#{@bucket}/*"],
                       region: '*',
                       effect: 'Allow',
                       permission: ['READ', 'WRITE']

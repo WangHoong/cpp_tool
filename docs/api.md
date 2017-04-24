@@ -51,13 +51,13 @@
 
  ## 获取临时token接口
 
- ### HTTP请求
+ ### 存放音频文件  `get /api/v1/sts/media_token`   
 
- `get /api/v1/sts_token`
+ ### 存放图片和歌词文件   `get /api/v1/sts/ro_token`
 
 
  ```shell
-   curl -i -X GET    --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/sts_token
+   curl -i -X GET    --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/sts/media_token
  ```
  ### Response 响应
 
