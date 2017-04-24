@@ -46,6 +46,34 @@
  }
 
 
+
+ # Part0 上传百度云
+
+ ## 获取临时token接口
+
+ ### HTTP请求
+
+ `get /api/v1/sts_token`
+
+
+ ```shell
+   curl -i -X GET    --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/sts_token
+ ```
+ ### Response 响应
+
+ > 响应数据:
+
+ ```json
+ {
+  "accessKeyId": "df502159289811e7b48f6f90ae7dae38",
+  "secretAccessKey": "be27232a12d6499dbc91b0812eb11f75",
+  "sessionToken": "6IHTZwTmedrcJnQLrsaLRTyb66q5fmhopK1ltkaCg=",
+  "createTime": "2017-04-24T02:51:10Z",
+  "expiration": "2017-04-24T14:51:10Z",
+  "userId": "f0693d510e03495e9b4eebb48ce2d68e"
+}
+ ```
+
 # Part1 用户管理
 
 ## 1.1、用户登录接口
