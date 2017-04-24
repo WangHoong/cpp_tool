@@ -8,7 +8,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     @users = @users.db_query(:name, params[:q]) if params[:q]
     @users = @users.where(status: params[:status]) if params[:status]
     @users = @users.page(page).per(size)
-    render json: {users: @users.as_json(User.as_list_json_options), meta: page_info(@users).merge!({size: size})}
+    render json: {users: @users.as_json(User.as_list_json_options), meta: page_info(@users)}
   end
 
 

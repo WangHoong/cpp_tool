@@ -11,7 +11,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     @contracts = @contracts.date_between(params[:contract_status]) if  params[:contract_status].present?
     @contracts = @contracts.includes(:authorizes,:provider,:audits,:authorize_valids,:authorize_dues).page(page).per(size)
 
-    render json: {contracts: @contracts.as_json(::Cp::Contract.as_list_json_options)}, meta: page_info(@contracts)
+    render json: {contracts: @contracts.as_json(::Cp::Contract.as_list_json_options), meta: page_info(@contracts)}
   end
 
 

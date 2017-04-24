@@ -6,7 +6,7 @@ class Api::V1::RolesController < Api::V1::BaseController
     @roles = Role.order(id: :desc)
     @roles = @roles.where(name: params[:q]) if params[:q]
     @roles = @roles.page(page).per(size)
-    render json: {roles: @roles.as_json(only: [:id, :name,:status]), meta: page_info(@roles).merge!({size: size})}
+    render json: {roles: @roles.as_json(only: [:id, :name,:status]), meta: page_info(@roles)}
   end
 
 
