@@ -27,12 +27,13 @@ Rails.application.routes.draw do
               post :unverify,:verify
             end
           end#providers
-          resources :roles, only: [:index, :create, :show, :update, :destroy] do
+          resources :roles, only: [:index] do
             collection do
               get :permissions
             end
             resources :permissions, only: [:index]
           end #roles
+          resources :banks, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
             collection do
