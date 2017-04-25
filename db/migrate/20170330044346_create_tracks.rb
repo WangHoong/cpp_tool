@@ -5,7 +5,7 @@ class CreateTracks < ActiveRecord::Migration[5.0]
       t.string   :isrc,                                                                      comment: "标准录音制品编码"
       t.integer  :status,      default: 0
       t.integer  :language_id,                                                                                            comment: "语种"
-      t.integer  :genre,                                                                                               comment: "曲风"
+      t.string   :genre,                                                                                               comment: "曲风"
       t.integer  :provider_id,                                                                                         comment: "版权方ID"
       t.datetime :uploaded_at
       t.string   :ost

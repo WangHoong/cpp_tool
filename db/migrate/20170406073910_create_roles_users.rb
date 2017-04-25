@@ -3,8 +3,8 @@ class CreateRolesUsers < ActiveRecord::Migration[5.0]
     create_table :roles_users, id: false do |t|
         t.integer "user_id"
         t.integer "role_id"
-        t.index ["role_id"], name: "index_roles_users_on_role_id", using: :btree
-        t.index ["user_id"], name: "index_roles_users_on_user_id", using: :btree
     end
+    add_index :roles_users, :role_id
+    add_index :roles_users, :user_id
   end
 end

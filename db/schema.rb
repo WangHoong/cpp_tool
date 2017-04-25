@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20170425100638) do
     t.string  "name"
     t.integer "target_id"
     t.string  "target_type"
-    t.index ["target_id", "target_type"], name: "index_target_id_and_target_type", using: :btree
+    t.index ["target_id", "target_type"], name: "index_accompany_artists_on_target_id_and_target_type", using: :btree
   end
 
   create_table "album_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -63,6 +63,8 @@ ActiveRecord::Schema.define(version: 20170425100638) do
     t.integer "track_id"
     t.integer "album_id"
     t.index ["album_id"], name: "album_id", using: :btree
+    t.index ["album_id"], name: "index_albums_tracks_on_album_id", using: :btree
+    t.index ["track_id"], name: "index_albums_tracks_on_track_id", using: :btree
     t.index ["track_id"], name: "track_id", using: :btree
   end
 
@@ -388,7 +390,7 @@ ActiveRecord::Schema.define(version: 20170425100638) do
     t.string   "isrc",                                                   comment: "标准录音制品编码"
     t.integer  "status",                    default: 0
     t.integer  "language_id",                                            comment: "语种"
-    t.integer  "genre",                                                  comment: "曲风"
+    t.string   "genre",                                                  comment: "曲风"
     t.integer  "provider_id",                                            comment: "版权方ID"
     t.datetime "uploaded_at"
     t.string   "ost"
