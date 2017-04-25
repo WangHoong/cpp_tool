@@ -8,7 +8,8 @@ class ArtistSerializer < ActiveModel::Serializer
              :not_through_reason,
              :deleted,
              :country,
-             :resources
+             :resources,
+             :approve
 
   def resources
     object.artist_resources.map do |resource|
