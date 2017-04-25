@@ -1,5 +1,5 @@
 class Album < ApplicationRecord
-  validates :name, :primary_artist_ids, :language_id, :genre, :format, presence: true
+  validates :name, :language_id, :genre, :format, presence: true
   validates :label, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true

@@ -26,7 +26,7 @@ default: &default
     children:           儿歌
     chinese_opera:      中国戏曲
     redsong:            社会主义特色
-    dōjin:              同人音乐
+    dojin:              同人音乐
     classical:          古典
     soundtrack:         原声音乐
     function_music:     功能音乐
@@ -43,4 +43,7 @@ development:
   <<: *default
 
 test:
+  <<: *default
+
+production:
   <<: *default
