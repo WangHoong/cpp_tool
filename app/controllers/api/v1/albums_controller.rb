@@ -14,7 +14,8 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Put /albums/:id
   def update
-    if @albums = get_album.update(album_params)
+    @albums = get_album
+    if @albums.update(album_params)
     render json: @albums
     else
     render json: @albums.errors, status: :unprocessable_entity
@@ -46,7 +47,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def approve
     @albums = get_albums_by_ids
     @albums.update(status: :agree)
-    render json: @artists
+    render json: @albums
   end
 
   private
