@@ -348,16 +348,29 @@ ActiveRecord::Schema.define(version: 20170419100119) do
   end
 
   create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.text     "description", limit: 65535
-    t.integer  "artist_id"
+    t.string   "title"
     t.integer  "album_id"
-    t.text     "audio_url",   limit: 65535
+    t.string   "isrc",                                                   comment: "标准录音制品编码"
+    t.integer  "artist_id"
     t.integer  "status"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "language_id",                                            comment: "语种"
+    t.integer  "genre",                                                  comment: "曲风"
+    t.integer  "provider_id",                                            comment: "版权方ID"
+    t.datetime "uploaded_at"
+    t.string   "ost"
+    t.string   "performer",                                              comment: "演唱"
+    t.string   "lyric",                                                  comment: "作词"
+    t.string   "melody",                                                 comment: "作曲"
+    t.string   "company"
+    t.boolean  "is_agent",                  default: false
+    t.boolean  "deleted",                   default: false
+    t.string   "harmonic",                                               comment: "作曲"
+    t.text     "remark",      limit: 65535
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.index ["album_id"], name: "index_tracks_on_album_id", using: :btree
     t.index ["artist_id"], name: "index_tracks_on_artist_id", using: :btree
+    t.index ["title"], name: "index_tracks_on_title", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
