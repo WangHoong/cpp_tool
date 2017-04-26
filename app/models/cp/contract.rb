@@ -55,6 +55,10 @@ class Cp::Contract < ApplicationRecord
       provider.try(:name)
    end
 
+   def department_name
+     department.try(:name)
+   end
+
    def audit_name
      audits.first.try(:username)
    end
@@ -76,7 +80,7 @@ class Cp::Contract < ApplicationRecord
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status, :created_at, :updated_at],
-       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name]
+       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name]
    }
 
 
