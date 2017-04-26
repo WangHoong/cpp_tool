@@ -490,11 +490,12 @@ roles:[
   "artist": {
     "id": 1,
     "name": "222222",
+    "label_id": 1,
+    "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "todo",
-    "not_through_reason": null,
+    "approve_status": "pending",
     "deleted": false,
     "country": null,
     "resources": [
@@ -506,11 +507,23 @@ roles:[
           "url": "1aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
           "native_name": "1ddaalllllll",
-          "created_at": "2017-04-19T16:39:25.000+08:00",
-          "updated_at": "2017-04-19T16:39:25.000+08:00"
+          "created_at": "2017-04-26T17:12:39.000+08:00",
+          "updated_at": "2017-04-26T17:12:39.000+08:00"
         }
       }
-    ]
+    ],
+    "approve": {
+      "id": 1,
+      "status": "pending",
+      "target_type": "Artist",
+      "target_id": 1,
+      "creator": "wyg",
+      "approve_at": null,
+      "approver": null,
+      "not_through_reason": null,
+      "created_at": "2017-04-26T17:12:39.000+08:00",
+      "updated_at": "2017-04-26T17:12:39.000+08:00"
+    }
   }
 }
 ```
@@ -570,8 +583,6 @@ roles:[
 | description                      | 否    | 备注                           |
 | label_id                         | 否    | 唱片公司ID                       |
 | label_name                       | 否    | 唱片公司名称                       |
-| not_through_reason               | 否    | 审批未通过原因                       |
-| approve_status                   | 否    | :agree,:disagree                       |
 | artist_resources_attributes_id          | 否    | 艺人资源id                         |
 | artist_resources_attributes_field       | 否    | 艺人个人资源区分                       |
 | artist_resources_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
@@ -617,27 +628,40 @@ roles:[
   "artist": {
     "id": 1,
     "name": "222222",
+    "label_id": 1,
+    "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "todo",
-    "not_through_reason": null,
+    "approve_status": "pending",
     "deleted": false,
     "country": null,
     "resources": [
       {
         "id": 1,
-        "field": 222,
+        "field": 1,
         "resource": {
           "id": 1,
-          "url": "3aaaaadd44444ssssaa,,.ssa",
-          "native_name": "1ddaalllllll",
+          "url": "1aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
-          "created_at": "2017-04-19T16:39:25.000+08:00",
-          "updated_at": "2017-04-19T16:55:18.000+08:00"
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-26T17:12:39.000+08:00",
+          "updated_at": "2017-04-26T17:12:39.000+08:00"
         }
       }
-    ]
+    ],
+    "approve": {
+      "id": 1,
+      "status": "pending",
+      "target_type": "Artist",
+      "target_id": 1,
+      "creator": "wyg",
+      "approve_at": null,
+      "approver": null,
+      "not_through_reason": null,
+      "created_at": "2017-04-26T17:12:39.000+08:00",
+      "updated_at": "2017-04-26T17:12:39.000+08:00"
+    }
   }
 }
 ```
@@ -666,31 +690,46 @@ roles:[
 ```json
 {
   "artists": [
+  {
+"artist": {
+  "id": 1,
+  "name": "222222",
+  "label_id": 1,
+  "label_name": "dddaaa",
+  "gender_type": "female",
+  "description": "aaaaaaaaaaaaaa",
+  "operator": null,
+  "approve_status": "pending",
+  "deleted": false,
+  "country": null,
+  "resources": [
     {
       "id": 1,
-      "name": "222222",
-      "gender_type": "female",
-      "description": "aaaaaaaaaaaaaa",
-      "operator": null,
-      "approve_status": "todo",
-      "not_through_reason": null,
-      "deleted": false,
-      "country": null,
-      "resources": [
-        {
-          "id": 1,
-          "field": 222,
-          "resource": {
-            "id": 1,
-            "url": "3aaaaadd44444ssssaa,,.ssa",
-            "deleted": false,
-            "native_name": "1ddaalllllll",
-            "created_at": "2017-04-19T16:39:25.000+08:00",
-            "updated_at": "2017-04-19T16:55:18.000+08:00"
-          }
-        }
-      ]
+      "field": 1,
+      "resource": {
+        "id": 1,
+        "url": "1aaaaadd44444ssssaa,,.ssa",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-04-26T17:12:39.000+08:00",
+        "updated_at": "2017-04-26T17:12:39.000+08:00"
+      }
     }
+  ],
+  "approve": {
+    "id": 1,
+    "status": "pending",
+    "target_type": "Artist",
+    "target_id": 1,
+    "creator": "wyg",
+    "approve_at": null,
+    "approver": null,
+    "not_through_reason": null,
+    "created_at": "2017-04-26T17:12:39.000+08:00",
+    "updated_at": "2017-04-26T17:12:39.000+08:00"
+  }
+}
+}
   ],
   "meta": {
     "page": 1,
@@ -723,27 +762,40 @@ roles:[
   "artist": {
     "id": 1,
     "name": "222222",
+    "label_id": 1,
+    "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "operator": null,
-    "approve_status": "todo",
-    "not_through_reason": null,
+    "approve_status": "pending",
     "deleted": false,
     "country": null,
     "resources": [
       {
         "id": 1,
-        "field": 222,
+        "field": 1,
         "resource": {
           "id": 1,
-          "url": "3aaaaadd44444ssssaa,,.ssa",
+          "url": "1aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
           "native_name": "1ddaalllllll",
-          "created_at": "2017-04-19T16:39:25.000+08:00",
-          "updated_at": "2017-04-19T16:55:18.000+08:00"
+          "created_at": "2017-04-26T17:12:39.000+08:00",
+          "updated_at": "2017-04-26T17:12:39.000+08:00"
         }
       }
-    ]
+    ],
+    "approve": {
+      "id": 1,
+      "status": "pending",
+      "target_type": "Artist",
+      "target_id": 1,
+      "creator": "wyg",
+      "approve_at": null,
+      "approver": null,
+      "not_through_reason": null,
+      "created_at": "2017-04-26T17:12:39.000+08:00",
+      "updated_at": "2017-04-26T17:12:39.000+08:00"
+    }
   }
 }
 
@@ -763,7 +815,7 @@ roles:[
 
 #### 请求示例
 
-`put /api/v1/artists/approve`
+`post /api/v1/artists/approve`
 ```json
 {
 "artist_ids":[1]
@@ -780,29 +832,116 @@ roles:[
     {
       "id": 1,
       "name": "222222",
+      "label_id": 1,
+      "label_name": "dddaaa",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
       "operator": null,
-      "approve_status": "agree",
-      "not_through_reason": null,
+      "approve_status": "accepted",
       "deleted": false,
       "country": null,
       "resources": [
         {
           "id": 1,
-          "field": 222,
+          "field": 1,
           "resource": {
             "id": 1,
-            "url": "3aaaaadd44444ssssaa,,.ssa",
+            "url": "1aaaaadd44444ssssaa,,.ssa",
             "deleted": false,
             "native_name": "1ddaalllllll",
-            "created_at": "2017-04-19T16:39:25.000+08:00",
-            "updated_at": "2017-04-19T16:55:18.000+08:00"
+            "created_at": "2017-04-26T17:12:39.000+08:00",
+            "updated_at": "2017-04-26T17:12:39.000+08:00"
           }
         }
-      ]
+      ],
+      "approve": {
+        "target_id": 1,
+        "id": 1,
+        "approve_at": "2017-04-26T17:18:12.000+08:00",
+        "approver": "wyg1",
+        "status": "accepted",
+        "not_through_reason": null,
+        "target_type": "Artist",
+        "creator": "wyg",
+        "created_at": "2017-04-26T17:12:39.000+08:00",
+        "updated_at": "2017-04-26T17:18:12.000+08:00"
+      }
     }
   ]
+}
+```
+
+## 3.6.  单个审核艺人接口
+
+### HTTP请求
+
+`post /api/v1/artists/:id/approve`
+
+### Request 请求参数
+
+
+| 参数名        | 是否必需 | 描述     |
+| ---------- | ---- | ------ |
+| not_through_reason | 否    | 不通过原因 |
+| approve_status | 是    | 要更改状态，reject，accept |
+
+#### 请求示例
+
+`post /api/v1/artists/1/approve`
+```json
+{
+	"artist":{
+		"not_through_reason":"222222",
+		"approve_status":"reject"
+	}
+
+}
+```
+
+### Response 响应
+
+> 响应数据:
+
+```json
+{
+  "artist": {
+    "id": 1,
+    "name": "222222",
+    "label_id": 1,
+    "label_name": "dddaaa",
+    "gender_type": "female",
+    "description": "aaaaaaaaaaaaaa",
+    "operator": null,
+    "approve_status": "rejected",
+    "deleted": false,
+    "country": null,
+    "resources": [
+      {
+        "id": 1,
+        "field": 1,
+        "resource": {
+          "id": 1,
+          "url": "1aaaaadd44444ssssaa,,.ssa",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-04-26T17:12:39.000+08:00",
+          "updated_at": "2017-04-26T17:12:39.000+08:00"
+        }
+      }
+    ],
+    "approve": {
+      "target_id": 1,
+      "id": 1,
+      "approve_at": "2017-04-26T17:20:34.000+08:00",
+      "approver": "wyg1",
+      "status": "rejected",
+      "not_through_reason": "222222",
+      "target_type": "Artist",
+      "creator": "wyg",
+      "created_at": "2017-04-26T17:12:39.000+08:00",
+      "updated_at": "2017-04-26T17:20:34.000+08:00"
+    }
+  }
 }
 ```
 
@@ -1086,7 +1225,7 @@ null
 
 ### HTTP请求
 
-`GET /api/v1/providers`
+`GET /api/v1/cp/contracts`
 
 ### Request 请求参数
 
@@ -1098,7 +1237,7 @@ null
 | contract_status  |  是    |  合约状态(valid:有效,near:快到期,due:过期,unvalid:未生效) |
 
 ```shell
-  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/contracts
+  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/cp/contracts
 ```
 ### Response 响应
 
@@ -1133,7 +1272,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts`
+`POST  /api/v1/cp/contracts`
 
 ### Request 请求参数
 
@@ -1169,7 +1308,7 @@ null
 
 ### HTTP请求
 
-`PUT  /api/v1/contracts/1`
+`PUT  /api/v1/cp/contracts/1`
 
 ### Request 请求参数
 
@@ -1207,7 +1346,7 @@ null
 
 ### HTTP请求
 
-`GET  /api/v1/contracts/1`
+`GET  /api/v1/cp/contracts/1`
 
 ### Response 响应
 
@@ -1238,7 +1377,7 @@ null
 
 ### HTTP请求
 
-`DELETE  /api/v1/contracts/1`
+`DELETE  /api/v1/cp/contracts/1`
 
 ### Response 响应
 
@@ -1250,7 +1389,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/verify`
+`POST  /api/v1/cp/contracts/verify`
 
 ### Request 请求参数
 
@@ -1277,7 +1416,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/unverify`
+`POST  /api/v1/cp/contracts/unverify`
 
 ### Request 请求参数
 
