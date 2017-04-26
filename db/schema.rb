@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(version: 20170421072337) do
     t.string   "target_type"
     t.integer  "target_id"
     t.datetime "created_at"
-    t.string   "creater"
+    t.string   "creator"
     t.datetime "approve_at"
     t.string   "approver"
+    t.text     "not_through_reason", limit: 65535
   end
 
   create_table "artist_associations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -80,17 +81,16 @@ ActiveRecord::Schema.define(version: 20170421072337) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                    comment: "国籍"
+    t.integer  "country_id",                                                comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                                                   comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                      comment: "唱片公司ID"
+    t.integer  "gender_type",                                               comment: "0男，1女，2组合"
+    t.integer  "label_id",                                                  comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",        limit: 65535,                              comment: "艺人介绍"
-    t.boolean  "deleted",                          default: false,              comment: "true删除,false未删除"
-    t.string   "operator",                                                      comment: "操作员"
-    t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.text     "description",    limit: 65535,                              comment: "艺人介绍"
+    t.boolean  "deleted",                      default: false,              comment: "true删除,false未删除"
+    t.string   "operator",                                                  comment: "操作员"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "approve_status"
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree

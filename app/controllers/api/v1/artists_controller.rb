@@ -43,13 +43,24 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     end
   end
 
-  # Put /artists/approve
+  # post /artists/approve
   def approve
-    @artists = get_artist_by_ids
-    if @artists.update(approve_status: :agree)
-      render json: @artists
+    case !!params[:id]
+    when true
+      get_artist
+      begin
+          Artist.approve(artist_params, @artist)
+          render json: @artist
+      rescue  Workflow::NoTransitionAllowed => e
+          render json: {status: 403, error: e}, status: :forbidden
+      end
     else
-      render json: @artists.errors, status: :unprocessable_entity
+      @artists = get_artist_by_ids
+      if Artist.batchApprove(@artists)
+        render json: @artists
+      else
+        render json: @artists.errors, status: :unprocessable_entity
+      end
     end
   end
 

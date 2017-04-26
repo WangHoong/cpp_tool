@@ -44,6 +44,9 @@ Rails.application.routes.draw do
             collection do
         			post :approve
         		end
+            member do
+              post :approve
+            end
           end #artists
           resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates
           resources :reports
