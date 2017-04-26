@@ -1086,7 +1086,7 @@ null
 
 ### HTTP请求
 
-`GET /api/v1/providers`
+`GET /api/v1/cp/contracts`
 
 ### Request 请求参数
 
@@ -1098,7 +1098,7 @@ null
 | contract_status  |  是    |  合约状态(valid:有效,near:快到期,due:过期,unvalid:未生效) |
 
 ```shell
-  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/contracts
+  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/cp/contracts
 ```
 ### Response 响应
 
@@ -1133,7 +1133,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts`
+`POST  /api/v1/cp/contracts`
 
 ### Request 请求参数
 
@@ -1169,7 +1169,7 @@ null
 
 ### HTTP请求
 
-`PUT  /api/v1/contracts/1`
+`PUT  /api/v1/cp/contracts/1`
 
 ### Request 请求参数
 
@@ -1207,7 +1207,7 @@ null
 
 ### HTTP请求
 
-`GET  /api/v1/contracts/1`
+`GET  /api/v1/cp/contracts/1`
 
 ### Response 响应
 
@@ -1238,7 +1238,7 @@ null
 
 ### HTTP请求
 
-`DELETE  /api/v1/contracts/1`
+`DELETE  /api/v1/cp/contracts/1`
 
 ### Response 响应
 
@@ -1250,7 +1250,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/verify`
+`POST  /api/v1/cp/contracts/verify`
 
 ### Request 请求参数
 
@@ -1277,7 +1277,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/unverify`
+`POST  /api/v1/cp/contracts/unverify`
 
 ### Request 请求参数
 
