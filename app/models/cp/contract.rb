@@ -60,14 +60,16 @@ class Cp::Contract < ApplicationRecord
    end
 
    def  contract_status
-     if end_time <= Time.now.months_since(3)
-      return 'near'
-    elsif start_time <=Time.now && end_time >= Time.now
-      return 'valid'
-    elsif end_time <= Time.now
-      return 'due'
-     elsif start_time > Time.now
-       return 'unvalid'
+     if  start_time && end_time
+       if  end_time <= Time.now.months_since(3)
+        return 'near'
+       elsif start_time <=Time.now && end_time >= Time.now
+        return 'valid'
+       elsif end_time <= Time.now
+        return 'due'
+       elsif start_time > Time.now
+         return 'unvalid'
+       end
      end
    end
 
