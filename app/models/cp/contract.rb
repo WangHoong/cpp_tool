@@ -3,6 +3,7 @@ class Cp::Contract < ApplicationRecord
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited
   belongs_to :provider
+  belongs_to :department
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
@@ -51,7 +52,11 @@ class Cp::Contract < ApplicationRecord
    end
 
    def provider_name
-     self.provider.name
+      provider.try(:name)
+   end
+
+   def audit_name
+     audits.first.try(:username)
    end
 
    def  contract_status
@@ -69,7 +74,7 @@ class Cp::Contract < ApplicationRecord
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status, :created_at, :updated_at],
-       metheds: [:provider_name,:contract_status]
+       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name]
    }
 
 
