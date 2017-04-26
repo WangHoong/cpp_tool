@@ -20,7 +20,7 @@ module Bce
                     {
                       service: 'bce:bos',
                       resource:["#{@bucket}"],
-                      region: '*',
+                      region: 'bj',
                       effect: 'Allow',
                       permission: ['READ', 'WRITE']
                     }
