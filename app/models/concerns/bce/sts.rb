@@ -19,7 +19,7 @@ module Bce
                   accessControlList: [
                     {
                       service: '*',
-                      resource:["#{@bucket}"/*],
+                      resource:["#{@bucket}/*"],
                       region: '*',
                       effect: 'Allow',
                       permission: ['READ', 'WRITE']
