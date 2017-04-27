@@ -48,19 +48,7 @@ class Sp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
-
-  #sp合约授权状态
-  def status
-    if contract_end_time <= Time.now.months_since(3)
-     return 'near'
-    elsif contract_start_time <=Time.now && contract_end_time >= Time.now
-     return 'valid'
-    elsif contract_end_time <= Time.now
-     return 'due'
-    elsif contract_start_time > Time.now
-      return 'unvalid'
-    end
-  end
+ 
 
 
 end

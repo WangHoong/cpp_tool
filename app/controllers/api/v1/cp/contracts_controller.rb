@@ -17,7 +17,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   def show
     @contract = get_contract
-    render json: {contract: @contract.as_json(::Cp::Contract.as_list_json_options)}
+    render json: {contract: @contract.as_json(::Cp::Contract.as_show_json_options)}
   end
 
 
@@ -50,7 +50,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   def verify
       @contracts = get_contract_list
-      if @contracts.update_all(status: :agree)
+      if @contracts.update_all(status: :accept)
           head :ok
       else
           render json: @contract.errors, status: :unprocessable_entity
@@ -59,7 +59,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   def unverify
       @contracts = get_contract_list
-      if @contracts.update_all(status: :disagree,reason: params[:reason])
+      if @contracts.update_all(status: :reject,reason: params[:reason])
           head :ok
       else
         render json: @contract.errors, status: :unprocessable_entity
