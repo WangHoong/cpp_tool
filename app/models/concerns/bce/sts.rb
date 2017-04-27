@@ -18,8 +18,8 @@ module Bce
       request = RestClient.post("#{@endpoint}#{@uri}", {
                   accessControlList: [
                     {
-                      service: '*',
-                      resource:["#{@bucket}/*"],
+                      service: 'bce:bos',
+                      resource:["#{@bucket}"],
                       region: '*',
                       effect: 'Allow',
                       permission: ['READ', 'WRITE']
