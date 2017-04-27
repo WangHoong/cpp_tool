@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170426090645) do
+ActiveRecord::Schema.define(version: 20170425100638) do
 
   create_table "accompany_artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -68,18 +68,6 @@ ActiveRecord::Schema.define(version: 20170426090645) do
     t.index ["track_id"], name: "track_id", using: :btree
   end
 
-  create_table "approves", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "status",                                        comment: "审批状态,pending,accepted,rejected"
-    t.string   "target_type",                                   comment: "类型"
-    t.integer  "target_id"
-    t.string   "creator",                                       comment: "录入者"
-    t.datetime "approve_at",                                    comment: "审批时间"
-    t.string   "approver",                                      comment: "审批人"
-    t.text     "not_through_reason", limit: 65535,              comment: "未通过原因"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-  end
-
   create_table "artist_associations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "association_id"
     t.integer  "artist_id"
@@ -106,8 +94,7 @@ ActiveRecord::Schema.define(version: 20170426090645) do
     t.string   "label_name"
     t.text     "description",        limit: 65535,                              comment: "艺人介绍"
     t.boolean  "deleted",                          default: false,              comment: "true删除,false未删除"
-    t.string   "operator",                                                      comment: "操作员"
-    t.string   "approve_status",                   default: "0",                comment: "0待审批 ,1审批通过，2审批未通过"
+    t.string   "status",                           default: "0",                comment: "pending,accepted,rejected"
     t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false

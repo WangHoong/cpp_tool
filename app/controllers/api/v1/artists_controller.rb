@@ -10,7 +10,12 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Get /artists/:id
   def show
-    render json: get_artist
+    get_artist
+    if @artist
+    render json: @artist
+    else
+    render json: @artist.errors, status: :unprocessable_entity
+    end
   end
 
   # Put /artists/:id
@@ -85,7 +90,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :label_id,
             :label_name,
             :not_through_reason,
-            :approve_status,
+            :status,
             artist_resources_attributes: [:id, :field, :_destroy, resource_attributes: [:id, :url, :native_name]]
         )
   end

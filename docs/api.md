@@ -488,41 +488,37 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 1,
+    "id": 6,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "operator": null,
-    "approve_status": "pending",
+    "status": "pending",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 1,
+        "id": 6,
         "field": 1,
         "resource": {
-          "id": 1,
+          "id": 6,
           "url": "1aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
           "native_name": "1ddaalllllll",
-          "created_at": "2017-04-26T17:12:39.000+08:00",
-          "updated_at": "2017-04-26T17:12:39.000+08:00"
+          "created_at": "2017-04-27T22:10:22.000+08:00",
+          "updated_at": "2017-04-27T22:10:22.000+08:00"
         }
       }
     ],
     "approve": {
-      "id": 1,
+      "approver_name": "",
+      "approve_at": "",
       "status": "pending",
-      "target_type": "Artist",
-      "target_id": 1,
-      "creator": "wyg",
-      "approve_at": null,
-      "approver": null,
-      "not_through_reason": null,
-      "created_at": "2017-04-26T17:12:39.000+08:00",
-      "updated_at": "2017-04-26T17:12:39.000+08:00"
+      "creator_name": "",
+      "created_at": "2017-04-27T22:10:22.000+08:00",
+      "updated_at": "2017-04-27T22:10:22.000+08:00"
     }
   }
 }
@@ -551,16 +547,25 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 1,
+    "id": 8,
     "name": "222222",
+    "label_id": 1,
+    "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "operator": null,
-    "approve_status": "todo",
+    "status": "pending",
     "not_through_reason": null,
     "deleted": true,
     "country": null,
-    "resources": []
+    "resources": [],
+    "approve": {
+      "approver_name": "",
+      "approve_at": "",
+      "status": "pending",
+      "creator_name": "",
+      "created_at": "2017-04-27T22:11:07.000+08:00",
+      "updated_at": "2017-04-27T22:11:07.000+08:00"
+    }
   }
 }
 ```
@@ -626,41 +631,37 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 1,
+    "id": 7,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
-    "description": "aaaaaaaaaaaaaa",
-    "operator": null,
-    "approve_status": "pending",
+    "description": "abbbvvvvvvvvaaaaaaaa",
+    "status": "pending",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 1,
-        "field": 1,
+        "id": 7,
+        "field": 223444332,
         "resource": {
-          "id": 1,
-          "url": "1aaaaadd44444ssssaa,,.ssa",
+          "id": 7,
+          "url": "344443343aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
-          "native_name": "1ddaalllllll",
-          "created_at": "2017-04-26T17:12:39.000+08:00",
-          "updated_at": "2017-04-26T17:12:39.000+08:00"
+          "native_name": "144ddaalllllll",
+          "created_at": "2017-04-27T22:11:06.000+08:00",
+          "updated_at": "2017-04-27T22:14:25.000+08:00"
         }
       }
     ],
     "approve": {
-      "id": 1,
+      "approver_name": "",
+      "approve_at": "",
       "status": "pending",
-      "target_type": "Artist",
-      "target_id": 1,
-      "creator": "wyg",
-      "approve_at": null,
-      "approver": null,
-      "not_through_reason": null,
-      "created_at": "2017-04-26T17:12:39.000+08:00",
-      "updated_at": "2017-04-26T17:12:39.000+08:00"
+      "creator_name": "",
+      "created_at": "2017-04-27T22:11:06.000+08:00",
+      "updated_at": "2017-04-27T22:14:52.000+08:00"
     }
   }
 }
@@ -690,50 +691,78 @@ roles:[
 ```json
 {
   "artists": [
-  {
-"artist": {
-  "id": 1,
-  "name": "222222",
-  "label_id": 1,
-  "label_name": "dddaaa",
-  "gender_type": "female",
-  "description": "aaaaaaaaaaaaaa",
-  "operator": null,
-  "approve_status": "pending",
-  "deleted": false,
-  "country": null,
-  "resources": [
     {
-      "id": 1,
-      "field": 1,
-      "resource": {
-        "id": 1,
-        "url": "1aaaaadd44444ssssaa,,.ssa",
-        "deleted": false,
-        "native_name": "1ddaalllllll",
-        "created_at": "2017-04-26T17:12:39.000+08:00",
-        "updated_at": "2017-04-26T17:12:39.000+08:00"
+      "id": 7,
+      "name": "222222",
+      "label_id": 1,
+      "label_name": "dddaaa",
+      "gender_type": "female",
+      "description": "abbbvvvvvvvvaaaaaaaa",
+      "status": "pending",
+      "not_through_reason": null,
+      "deleted": false,
+      "country": null,
+      "resources": [
+        {
+          "id": 7,
+          "field": 223444332,
+          "resource": {
+            "id": 7,
+            "url": "344443343aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "144ddaalllllll",
+            "created_at": "2017-04-27T22:11:06.000+08:00",
+            "updated_at": "2017-04-27T22:14:25.000+08:00"
+          }
+        }
+      ],
+      "approve": {
+        "approver_name": "",
+        "approve_at": "",
+        "status": "pending",
+        "creator_name": "",
+        "created_at": "2017-04-27T22:11:06.000+08:00",
+        "updated_at": "2017-04-27T22:14:52.000+08:00"
+      }
+    },
+    {
+      "id": 6,
+      "name": "222222",
+      "label_id": 1,
+      "label_name": "dddaaa",
+      "gender_type": "female",
+      "description": "aaaaaaaaaaaaaa",
+      "status": "pending",
+      "not_through_reason": null,
+      "deleted": false,
+      "country": null,
+      "resources": [
+        {
+          "id": 6,
+          "field": 1,
+          "resource": {
+            "id": 6,
+            "url": "1aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "1ddaalllllll",
+            "created_at": "2017-04-27T22:10:22.000+08:00",
+            "updated_at": "2017-04-27T22:10:22.000+08:00"
+          }
+        }
+      ],
+      "approve": {
+        "approver_name": "",
+        "approve_at": "",
+        "status": "pending",
+        "creator_name": "",
+        "created_at": "2017-04-27T22:10:22.000+08:00",
+        "updated_at": "2017-04-27T22:10:22.000+08:00"
       }
     }
   ],
-  "approve": {
-    "id": 1,
-    "status": "pending",
-    "target_type": "Artist",
-    "target_id": 1,
-    "creator": "wyg",
-    "approve_at": null,
-    "approver": null,
-    "not_through_reason": null,
-    "created_at": "2017-04-26T17:12:39.000+08:00",
-    "updated_at": "2017-04-26T17:12:39.000+08:00"
-  }
-}
-}
-  ],
   "meta": {
     "page": 1,
-    "total": 1
+    "total": 2
   }
 }
 ```
@@ -760,41 +789,37 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 1,
+    "id": 6,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "operator": null,
-    "approve_status": "pending",
+    "status": "pending",
+    "not_through_reason": null,
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 1,
+        "id": 6,
         "field": 1,
         "resource": {
-          "id": 1,
+          "id": 6,
           "url": "1aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
           "native_name": "1ddaalllllll",
-          "created_at": "2017-04-26T17:12:39.000+08:00",
-          "updated_at": "2017-04-26T17:12:39.000+08:00"
+          "created_at": "2017-04-27T22:10:22.000+08:00",
+          "updated_at": "2017-04-27T22:10:22.000+08:00"
         }
       }
     ],
     "approve": {
-      "id": 1,
+      "approver_name": "",
+      "approve_at": "",
       "status": "pending",
-      "target_type": "Artist",
-      "target_id": 1,
-      "creator": "wyg",
-      "approve_at": null,
-      "approver": null,
-      "not_through_reason": null,
-      "created_at": "2017-04-26T17:12:39.000+08:00",
-      "updated_at": "2017-04-26T17:12:39.000+08:00"
+      "creator_name": "",
+      "created_at": "2017-04-27T22:10:22.000+08:00",
+      "updated_at": "2017-04-27T22:10:22.000+08:00"
     }
   }
 }
@@ -818,7 +843,7 @@ roles:[
 `post /api/v1/artists/approve`
 ```json
 {
-"artist_ids":[1]
+"artist_ids":[6,7]
 }
 ```
 
@@ -830,41 +855,71 @@ roles:[
 {
   "artists": [
     {
-      "id": 1,
+      "id": 6,
       "name": "222222",
       "label_id": 1,
       "label_name": "dddaaa",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
-      "operator": null,
-      "approve_status": "accepted",
+      "status": "accepted",
+      "not_through_reason": null,
       "deleted": false,
       "country": null,
       "resources": [
         {
-          "id": 1,
+          "id": 6,
           "field": 1,
           "resource": {
-            "id": 1,
+            "id": 6,
             "url": "1aaaaadd44444ssssaa,,.ssa",
             "deleted": false,
             "native_name": "1ddaalllllll",
-            "created_at": "2017-04-26T17:12:39.000+08:00",
-            "updated_at": "2017-04-26T17:12:39.000+08:00"
+            "created_at": "2017-04-27T22:10:22.000+08:00",
+            "updated_at": "2017-04-27T22:10:22.000+08:00"
           }
         }
       ],
       "approve": {
-        "target_id": 1,
-        "id": 1,
-        "approve_at": "2017-04-26T17:18:12.000+08:00",
-        "approver": "wyg1",
+        "approver_name": "",
+        "approve_at": "2017-04-27T22:19:15.000+08:00",
         "status": "accepted",
-        "not_through_reason": null,
-        "target_type": "Artist",
-        "creator": "wyg",
-        "created_at": "2017-04-26T17:12:39.000+08:00",
-        "updated_at": "2017-04-26T17:18:12.000+08:00"
+        "creator_name": "",
+        "created_at": "2017-04-27T22:10:22.000+08:00",
+        "updated_at": "2017-04-27T22:19:15.000+08:00"
+      }
+    },
+    {
+      "id": 7,
+      "name": "222222",
+      "label_id": 1,
+      "label_name": "dddaaa",
+      "gender_type": "female",
+      "description": "abbbvvvvvvvvaaaaaaaa",
+      "status": "accepted",
+      "not_through_reason": null,
+      "deleted": false,
+      "country": null,
+      "resources": [
+        {
+          "id": 7,
+          "field": 223444332,
+          "resource": {
+            "id": 7,
+            "url": "344443343aaaaadd44444ssssaa,,.ssa",
+            "deleted": false,
+            "native_name": "144ddaalllllll",
+            "created_at": "2017-04-27T22:11:06.000+08:00",
+            "updated_at": "2017-04-27T22:14:25.000+08:00"
+          }
+        }
+      ],
+      "approve": {
+        "approver_name": "",
+        "approve_at": "2017-04-27T22:19:15.000+08:00",
+        "status": "accepted",
+        "creator_name": "",
+        "created_at": "2017-04-27T22:11:06.000+08:00",
+        "updated_at": "2017-04-27T22:19:15.000+08:00"
       }
     }
   ]
@@ -883,7 +938,7 @@ roles:[
 | 参数名        | 是否必需 | 描述     |
 | ---------- | ---- | ------ |
 | not_through_reason | 否    | 不通过原因 |
-| approve_status | 是    | 要更改状态，reject，accept |
+| status | 是    | 要更改状态，reject，accept |
 
 #### 请求示例
 
@@ -892,7 +947,7 @@ roles:[
 {
 	"artist":{
 		"not_through_reason":"222222",
-		"approve_status":"reject"
+		"status":"reject"
 	}
 
 }
@@ -905,41 +960,37 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 1,
+    "id": 7,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
-    "description": "aaaaaaaaaaaaaa",
-    "operator": null,
-    "approve_status": "rejected",
+    "description": "abbbvvvvvvvvaaaaaaaa",
+    "status": "rejected",
+    "not_through_reason": "222222",
     "deleted": false,
     "country": null,
     "resources": [
       {
-        "id": 1,
-        "field": 1,
+        "id": 7,
+        "field": 223444332,
         "resource": {
-          "id": 1,
-          "url": "1aaaaadd44444ssssaa,,.ssa",
+          "id": 7,
+          "url": "344443343aaaaadd44444ssssaa,,.ssa",
           "deleted": false,
-          "native_name": "1ddaalllllll",
-          "created_at": "2017-04-26T17:12:39.000+08:00",
-          "updated_at": "2017-04-26T17:12:39.000+08:00"
+          "native_name": "144ddaalllllll",
+          "created_at": "2017-04-27T22:11:06.000+08:00",
+          "updated_at": "2017-04-27T22:14:25.000+08:00"
         }
       }
     ],
     "approve": {
-      "target_id": 1,
-      "id": 1,
-      "approve_at": "2017-04-26T17:20:34.000+08:00",
-      "approver": "wyg1",
+      "approver_name": "",
+      "approve_at": "2017-04-27T22:21:11.000+08:00",
       "status": "rejected",
-      "not_through_reason": "222222",
-      "target_type": "Artist",
-      "creator": "wyg",
-      "created_at": "2017-04-26T17:12:39.000+08:00",
-      "updated_at": "2017-04-26T17:20:34.000+08:00"
+      "creator_name": "",
+      "created_at": "2017-04-27T22:11:06.000+08:00",
+      "updated_at": "2017-04-27T22:21:11.000+08:00"
     }
   }
 }
