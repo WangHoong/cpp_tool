@@ -6,7 +6,7 @@ class Album < ApplicationRecord
 
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 
-  enum status: [:todo, :agree, :disagree]
+  enum status: [:pending,:accept,:reject]
 
   scope :recent, -> { order('id DESC') }
 

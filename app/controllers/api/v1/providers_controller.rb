@@ -40,14 +40,14 @@ class Api::V1::ProvidersController < Api::V1::BaseController
 
   def verify
       @providers =  Provider.where(id: params[:provider_ids])
-      if @providers.update_all(status: :agree)
+      if @providers.update_all(status: :accept)
           head :ok
       end
   end
 
   def unverify
       @providers =  Provider.where(id: params[:provider_ids])
-      if @providers.update_all(status: :disagree,reason: params[:reason])
+      if @providers.update_all(status: :reject,reason: params[:reason])
           head :ok
       end
   end

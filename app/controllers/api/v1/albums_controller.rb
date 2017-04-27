@@ -46,7 +46,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   # Post /albums/approve
   def approve
     @albums = get_albums_by_ids
-    @albums.update(status: :agree)
+    @albums.update_all(status: :accept)
     render json: @albums
   end
 
