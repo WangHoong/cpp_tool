@@ -9,7 +9,7 @@ class Api::V1::AuthorizedAreasController < Api::V1::BaseController
     @areas = @areas.db_query(:name, params[:q]) if params[:q]
     @areas = @areas.page(page).per(size)
 
-    render json: @areas,  meta: page_info(@areas)
+    render json: {areas: @areas},  meta: page_info(@areas)
   end
 
   def show
