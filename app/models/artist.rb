@@ -1,4 +1,6 @@
 class Artist < ApplicationRecord
+	include Workflow
+	include ApproveWorkflow
 	audited
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum gender_type: [:male,:female,:team]
@@ -8,6 +10,5 @@ class Artist < ApplicationRecord
 	has_many :resources, through: :artist_resources, :dependent => :destroy
 	accepts_nested_attributes_for :artist_resources, :allow_destroy => true
 	scope :recent, -> { order('id DESC') }
-	include Workflow
-	include ApproveWorkflow
+
 end

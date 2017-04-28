@@ -8,8 +8,9 @@ Rails.application.routes.draw do
                 post :unverify,:verify
               end
               resources :authorizes,  except: [:create,:update]
-            end
-          end #contracts
+            end #contracts
+          end
+          resources :authorized_areas 
           resources :sessions, only: [:create]
           resources :sts, only: [] do
             collection do

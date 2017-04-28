@@ -39,8 +39,8 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def verify
-      @providers =  Provider.where(id: params[:provider_ids])
-      if @providers.update_all(status: :accept)
+      @provider =  Provider.find(params[:id])
+      if @provider.accept! 
           head :ok
       end
   end
