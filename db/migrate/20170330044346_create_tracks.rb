@@ -11,13 +11,10 @@ class CreateTracks < ActiveRecord::Migration[5.0]
       t.integer  :authorize_id
       t.datetime :uploaded_at
       t.string   :ost
-      t.string   :performer,                                                                                           comment: "演唱"
       t.string   :lyric,                                                                                               comment: "作词"
-      t.string   :melody,                                                                                              comment: "作曲"
-      t.string   :company
+      t.string   :label
       t.boolean  :is_agent,      default: false
       t.boolean  :deleted,      default: false
-      t.string   :harmonic,                                                                          comment: "作曲"
       t.text :remark
       t.timestamps
     end
