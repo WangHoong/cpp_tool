@@ -3,6 +3,9 @@ class Track < ApplicationRecord
   has_and_belongs_to_many :albums
   has_and_belongs_to_many :artists
   belongs_to :language
+  belongs_to :provider
+  belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
+  belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
   has_many :accompany_artists, as: :target, :dependent => :destroy
   accepts_nested_attributes_for :accompany_artists, :allow_destroy => true
   has_many :track_resources

@@ -7,6 +7,8 @@ class CreateTracks < ActiveRecord::Migration[5.0]
       t.integer  :language_id,                                                                                            comment: "语种"
       t.string   :genre,                                                                                               comment: "曲风"
       t.integer  :provider_id,                                                                                         comment: "版权方ID"
+      t.integer  :contract_id
+      t.integer  :authorize_id
       t.datetime :uploaded_at
       t.string   :ost
       t.string   :performer,                                                                                           comment: "演唱"

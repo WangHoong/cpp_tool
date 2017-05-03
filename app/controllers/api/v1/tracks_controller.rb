@@ -10,7 +10,6 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def show
     @track = Track.find params[:id]
-
     render json: @track
   end
 
@@ -51,9 +50,12 @@ class Api::V1::TracksController < Api::V1::BaseController
       :ost,
       :company,
       :lyric,
+      :remark,
       :harmonic,
       :language_id,
       :provider_id,
+      :contract_id,
+      :authorize_id,
       artist_ids: [],
       album_ids: [],
       accompany_artists_attributes: [:id,:name,:_destroy],
