@@ -85,7 +85,7 @@ class Cp::Contract < ApplicationRecord
 
    class_attribute :as_show_json_options
     self.as_show_json_options={
-      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:reason,:desc,:created_at, :updated_at],
+      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:pay_amount,:reason,:desc,:created_at, :updated_at],
       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name],
       include: [:resources,authorizes: {include:[:resources,authorized_businesses: {include:[:authorized_areas]}]}]
     }
