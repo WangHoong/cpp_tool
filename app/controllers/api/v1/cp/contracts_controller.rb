@@ -92,7 +92,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :pay_amount,
             :contract_resources_attributes => [:id,:field,:_destroy,resource_attributes: [:id,:url,:native_name]],
             :authorizes_attributes => [:id,:contract_id,:currency_id,:account_id,:end_time,:start_time,:_destroy,
-              :authorized_businesses_attributes =>[:id,:authorized_range_id,:divided_point,:_destroy,:authorized_area_ids=>[]],
+              :authorized_businesses_attributes =>[:id,:authorized_range_id,:divided_point,:_destroy,:areas_count,:authorized_area_ids=>[]],
               :contract_resources_attributes => [:id,:field,:_destroy,resource_attributes: [:id,:url,:native_name]]]
         )
   end
