@@ -1406,15 +1406,33 @@ null
 ```json
 {
   "contract": {
-          "id":28,"provider_id":1,"provider_name":"版权方",
+          "id":18,"provider_id":1,"provider_name":"版权方",
           "project_no":"ssss","contract_no":"sssss",
           "signing_company":"32aa","start_time":"2016-11-17",
           "end_time":"2016-12-17","allow_overdue":false,
           "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss","reason":"dddd",
-          "contract_files":[{"id":177,"url":"333","filename":"nasss"}],
+          "contract_resources": [
+              {
+                "id": 2,
+                "target_id": 18,
+                "target_type": "Cp::Contract",
+                "resource_id": 20,
+                "field": 1,
+                "resource_url": "33333"
+              }
+            ],
           "authorizes":[{"id":29,"currency_id":1,"account_id":1,
               "start_time":"2016-11-17","end_time":"2016-12-17",
-              "contract_files":[{"id":176,"url":"ddd","filename":"nasss"}],
+              "contract_resources": [
+                  {
+                    "id": 1,
+                    "target_id": 18,
+                    "target_type": "Cp::Authorize",
+                    "resource_id": 20,
+                    "field": 1,
+                    "resource_url": "33333"
+                  }
+                ],
               "authorized_businesses":[{"id":93,"business_id":1,
               "business_type":"AuthorizedRange","is_whole":0,"divided_point":50,
               "authorized_area_ids":[124]}]
