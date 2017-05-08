@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503090558) do
+ActiveRecord::Schema.define(version: 20170505083458) do
 
   create_table "accompany_artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 20170503090558) do
     t.integer  "target_id"
     t.string   "target_type"
     t.integer  "resource_id"
-    t.integer  "field"
+    t.integer  "field",                    comment: "field: \"0:图片,1:音频,2:歌词,3:视频\""
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["resource_id"], name: "index_contract_resources_on_resource_id", using: :btree
@@ -266,6 +266,21 @@ ActiveRecord::Schema.define(version: 20170503090558) do
 
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
+    t.integer  "parent_id"
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
+    t.integer  "depth",          default: 0, null: false
+    t.integer  "children_count", default: 0, null: false
+    t.integer  "sort",           default: 0,              comment: "排序"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["lft"], name: "index_permission_groups_on_lft", using: :btree
+    t.index ["parent_id"], name: "index_permission_groups_on_parent_id", using: :btree
+    t.index ["rgt"], name: "index_permission_groups_on_rgt", using: :btree
+  end
+
+  create_table "permission_groups_te", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
     t.integer  "parent_id",  default: 0
     t.integer  "sort",       default: 0,              comment: "排序"
     t.datetime "created_at",             null: false
@@ -309,16 +324,26 @@ ActiveRecord::Schema.define(version: 20170503090558) do
     t.datetime "updated_at",                             null: false
   end
 
+  create_table "report_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.integer  "field"
+    t.integer  "resource_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dsp_id"
     t.date     "start_time"
     t.date     "end_time"
-    t.float    "income",     limit: 24
+    t.float    "income",         limit: 24
     t.integer  "status"
-    t.boolean  "is_std"
-    t.boolean  "is_split"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.boolean  "is_std",                    default: false
+    t.boolean  "is_split",                  default: false
+    t.integer  "currency_id"
+    t.integer  "process_status",            default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
   end
 
@@ -405,23 +430,22 @@ ActiveRecord::Schema.define(version: 20170503090558) do
 
   create_table "tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "title"
-    t.string   "isrc",                                                   comment: "标准录音制品编码"
-    t.integer  "status",                    default: 0
-    t.integer  "language_id",                                            comment: "语种"
-    t.string   "genre",                                                  comment: "曲风"
+    t.string   "isrc",                                                    comment: "标准录音制品编码"
+    t.integer  "status",                     default: 0
+    t.integer  "language_id",                                             comment: "语种"
+    t.string   "genre",                                                   comment: "曲风"
     t.datetime "uploaded_at"
     t.string   "ost"
-    t.string   "performer",                                              comment: "演唱"
-    t.string   "lyric",                                                  comment: "作词"
-    t.string   "melody",                                                 comment: "作曲"
-    t.string   "company",                                                comment: "唱片公司"
-    t.boolean  "is_agent",                  default: false,              comment: "是否代理"
-    t.integer  "provider_id",                                            comment: "版权方ID"
-    t.boolean  "deleted",                   default: false
-    t.string   "harmonic",                                               comment: "作曲"
-    t.text     "remark",      limit: 65535
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.string   "lyric",                                                   comment: "作词"
+    t.string   "label",                                                   comment: "唱片公司"
+    t.boolean  "is_agent",                   default: false,              comment: "是否代理"
+    t.integer  "provider_id",                                             comment: "版权方ID"
+    t.integer  "contract_id"
+    t.integer  "authorize_id"
+    t.boolean  "deleted",                    default: false
+    t.text     "remark",       limit: 65535
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.index ["title"], name: "index_tracks_on_title", using: :btree
   end
 
@@ -436,6 +460,7 @@ ActiveRecord::Schema.define(version: 20170503090558) do
     t.string   "password_digest"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+    t.boolean  "is_admin",                      default: false
     t.index ["email"], name: "index_users_on_email", using: :btree
   end
 

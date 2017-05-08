@@ -453,7 +453,7 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
-| artist_resources_attributes_field       | 否    | 个人资源区分                   |
+| artist_resources_attributes[field]| 是    | 个人资源区分 0:图片,1:音频,2:歌词,3:视频 |
 | resource_attributes_url         | 否    | 资源URL                    |
 | resource_attributes_native_name | 否    | 文件原始名称                   |
 
@@ -501,7 +501,7 @@ roles:[
     "resources": [
       {
         "id": 6,
-        "field": 1,
+        "field": 1, #0:图片,1:音频,2:歌词,3:视频
         "resource": {
           "id": 6,
           "url": "1aaaaadd44444ssssaa,,.ssa",

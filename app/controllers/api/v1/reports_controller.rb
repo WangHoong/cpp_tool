@@ -50,7 +50,9 @@ class Api::V1::ReportsController < Api::V1::BaseController
         :end_time,
         :income,
         :is_std,
-        :is_split
+        :is_split,
+        :currency_id,
+        report_resources_attributes: [:id, :report_id, :field, :_destroy,resource_attributes: [:id,:url,:native_name,:_destroy]]
     )
   end
 

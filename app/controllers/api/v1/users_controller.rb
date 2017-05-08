@@ -43,7 +43,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
   def current
-    render json: {user: current_user.as_json(User.as_list_json_options)}
+    render json: {user: @current_user.as_json(User.as_show_json_options)}
   end
 
 

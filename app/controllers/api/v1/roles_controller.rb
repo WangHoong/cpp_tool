@@ -39,10 +39,10 @@ class Api::V1::RolesController < Api::V1::BaseController
   end
 
   def permissions
-    @groups = PermissionGroup.includes(:subclass,:permissions).recent.where(parent_id: 0)
+    @groups = PermissionGroup.includes(:subclass,:permissions).recent.where(parent_id: nil)
     groups = []
     @groups.each do |group|
-       groups << {id: group.id,name: group.name,subclass: group.subclass.includes(:permissions).map{|m| Hash[{id: m.id,name: m.name,permissions: m.permissions.map{|n| Hash[{id: n.id,display_name: n.display_name,name: n.name}]}}]}}
+       groups << {id: group.id,name: group.name,subclass: group.subclass.includes(:permissions).map{|m| Hash[{id: m.id,name: m.name,permissions: m.permissions.map{|n| Hash[{id: n.id,display_name: n.display_name,name: n.name,rule_type: n.rule_type}]}}]}}
     end
     render json: {groups: groups}
   end

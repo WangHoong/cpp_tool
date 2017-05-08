@@ -90,3 +90,10 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'workflow', '~> 1.2.0'
+
+#export xlsx
+gem 'axlsx'
+#import xlsx
+gem "roo"
+
+gem 'awesome_nested_set'
