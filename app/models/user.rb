@@ -12,10 +12,10 @@ class User < ApplicationRecord
 
   def roles_permissions
     permissions = roles.includes(:permissions).map {|role| role.permissions}.flatten.uniq
- 
+
     group_ids =  permissions.map(&:permission_group_id).flatten.uniq
     @group = PermissionGroup.where(id: group_ids)
-    @groups = PermissionGroup.recent.where(id: nil)
+    @groups = PermissionGroup.recent.where(parent_id: nil)
     groups = []
     @groups.each do |group|
         groups << {id: group.id,name: group.name,subclass: group.descendants}
