@@ -11,19 +11,14 @@ class User < ApplicationRecord
 
 
   def roles_permissions
-    permissions = roles.includes(:permissions).map {|role| role.permissions}.flatten.uniq
-    group_ids =  permissions.map(&:permission_group_id).flatten.uniq
-    groups = PermissionGroup.where(id: group_ids).map{|m| m.ancestors.map(&:id)}.flatten.uniq
-    @groups = PermissionGroup.roots.recent.where(id: groups)
-    groups = []
-    @groups.each do |group|
-        groups << {id: group.id,name: group.name,subclass: group.descendants}
+    if is_admin
+      permissions = Permission.all
+    else
+      permissions = roles.includes(:permissions).map{|role| role.permissions.select(:id,:module_name,:rule_type)}.flatten.uniq
     end
-    return groups
+    @permissions = permissions.group_by(&:module_name).map{|key, value| [key, value.map(&:rule_type)]}
+    return  @permissions.to_h
   end
-
-
-
 
   class_attribute :as_list_json_options
   self.as_list_json_options={

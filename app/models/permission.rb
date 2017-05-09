@@ -1,8 +1,8 @@
 class Permission < ApplicationRecord
 	enum status: [:disabled,:enabled]
+  belongs_to :permission_group
   has_and_belongs_to_many :roles
 	has_and_belongs_to_many :users
-  belongs_to :permission_group
 
   default_scope -> { where(status: :enabled) }
 	default_scope -> { order('id ASC') }
