@@ -10,7 +10,7 @@ Rails.application.routes.draw do
               resources :authorizes,  except: [:create,:update]
             end #contracts
           end
-          resources :authorized_areas 
+          resources :authorized_areas
           resources :sessions, only: [:create]
           resources :sts, only: [] do
             collection do
@@ -49,6 +49,8 @@ Rails.application.routes.draw do
               post :approve
             end
           end #artists
+          resources :countries, only: [:index]
+          resources :currencies, only: [:index]
           resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates
           resources :reports
           resources :constants, only: [] do
