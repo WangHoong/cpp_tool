@@ -12,10 +12,9 @@ class User < ApplicationRecord
 
   def roles_permissions
     permissions = roles.includes(:permissions).map {|role| role.permissions}.flatten.uniq
-
     group_ids =  permissions.map(&:permission_group_id).flatten.uniq
-    @group = PermissionGroup.where(id: group_ids)
-    @groups = PermissionGroup.recent.where(parent_id: nil)
+    groups = PermissionGroup.where(id: group_ids).map{|m| m.ancestors.map(&:id)}.flatten.uniq
+    @groups = PermissionGroup.roots.recent.where(id: groups)
     groups = []
     @groups.each do |group|
         groups << {id: group.id,name: group.name,subclass: group.descendants}
@@ -23,12 +22,7 @@ class User < ApplicationRecord
     return groups
   end
 
-  def self.root_cates(categories)
-    attrs=[]
-    categories.each do |category|
-      attrs<<category.self_and_ancestors[0]
-    end
-  end
+
 
 
   class_attribute :as_list_json_options

@@ -4,7 +4,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:resources,:country).recent.page(page).per(size)
+    @artists = Artist.includes(:resources,:country,:audits).recent.page(page).per(size)
     render json: @artists, meta: page_info(@artists)
   end
 
