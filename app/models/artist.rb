@@ -6,9 +6,19 @@ class Artist < ApplicationRecord
 	enum gender_type: [:male,:female,:team]
 	validates :name, presence: true
 	belongs_to :country
-	has_many :artist_resources
-	has_many :resources, through: :artist_resources, :dependent => :destroy
-	accepts_nested_attributes_for :artist_resources, :allow_destroy => true
+	# songs resource association
+	has_many :song_resources, -> { where resource_type: 'song' },
+						class_name: 'ArtistResource', dependent: :destroy
+	has_many :songs, :through => :song_resources, class_name: 'Resource', :source => :resource
+
+	# images resource association
+	has_many :image_resources, -> { where resource_type: 'image' },
+						class_name: 'ArtistResource', dependent: :destroy
+	has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
+
+	accepts_nested_attributes_for :songs, :allow_destroy => true
+	accepts_nested_attributes_for :images, :allow_destroy => true
+
 	scope :recent, -> { order('id DESC') }
 
 end
