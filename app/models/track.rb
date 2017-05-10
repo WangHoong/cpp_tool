@@ -20,14 +20,18 @@ class Track < ApplicationRecord
   scope :recent, -> { order('id DESC') }
 
   def provider_name
-    self.provider.try(:name)
+     provider.try(:name)
+  end
+
+  def contract_name
+    contract.try(:contract_no)
   end
 
   class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
       include: [:albums,:artists,:audits],
-      methods: [:provider_name]
+      methods: [:provider_name,:contract_name]
 	}
 
 
