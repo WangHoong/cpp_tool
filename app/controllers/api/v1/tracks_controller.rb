@@ -5,7 +5,7 @@ class Api::V1::TracksController < Api::V1::BaseController
     size = params[:size]
     @tracks = Track.recent.page(page).per(size)
 
-    render json: @tracks, meta: page_info(@tracks)
+    render json: {tracks: @tracks.as_json(Track.as_list_json_options)}, meta: page_info(@tracks)
   end
 
   def show
