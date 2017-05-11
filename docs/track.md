@@ -6,7 +6,7 @@
 
 `post /api/v1/tracks`
 
-### file_type:(0:图片:1:歌曲文件,2:歌词,3:视频)
+### file_type:(0:图片,1:歌曲文件,2:歌词,3:视频)
 ### Request 请求参数
 
 ```json

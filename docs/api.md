@@ -430,12 +430,12 @@ roles:[
 
 ### HTTP请求
 
-`GET /api/v1/roles/:role_id/permissions`
+`GET /api/v1/roles/permissions`
 
 ### Request 请求参数
 
 ```shell
-  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:role_id/permissions
+  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/permissions
 ```
 ### Response 响应
 

@@ -41,7 +41,7 @@ Rails.application.routes.draw do
               post :unverify,:verify
             end
           end#providers
-          resources :roles, only: [:index] do
+          resources :roles do
             collection do
               get :permissions
             end
