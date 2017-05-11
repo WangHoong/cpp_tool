@@ -26,7 +26,7 @@
 	 "is_agent": true,
 	 "accompany_artists_attributes": [{"name": "sssss"}],
 	 "track_composers_attributes": [{ "op_type": "作词","name": "taihe", "point": 1}],
-	 "track_resources_attributes":[{"field": 1,"resource_attributes": {"url": "fdfdfd","native_name": "rrrr"}}]
+	 "track_resources_attributes":[{"resource_type": 1,"url": "fdfdfd","file_name": "rrrr"}]
  }
 }
 
@@ -95,7 +95,7 @@
 	"is_agent": true,
 	"accompany_artists_attributes": [{"id":1,"name": "sssss","_destroy": true}],
 	"track_composers_attributes": [{ "id":1,"op_type": "作词","name": "taihe", "point": 1,"_destroy": true}],
-	"track_resources_attributes":[{"id":1,"field": 1,"_destroy": true,"resource_attributes": {"id":1,"url": "fdfdfd","native_name": "rrrr"}}]
+  "track_resources_attributes":[{"id":1,"resource_type": 1,"url": "fdfdfd","file_name": "rrrr","_destroy": true}]
  }
 }
 ```
@@ -196,8 +196,8 @@
 		 "authorize_id":1,
 		 "accompany_artists":[{"name":"dfdf"}],
 		 "track_composers":[{"name":"232332","point":1,"op_type":"作曲"}],
-		 "track_resources":[{"field":1,"resource": {"url":"dfdfd"}}]
+		 "track_resources":[{"resource_type":1,"url":"dfdfd","file_name":"dfdfdf"}]
    }
- 
+
 }
 ```

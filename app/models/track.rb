@@ -34,5 +34,11 @@ class Track < ApplicationRecord
       methods: [:provider_name,:contract_name]
 	}
 
+  class_attribute :as_show_json_options
+  self.as_show_json_options={
+     only: [:id, :title,:isrc,:status,:language_id,:genre,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
+      include: [:albums,:artists,:audits,:track_resources],
+      methods: [:provider_name,:contract_name]
+  }
 
 end

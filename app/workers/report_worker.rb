@@ -1,27 +1,25 @@
 class ReportWorker
   include Sidekiq::Worker
   sidekiq_options queue: :report, retry: true
- 
-  def perform(revenue_id)
-    revenue = Revenue.find(revenue_id)
-    response = revenue.analyses_data(:succeed)
-    time = revenue.analyses_date(:succeed)
+
+  def perform(report_id)
+    report = Report.find(report_id)
+    response = report.analyses_data(:succeed)
+    time = report.analyses_date(:succeed)
 
     bucket = {}
     start_date = Time.at(time['min_date']['value'] / 1000)
     end_date = Time.at(time['max_date']['value'] / 1000)
 
-
     response.each do |ele|
-      next if ele['note']['publisher_id'].nil?
+      next if ele['note']['provider_id'].nil?
+      provider_id = ele['note']['provider_id']
 
-      publisher_id = ele['note']['publisher_id']
-
-      if bucket[publisher_id].blank?
-        bucket[publisher_id] = []
+      if bucket[provider_id].blank?
+        bucket[provider_id] = []
       end
 
-      bucket[publisher_id] << ele
+      bucket[provider_id] << ele
     end
 
     res = {}
@@ -37,7 +35,7 @@ class ReportWorker
 
     bucket.each do |key, value|
       amount = 0
-      info['publisher_id'] = key
+      info['provider_id'] = key
       info['currency_id'] = get_currency(key).try(:id)
       info['dsp_id'] = value[0]['note']['dsp_id']
       info['file_url'] = res[key][0]
@@ -62,8 +60,8 @@ class ReportWorker
   def gen_settlement_workbook(bucket, start_date, end_date)
     res = {}
     bucket.each do |key, value|
-      publisher = get_publisher(key)
-      currency = publisher.try(:currency)
+      provider = get_provider(key)
+      currency = provider.try(:currency)
 
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
@@ -78,7 +76,7 @@ class ReportWorker
         set = {}
         sheet_name = "数据汇总"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['CP名称', publisher.try(:name)]
+        sheet.add_row ['CP名称', provider.try(:name)]
         sheet.add_row ['结算货币', currency.try(:name)]
         sheet.add_row ['DSP', 'DateStart', 'DateEnd', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue' ]
 
@@ -110,16 +108,16 @@ class ReportWorker
     sheet
   end
 
-  def get_publisher(publisher_id)
-    publisher = Publisher.find(publisher_id) rescue nil
+  def get_provider(provider_id)
+    provider = Provider.find(provider_id) rescue nil
 
-    publisher
+    provider
   end
 
-  def get_currency(publisher_id)
-    publisher = get_publisher(publisher_id)
+  def get_currency(provider_id)
+    provider = get_provider(provider_id)
     # TODO: Currency should not be nil
-    currency = Currency.find(publisher.try(:currency_id)) rescue Currency.first
+    currency = Currency.find(provider.try(:currency_id)) rescue Currency.first
 
     currency
   end
