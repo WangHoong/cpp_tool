@@ -1224,10 +1224,10 @@ roles:[
          "start_time":"2016-11-17","end_time":"2017-12-17",
          "allow_overdue":false,"pay_type":"default",
          "pay_amount":10,"desc":"dfdfdfsss",
-         "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+         "contract_resources_attributes": [{"url":"33333","file_name":"eeeeee"}],
          "authorizes_attributes":[{"currency_id":1,"account_id":1,
          "start_time":"2016-11-17","end_time":"2016-12-17",
-          "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+          "contract_resources_attributes":[{"url":"33333","file_name":"eeeeee"}],
           "authorized_businesses_attributes":[{"authorized_range_id":1,"divided_point":50,
           "authorized_area_ids":[124]}]
           }]
@@ -1261,10 +1261,10 @@ roles:[
      "start_time":"2016-11-17","end_time":"2017-12-17",
      "allow_overdue":false,"pay_type":"default",
      "pay_amount":10,"desc":"dfdfdfsss",
-     "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+     "contract_resources_attributes":[{"id":1,"url":"33333","file_name":"eeeeee"}],
      "authorizes_attributes":[{"id":2,"currency_id":1,"account_id":1,
      "start_time":"2016-11-17","end_time":"2016-12-17",
-      "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+      "contract_resources_attributes":[{"id":1,"url":"33333","file_name":"eeeeee"}],
       "authorized_businesses_attributes":[{"id":2,"authorized_range_id":1,"divided_point":50,
       "authorized_area_ids":[124]}]
       }]
@@ -1302,9 +1302,8 @@ roles:[
                 "id": 2,
                 "target_id": 18,
                 "target_type": "Cp::Contract",
-                "resource_id": 20,
-                "field": 1,
-                "resource_url": "33333"
+                "file_name": "dfdf",
+                "url": "33333"
               }
             ],
           "authorizes":[{"id":29,"currency_id":1,"account_id":1,
@@ -1314,9 +1313,8 @@ roles:[
                     "id": 1,
                     "target_id": 18,
                     "target_type": "Cp::Authorize",
-                    "resource_id": 20,
-                    "field": 1,
-                    "resource_url": "33333"
+                    "file_name": "dfdfd",
+                    "url": "33333"
                   }
                 ],
               "authorized_businesses":[{"id":93,"business_id":1,
