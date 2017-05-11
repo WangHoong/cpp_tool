@@ -47,6 +47,7 @@ Rails.application.routes.draw do
             end
             resources :permissions, only: [:index]
           end #roles
+          resources :departments, only: [:index]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
