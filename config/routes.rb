@@ -9,7 +9,20 @@ Rails.application.routes.draw do
               end
               resources :authorizes,  except: [:create,:update]
             end #contracts
+            resources :settlements
           end
+
+          resources :reports do
+            member do
+              get :analyses_file
+              put :processed
+              put :confirm
+              put :account
+              put :done
+              put :reprocess
+            end
+          end
+
           resources :authorized_areas
           resources :sessions, only: [:create]
           resources :sts, only: [] do
@@ -60,6 +73,7 @@ Rails.application.routes.draw do
               get :artist_types
             end
           end# constants
+
 
     end #api
   end #v1

@@ -228,8 +228,22 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.datetime "updated_at",                                                           null: false
   end
 
-  create_table "currencies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.string "name"
+  create_table "cp_settlements", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT" do |t|
+    t.float    "settlement_amount",      limit: 24,                          comment: "结算金额"
+    t.date     "settlement_cycle_start",                                     comment: "结算周期开始时间"
+    t.date     "settlement_cycle_end",                                       comment: "结算周期结束时间"
+    t.date     "settlement_date",                                            comment: "结算日期"
+    t.integer  "settlement_status",                 default: 0,              comment: "结算状态 0 待确认 1待支付2已支付"
+    t.integer  "provider_id",                                                comment: "版权方"
+    t.integer  "dsp_id",                                                     comment: "渠道"
+    t.integer  "currency_id",                       default: 1, null: false, comment: "货币"
+    t.string   "file_url",                                                   comment: "文件URL"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "currencies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", comment: "名称"
   end
 
   create_table "departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -311,22 +325,25 @@ ActiveRecord::Schema.define(version: 20170509031253) do
 
   create_table "report_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "report_id"
-    t.integer  "field"
-    t.integer  "resource_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "file_name"
+    t.string   "url"
+    t.datetime "processed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dsp_id"
+    t.integer  "currency_id"
     t.date     "start_time"
     t.date     "end_time"
-    t.float    "income",     limit: 24
-    t.integer  "status"
-    t.boolean  "is_std"
-    t.boolean  "is_split"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.decimal  "income",         precision: 10, scale: 2, default: "0.0"
+    t.integer  "status",                                  default: 0
+    t.integer  "process_status",                          default: 0
+    t.boolean  "is_std",                                  default: false
+    t.boolean  "is_split",                                default: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
   end
 
@@ -394,12 +411,12 @@ ActiveRecord::Schema.define(version: 20170509031253) do
   end
 
   create_table "track_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "resource_id"
     t.integer  "track_id"
-    t.integer  "field"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["resource_id"], name: "index_track_resources_on_resource_id", using: :btree
+    t.string   "file_name"
+    t.integer  "resource_type", default: 0
+    t.string   "url"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["track_id"], name: "index_track_resources_on_track_id", using: :btree
   end
 
