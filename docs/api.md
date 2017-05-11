@@ -490,8 +490,10 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
-| resource_attributes_url         | 否    | 资源URL                    |
-| resource_attributes_native_name | 否    | 文件原始名称                   |
+| songs_attributes_url         | 否    | 资源URL                    |
+| songs_attributes_native_name | 否    | 文件原始名称                   |
+| images_attributes_url         | 否    | 资源URL                    |
+| images_attributes_native_name | 否    | 文件原始名称                   |
 
 #### 请求示例
 `post /api/v1/artists`
@@ -649,11 +651,14 @@ roles:[
 | description                      | 否    | 备注                           |
 | label_id                         | 否    | 唱片公司ID                       |
 | label_name                       | 否    | 唱片公司名称                       |
-| artist_resources_attributes_id          | 否    | 艺人资源id                         |
-| artist_resources_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
-| resource_attributes_id          | 否    | 资源id                         |
-| resource_attributes_url         | 否    | 资源URL                        |
-| resource_attributes_native_name | 否    | 文件原始名称                       |
+| songs_attributes_id          | 否    | 艺人资源id                         |
+| songs_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| songs_attributes_url         | 否    | 资源URL                    |
+| songs_attributes_native_name | 否    | 文件原始名称                   |
+| images_attributes_id          | 否    | 艺人资源id                         |
+| images_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| images_attributes_url         | 否    | 资源URL                    |
+| images_attributes_native_name | 否    | 文件原始名称                   |
 
  注意⚠️ 更新artist_resources_attributes里面原有数据时候要加入艺人资源id ，如果不加艺人资源id 会创建新的数据,当不删除artist_resources_attributes里面数据时候_destroy 为false或不传此参数
 
@@ -1402,8 +1407,8 @@ null
 | 参数名                              | 是否必需 | 描述                       |
 | -------------------------------- | ---- | ------------------------ |
 | exchange_rate                           | 是    | 标志是货币                    |
-| currency                             | 是    | 货币                     |
-| settlement_currency                       | 是    | 结算货币                    |
+| currency_id                             | 是    | 货币_id                     |
+| settlement_currency_id                       | 是    | 结算货币_id                    |
 | exchange_ratio                     | 是   |      汇率                |
 | status                      | 是   | 状态 [:enabled, :disabled] |
 | operator                      | 是   | 操作人                       |
@@ -1413,8 +1418,8 @@ null
 ```json
 {
 	"exchange_rate":{
-		"currency":"韩币",
-		"settlement_currency":"人民币",
+		"currency_id":3,
+		"settlement_currency_id":1,
 		"exchange_ratio":"1:12",
 		"status":"enabled",
 		"operator":"aasd"
@@ -1429,15 +1434,22 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币",
-  "settlement_currency": "人民币",
-  "exchange_ratio": "1:12",
-  "status": "enabled",
-  "deleted": false,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:13:45.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd",
+    "created_at": "2017-05-11T17:08:08.000+08:00",
+    "updated_at": "2017-05-11T17:11:52.000+08:00"
+  }
 }
 ```
 ## 8.2. 删除货币接口
@@ -1461,15 +1473,20 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币",
-  "settlement_currency": "人民币",
-  "exchange_ratio": "1:12",
-  "status": "enabled",
-  "deleted": true,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:13:45.000+08:00"
+  "exchange_rate": {
+    "id": 8,
+    "currency": {
+      "id": 3,
+      "name": "美元"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```
 
@@ -1484,8 +1501,8 @@ null
 | 参数名                              | 是否必需 | 描述                       |
 | -------------------------------- | ---- | ------------------------ |
 | exchange_rate                           | 是    | 标志是货币                    |
-| currency                             | 否    | 货币                     |
-| settlement_currency                       | 否    | 结算货币                    |
+| currency_id                             | 否    | 货币                     |
+| settlement_currency_id                       | 否    | 结算货币                    |
 | exchange_ratio                     | 否   |      汇率                |
 | status                      | 否   | 状态 [:enabled, :disabled] |
 | operator                      | 否   | 操作人                       |
@@ -1495,10 +1512,10 @@ null
 ```json
 {
 	"exchange_rate":{
-		"currency":"韩币1",
-		"settlement_currency":"人民dddd币1",
+		"currency_id":2,
+		"settlement_currency":1,
 		"exchange_ratio":"1:12",
-		"status":"disabled",
+		"status":"enabled",
 		"operator":"aasd"
 	}
 
@@ -1511,15 +1528,20 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币1",
-  "settlement_currency": "人民dddd币1",
-  "exchange_ratio": "1:12",
-  "status": "disabled",
-  "operator": "aasd",
-  "deleted": false,
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:28:15.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```
 ## 8.4. 查看货币列表接口
@@ -1539,19 +1561,56 @@ null
 > 响应数据:
 
 ```json
-[
-  {
-    "id": 2,
-    "currency": "韩币11111111",
-    "settlement_currency": "人民dddd币1",
-    "exchange_ratio": "1:12",
-    "status": "disabled",
-    "deleted": false,
-    "operator": "aasd",
-    "created_at": "2017-04-20T12:13:45.000+08:00",
-    "updated_at": "2017-04-20T14:25:41.000+08:00"
+{
+  "exchange_rates": [
+    {
+      "id": 7,
+      "currency": {
+        "id": 2,
+        "name": "英镑"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    },
+    {
+      "id": 6,
+      "currency": {
+        "id": 3,
+        "name": "美元"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    },
+    {
+      "id": 5,
+      "currency": {
+        "id": 2,
+        "name": "英镑"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "total": 3
   }
-]
+}
 ```
 ## 8.5. 查看货币详情接口
 
@@ -1573,14 +1632,19 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币11111111",
-  "settlement_currency": "人民dddd币1",
-  "exchange_ratio": "1:12",
-  "status": "disabled",
-  "deleted": false,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T14:25:41.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```
