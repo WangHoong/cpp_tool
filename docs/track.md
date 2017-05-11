@@ -6,6 +6,7 @@
 
 `post /api/v1/tracks`
 
+### file_type:(0:图片:1:歌曲文件,2:歌词,3:视频)
 ### Request 请求参数
 
 ```json
@@ -26,7 +27,7 @@
 	 "is_agent": true,
 	 "accompany_artists_attributes": [{"name": "sssss"}],
 	 "track_composers_attributes": [{ "op_type": "作词","name": "taihe", "point": 1}],
-	 "track_resources_attributes":[{"resource_type": 1,"url": "fdfdfd","file_name": "rrrr"}]
+	 "track_resources_attributes":[{"file_type": 1,"url": "fdfdfd","file_name": "rrrr"}]
  }
 }
 
@@ -95,7 +96,7 @@
 	"is_agent": true,
 	"accompany_artists_attributes": [{"id":1,"name": "sssss","_destroy": true}],
 	"track_composers_attributes": [{ "id":1,"op_type": "作词","name": "taihe", "point": 1,"_destroy": true}],
-  "track_resources_attributes":[{"id":1,"resource_type": 1,"url": "fdfdfd","file_name": "rrrr","_destroy": true}]
+  "track_resources_attributes":[{"id":1,"file_type": 1,"url": "fdfdfd","file_name": "rrrr","_destroy": true}]
  }
 }
 ```
@@ -196,7 +197,7 @@
 		 "authorize_id":1,
 		 "accompany_artists":[{"name":"dfdf"}],
 		 "track_composers":[{"name":"232332","point":1,"op_type":"作曲"}],
-		 "track_resources":[{"resource_type":1,"url":"dfdfd","file_name":"dfdfdf"}]
+		 "track_resources":[{"file_type":1,"url":"dfdfd","file_name":"dfdfdf"}]
    }
 
 }

@@ -57,7 +57,7 @@ class Api::V1::TracksController < Api::V1::BaseController
       album_ids: [],
       accompany_artists_attributes: [:id,:name,:_destroy],
       track_composers_attributes: [:id,:name,:op_type,:point,:_destroy],
-      track_resources_attributes: [:id, :file_name,:url, :_destroy]
+      track_resources_attributes: [:id,:file_type, :file_name,:url, :_destroy]
      )
   end
 
