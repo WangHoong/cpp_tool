@@ -1,12 +1,13 @@
 class Album < ApplicationRecord
+  include Workflow
+	include ApproveWorkflow
+  audited
   validates :name, :language_id, :genre, :format, presence: true
   validates :label, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true
 
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
-
-  enum status: [:pending,:accept,:reject]
 
   scope :recent, -> { order('id DESC') }
 
