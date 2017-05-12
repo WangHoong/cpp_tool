@@ -5,7 +5,7 @@ class Cp::Authorize < ApplicationRecord
   belongs_to :authorized_range
   has_many :authorized_businesses
   has_many :contract_resources, as: :target, :dependent => :destroy
-  has_many :resources, through: :contract_resources, :dependent => :destroy
+  
   accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorized_businesses,  :allow_destroy => true
 
@@ -13,7 +13,7 @@ class Cp::Authorize < ApplicationRecord
   scope :recent, -> { order('authorizes.id DESC') }
 
 
- 
+
 
 
   #还剩多少天结束

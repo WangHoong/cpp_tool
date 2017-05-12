@@ -1,11 +1,10 @@
 default: &default
-  elasticsearch_server: '172.31.6.60:9200'
+  elasticsearch_server: '127.0.0.1:9200'
   donkey_index: 'donkey_test'
   analysis_error_type: 'analysis_error'
   analysis_success_type: 'analysis_result'
   analysis_info_type: 'analysis_info'
   distribution_type: 'distributions'
-  taihe_url: 'http://dev.api.topdmc.cn/api/v1/'
   remote_servers: ['127.0.0.1','54.223.86.5','54.223.222.214']
   access_token: 'izrFiion7xEe2ccTj0v0mOcuNoT3FvpPqI31WLSCEBLvuz4xoju5MaoytEcg6Md773w'
   upload_category:

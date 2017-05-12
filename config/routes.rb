@@ -48,6 +48,7 @@ Rails.application.routes.draw do
             resources :permissions, only: [:index]
           end #roles
           resources :departments, only: [:index]
+          resources :authorized_ranges, only: [:index]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy]
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
