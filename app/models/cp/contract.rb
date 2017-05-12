@@ -10,7 +10,7 @@ class Cp::Contract < ApplicationRecord
   has_many :authorize_dues, -> {where('cp_authorizes.end_time <?',Time.now)},class_name: 'Cp::Authorize'
   #has_many :assets, as: :target, :dependent => :destroy
   has_many :contract_resources, as: :target, :dependent => :destroy
-	has_many :resources, through: :contract_resources, :dependent => :destroy
+
 	accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
@@ -87,7 +87,7 @@ class Cp::Contract < ApplicationRecord
     self.as_show_json_options={
       only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:pay_amount,:reason,:desc,:created_at, :updated_at],
       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name],
-      include: [{contract_resources: {methods:[:resource_url]}},authorizes: {include:[{contract_resources: {methods:[:resource_url]}},authorized_businesses: {include:[:authorized_areas]}]}],
+      include: [:contract_resources,authorizes: {include:[:contract_resources,authorized_businesses: {include:[:authorized_areas],methods: [:authorized_range_name]}]}],
 
     }
 

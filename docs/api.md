@@ -263,6 +263,43 @@ users:[
     status
   }
 ```
+
+## 1.7、用户权限接口
+
+### HTTP请求
+
+`get /api/v1/users/current`
+
+```shell
+  curl -i -X GET    --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/users/current
+```
+### Response 响应
+### 说明
+rule_type(1:查看,2:编辑,3:审核）
+User:用户管理,Role:角色管理,Artist:艺人管理,Album专辑管理,Track歌曲管理,Provider:版权方管理,Contract:合约管理,渠道数据列表,结算单列表,版权方账户记录,汇率管理,待结数据列表,Dsp:渠道方管理
+> 响应数据:
+
+```json
+{
+ "user": {
+   "id": 1,
+   "name": "123456",
+   "email": "wh@topdmc.com",
+   "phone": null,
+   "avatar_url": "sdfdfd",
+   "status": 1,
+   "created_at": "2017-04-06T12:39:38.000+08:00",
+   "updated_at": "2017-04-06T15:47:33.000+08:00",
+   "roles_permissions": {
+     "User": [ 1, 2 ],  
+     "Role": [ 1, 2 ]
+   }
+ }
+}
+```
+
+
+
 # Part2 角色管理
 
 ## 2.1、角色列表接口
@@ -393,12 +430,12 @@ roles:[
 
 ### HTTP请求
 
-`GET /api/v1/roles/:role_id/permissions`
+`GET /api/v1/roles/permissions`
 
 ### Request 请求参数
 
 ```shell
-  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/:role_id/permissions
+  curl -i -X GET --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/roles/permissions
 ```
 ### Response 响应
 
@@ -453,9 +490,10 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
-| artist_resources_attributes[field]| 是    | 个人资源区分 0:图片,1:音频,2:歌词,3:视频 |
-| resource_attributes_url         | 否    | 资源URL                    |
-| resource_attributes_native_name | 否    | 文件原始名称                   |
+| songs_attributes_url         | 否    | 资源URL                    |
+| songs_attributes_native_name | 否    | 文件原始名称                   |
+| images_attributes_url         | 否    | 资源URL                    |
+| images_attributes_native_name | 否    | 文件原始名称                   |
 
 #### 请求示例
 `post /api/v1/artists`
@@ -464,17 +502,17 @@ roles:[
 	"artist":{
 		"name":"222222",
 		"country_id":"1",
-		"country_name":"吧2",
 		"gender_type":"female",
 		"description":"aaaaaaaaaaaaaa",
 		"label_id":"1",
 		"label_name":"dddaaa",
-		"artist_resources_attributes":[{
-			"field":1,
-			"resource_attributes":{
-			"url":"1aaaaadd44444ssssaa,,.ssa",
+		"songs_attributes":[{
+			"url":"1aaaaadd44444ssssaa,,.ssa.mp3",
 			"native_name":"1ddaalllllll"
-		}
+		}],
+		"images_attributes":[{
+			"url":"1saa,,.ssa.avi",
+			"native_name":"1ddaalllllll"
 		}]
 	}
 
@@ -488,28 +526,42 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 6,
+    "id": 12,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "status": "pending",
-    "not_through_reason": null,
     "deleted": false,
-    "country": null,
-    "resources": [
+    "country": {
+      "id": 1,
+      "continent_id": 3,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "songs": [
       {
-        "id": 6,
-        "field": 1, #0:图片,1:音频,2:歌词,3:视频
-        "resource": {
-          "id": 6,
-          "url": "1aaaaadd44444ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "1ddaalllllll",
-          "created_at": "2017-04-27T22:10:22.000+08:00",
-          "updated_at": "2017-04-27T22:10:22.000+08:00"
-        }
+        "id": 20,
+        "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:47:53.000+08:00",
+        "updated_at": "2017-05-10T14:47:53.000+08:00"
+      }
+    ],
+    "images": [
+      {
+        "id": 21,
+        "url": "1saa,,.ssa.avi",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:47:53.000+08:00",
+        "updated_at": "2017-05-10T14:47:53.000+08:00"
       }
     ],
     "approve": {
@@ -517,8 +569,9 @@ roles:[
       "approve_at": "",
       "status": "pending",
       "creator_name": "",
-      "created_at": "2017-04-27T22:10:22.000+08:00",
-      "updated_at": "2017-04-27T22:10:22.000+08:00"
+      "created_at": "2017-05-10T14:47:53.000+08:00",
+      "updated_at": "2017-05-10T14:47:53.000+08:00",
+      "not_through_reason": ""
     }
   }
 }
@@ -547,24 +600,34 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 8,
+    "id": 12,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "status": "pending",
-    "not_through_reason": null,
     "deleted": true,
-    "country": null,
-    "resources": [],
+    "country": {
+      "id": 1,
+      "continent_id": 3,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "songs": [],
+    "images": [],
     "approve": {
       "approver_name": "",
       "approve_at": "",
       "status": "pending",
       "creator_name": "",
-      "created_at": "2017-04-27T22:11:07.000+08:00",
-      "updated_at": "2017-04-27T22:11:07.000+08:00"
+      "created_at": "2017-05-10T14:47:53.000+08:00",
+      "updated_at": "2017-05-10T14:47:53.000+08:00",
+      "not_through_reason": ""
     }
   }
 }
@@ -588,12 +651,14 @@ roles:[
 | description                      | 否    | 备注                           |
 | label_id                         | 否    | 唱片公司ID                       |
 | label_name                       | 否    | 唱片公司名称                       |
-| artist_resources_attributes_id          | 否    | 艺人资源id                         |
-| artist_resources_attributes_field       | 否    | 艺人个人资源区分                       |
-| artist_resources_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
-| resource_attributes_id          | 否    | 资源id                         |
-| resource_attributes_url         | 否    | 资源URL                        |
-| resource_attributes_native_name | 否    | 文件原始名称                       |
+| songs_attributes_id          | 否    | 艺人资源id                         |
+| songs_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| songs_attributes_url         | 否    | 资源URL                    |
+| songs_attributes_native_name | 否    | 文件原始名称                   |
+| images_attributes_id          | 否    | 艺人资源id                         |
+| images_attributes__destroy    | 否    | 是否删除艺人资源文件[true,false] |
+| images_attributes_url         | 否    | 资源URL                    |
+| images_attributes_native_name | 否    | 文件原始名称                   |
 
  注意⚠️ 更新artist_resources_attributes里面原有数据时候要加入艺人资源id ，如果不加艺人资源id 会创建新的数据,当不删除artist_resources_attributes里面数据时候_destroy 为false或不传此参数
 
@@ -605,20 +670,15 @@ roles:[
 	"artist":{
 		"name":"222222",
 		"country_id":"1",
-		"country_name":"吧333",
 		"gender_type":"female",
-		"description":"aaaaaaaaaaaaaa",
+		"description":"aaaaaaxxxxxxaaaaaaaa",
 		"label_id":"1",
 		"label_name":"dddaaa",
-		"artist_resources_attributes":[{
-			"id":1,
-			"field":223444332,
-      "_destroy":true,
-			"resource_attributes":{
-			"id":1,
-			"url":"344443343aaaaadd44444ssssaa,,.ssa",
-			"native_name":"144ddaalllllll"
-			}
+		"songs_attributes":[{
+			"id": 19,
+		   "_destroy": true,
+			"url":"1aaaaadd44444ssssaa,,.ssa.mp3",
+			"native_name":"1ddaalllllll"
 		}]
 	}
 
@@ -631,28 +691,33 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 7,
+    "id": 11,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
-    "description": "abbbvvvvvvvvaaaaaaaa",
-    "status": "pending",
-    "not_through_reason": null,
+    "description": "aaaaaaxxxxxxaaaaaaaa",
     "deleted": false,
-    "country": null,
-    "resources": [
+    "country": {
+      "id": 1,
+      "continent_id": 3,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "songs": [],
+    "images": [
       {
-        "id": 7,
-        "field": 223444332,
-        "resource": {
-          "id": 7,
-          "url": "344443343aaaaadd44444ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "144ddaalllllll",
-          "created_at": "2017-04-27T22:11:06.000+08:00",
-          "updated_at": "2017-04-27T22:14:25.000+08:00"
-        }
+        "id": 18,
+        "url": "1saa,,.ssa.avi",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:41:02.000+08:00",
+        "updated_at": "2017-05-10T14:41:02.000+08:00"
       }
     ],
     "approve": {
@@ -660,8 +725,9 @@ roles:[
       "approve_at": "",
       "status": "pending",
       "creator_name": "",
-      "created_at": "2017-04-27T22:11:06.000+08:00",
-      "updated_at": "2017-04-27T22:14:52.000+08:00"
+      "created_at": "2017-05-10T14:39:17.000+08:00",
+      "updated_at": "2017-05-10T14:49:39.000+08:00",
+      "not_through_reason": ""
     }
   }
 }
@@ -692,62 +758,42 @@ roles:[
 {
   "artists": [
     {
-      "id": 7,
-      "name": "222222",
-      "label_id": 1,
-      "label_name": "dddaaa",
-      "gender_type": "female",
-      "description": "abbbvvvvvvvvaaaaaaaa",
-      "status": "pending",
-      "not_through_reason": null,
-      "deleted": false,
-      "country": null,
-      "resources": [
-        {
-          "id": 7,
-          "field": 223444332,
-          "resource": {
-            "id": 7,
-            "url": "344443343aaaaadd44444ssssaa,,.ssa",
-            "deleted": false,
-            "native_name": "144ddaalllllll",
-            "created_at": "2017-04-27T22:11:06.000+08:00",
-            "updated_at": "2017-04-27T22:14:25.000+08:00"
-          }
-        }
-      ],
-      "approve": {
-        "approver_name": "",
-        "approve_at": "",
-        "status": "pending",
-        "creator_name": "",
-        "created_at": "2017-04-27T22:11:06.000+08:00",
-        "updated_at": "2017-04-27T22:14:52.000+08:00"
-      }
-    },
-    {
-      "id": 6,
+      "id": 15,
       "name": "222222",
       "label_id": 1,
       "label_name": "dddaaa",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
-      "status": "pending",
-      "not_through_reason": null,
       "deleted": false,
-      "country": null,
-      "resources": [
+      "country": {
+        "id": 1,
+        "continent_id": 3,
+        "name": "Cameroon",
+        "lower_name": "the republic of cameroon",
+        "country_code": "CMR",
+        "full_name": "the Republic of Cameroon",
+        "cname": "喀麦隆",
+        "full_cname": "喀麦隆共和国",
+        "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+      },
+      "songs": [
         {
-          "id": 6,
-          "field": 1,
-          "resource": {
-            "id": 6,
-            "url": "1aaaaadd44444ssssaa,,.ssa",
-            "deleted": false,
-            "native_name": "1ddaalllllll",
-            "created_at": "2017-04-27T22:10:22.000+08:00",
-            "updated_at": "2017-04-27T22:10:22.000+08:00"
-          }
+          "id": 26,
+          "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:06.000+08:00",
+          "updated_at": "2017-05-10T14:54:06.000+08:00"
+        }
+      ],
+      "images": [
+        {
+          "id": 27,
+          "url": "1saa,,.ssa.avi",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:06.000+08:00",
+          "updated_at": "2017-05-10T14:54:06.000+08:00"
         }
       ],
       "approve": {
@@ -755,14 +801,64 @@ roles:[
         "approve_at": "",
         "status": "pending",
         "creator_name": "",
-        "created_at": "2017-04-27T22:10:22.000+08:00",
-        "updated_at": "2017-04-27T22:10:22.000+08:00"
+        "created_at": "2017-05-10T14:54:06.000+08:00",
+        "updated_at": "2017-05-10T14:54:06.000+08:00",
+        "not_through_reason": ""
+      }
+    },
+    {
+      "id": 14,
+      "name": "222222",
+      "label_id": 1,
+      "label_name": "dddaaa",
+      "gender_type": "female",
+      "description": "aaaaaaaaaaaaaa",
+      "deleted": false,
+      "country": {
+        "id": 1,
+        "continent_id": 3,
+        "name": "Cameroon",
+        "lower_name": "the republic of cameroon",
+        "country_code": "CMR",
+        "full_name": "the Republic of Cameroon",
+        "cname": "喀麦隆",
+        "full_cname": "喀麦隆共和国",
+        "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+      },
+      "songs": [
+        {
+          "id": 24,
+          "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:05.000+08:00",
+          "updated_at": "2017-05-10T14:54:05.000+08:00"
+        }
+      ],
+      "images": [
+        {
+          "id": 25,
+          "url": "1saa,,.ssa.avi",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:05.000+08:00",
+          "updated_at": "2017-05-10T14:54:05.000+08:00"
+        }
+      ],
+      "approve": {
+        "approver_name": "",
+        "approve_at": "",
+        "status": "pending",
+        "creator_name": "",
+        "created_at": "2017-05-10T14:54:05.000+08:00",
+        "updated_at": "2017-05-10T14:54:05.000+08:00",
+        "not_through_reason": ""
       }
     }
   ],
   "meta": {
     "page": 1,
-    "total": 2
+    "total": 3
   }
 }
 ```
@@ -789,28 +885,42 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 6,
+    "id": 15,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
-    "status": "pending",
-    "not_through_reason": null,
     "deleted": false,
-    "country": null,
-    "resources": [
+    "country": {
+      "id": 1,
+      "continent_id": 3,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "songs": [
       {
-        "id": 6,
-        "field": 1,
-        "resource": {
-          "id": 6,
-          "url": "1aaaaadd44444ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "1ddaalllllll",
-          "created_at": "2017-04-27T22:10:22.000+08:00",
-          "updated_at": "2017-04-27T22:10:22.000+08:00"
-        }
+        "id": 26,
+        "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:54:06.000+08:00",
+        "updated_at": "2017-05-10T14:54:06.000+08:00"
+      }
+    ],
+    "images": [
+      {
+        "id": 27,
+        "url": "1saa,,.ssa.avi",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:54:06.000+08:00",
+        "updated_at": "2017-05-10T14:54:06.000+08:00"
       }
     ],
     "approve": {
@@ -818,8 +928,9 @@ roles:[
       "approve_at": "",
       "status": "pending",
       "creator_name": "",
-      "created_at": "2017-04-27T22:10:22.000+08:00",
-      "updated_at": "2017-04-27T22:10:22.000+08:00"
+      "created_at": "2017-05-10T14:54:06.000+08:00",
+      "updated_at": "2017-05-10T14:54:06.000+08:00",
+      "not_through_reason": ""
     }
   }
 }
@@ -855,71 +966,101 @@ roles:[
 {
   "artists": [
     {
-      "id": 6,
+      "id": 13,
       "name": "222222",
       "label_id": 1,
       "label_name": "dddaaa",
       "gender_type": "female",
       "description": "aaaaaaaaaaaaaa",
-      "status": "accepted",
-      "not_through_reason": null,
       "deleted": false,
-      "country": null,
-      "resources": [
+      "country": {
+        "id": 1,
+        "continent_id": 3,
+        "name": "Cameroon",
+        "lower_name": "the republic of cameroon",
+        "country_code": "CMR",
+        "full_name": "the Republic of Cameroon",
+        "cname": "喀麦隆",
+        "full_cname": "喀麦隆共和国",
+        "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+      },
+      "songs": [
         {
-          "id": 6,
-          "field": 1,
-          "resource": {
-            "id": 6,
-            "url": "1aaaaadd44444ssssaa,,.ssa",
-            "deleted": false,
-            "native_name": "1ddaalllllll",
-            "created_at": "2017-04-27T22:10:22.000+08:00",
-            "updated_at": "2017-04-27T22:10:22.000+08:00"
-          }
+          "id": 22,
+          "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:04.000+08:00",
+          "updated_at": "2017-05-10T14:54:04.000+08:00"
+        }
+      ],
+      "images": [
+        {
+          "id": 23,
+          "url": "1saa,,.ssa.avi",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:05.000+08:00",
+          "updated_at": "2017-05-10T14:54:05.000+08:00"
         }
       ],
       "approve": {
         "approver_name": "",
-        "approve_at": "2017-04-27T22:19:15.000+08:00",
+        "approve_at": "2017-05-10T14:58:46.000+08:00",
         "status": "accepted",
         "creator_name": "",
-        "created_at": "2017-04-27T22:10:22.000+08:00",
-        "updated_at": "2017-04-27T22:19:15.000+08:00"
+        "created_at": "2017-05-10T14:54:04.000+08:00",
+        "updated_at": "2017-05-10T14:58:46.000+08:00",
+        "not_through_reason": ""
       }
     },
     {
-      "id": 7,
+      "id": 14,
       "name": "222222",
       "label_id": 1,
       "label_name": "dddaaa",
       "gender_type": "female",
-      "description": "abbbvvvvvvvvaaaaaaaa",
-      "status": "accepted",
-      "not_through_reason": null,
+      "description": "aaaaaaaaaaaaaa",
       "deleted": false,
-      "country": null,
-      "resources": [
+      "country": {
+        "id": 1,
+        "continent_id": 3,
+        "name": "Cameroon",
+        "lower_name": "the republic of cameroon",
+        "country_code": "CMR",
+        "full_name": "the Republic of Cameroon",
+        "cname": "喀麦隆",
+        "full_cname": "喀麦隆共和国",
+        "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+      },
+      "songs": [
         {
-          "id": 7,
-          "field": 223444332,
-          "resource": {
-            "id": 7,
-            "url": "344443343aaaaadd44444ssssaa,,.ssa",
-            "deleted": false,
-            "native_name": "144ddaalllllll",
-            "created_at": "2017-04-27T22:11:06.000+08:00",
-            "updated_at": "2017-04-27T22:14:25.000+08:00"
-          }
+          "id": 24,
+          "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:05.000+08:00",
+          "updated_at": "2017-05-10T14:54:05.000+08:00"
+        }
+      ],
+      "images": [
+        {
+          "id": 25,
+          "url": "1saa,,.ssa.avi",
+          "deleted": false,
+          "native_name": "1ddaalllllll",
+          "created_at": "2017-05-10T14:54:05.000+08:00",
+          "updated_at": "2017-05-10T14:54:05.000+08:00"
         }
       ],
       "approve": {
         "approver_name": "",
-        "approve_at": "2017-04-27T22:19:15.000+08:00",
+        "approve_at": "2017-05-10T14:58:46.000+08:00",
         "status": "accepted",
         "creator_name": "",
-        "created_at": "2017-04-27T22:11:06.000+08:00",
-        "updated_at": "2017-04-27T22:19:15.000+08:00"
+        "created_at": "2017-05-10T14:54:05.000+08:00",
+        "updated_at": "2017-05-10T14:58:46.000+08:00",
+        "not_through_reason": ""
       }
     }
   ]
@@ -960,37 +1101,52 @@ roles:[
 ```json
 {
   "artist": {
-    "id": 7,
+    "id": 15,
     "name": "222222",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
-    "description": "abbbvvvvvvvvaaaaaaaa",
-    "status": "rejected",
-    "not_through_reason": "222222",
+    "description": "aaaaaaaaaaaaaa",
     "deleted": false,
-    "country": null,
-    "resources": [
+    "country": {
+      "id": 1,
+      "continent_id": 3,
+      "name": "Cameroon",
+      "lower_name": "the republic of cameroon",
+      "country_code": "CMR",
+      "full_name": "the Republic of Cameroon",
+      "cname": "喀麦隆",
+      "full_cname": "喀麦隆共和国",
+      "remark": "喀麦隆共和国（法语：République du Cameroun）通称喀麦隆，是位于非洲中西部的单一制共和国，西方与尼日利亚接壤，东北与东边分别和乍得与中非相靠，南方则与赤道几内亚、加蓬及刚果共和国毗邻。"
+    },
+    "songs": [
       {
-        "id": 7,
-        "field": 223444332,
-        "resource": {
-          "id": 7,
-          "url": "344443343aaaaadd44444ssssaa,,.ssa",
-          "deleted": false,
-          "native_name": "144ddaalllllll",
-          "created_at": "2017-04-27T22:11:06.000+08:00",
-          "updated_at": "2017-04-27T22:14:25.000+08:00"
-        }
+        "id": 26,
+        "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:54:06.000+08:00",
+        "updated_at": "2017-05-10T14:54:06.000+08:00"
+      }
+    ],
+    "images": [
+      {
+        "id": 27,
+        "url": "1saa,,.ssa.avi",
+        "deleted": false,
+        "native_name": "1ddaalllllll",
+        "created_at": "2017-05-10T14:54:06.000+08:00",
+        "updated_at": "2017-05-10T14:54:06.000+08:00"
       }
     ],
     "approve": {
       "approver_name": "",
-      "approve_at": "2017-04-27T22:21:11.000+08:00",
-      "status": "rejected",
+      "approve_at": "2017-05-10T15:01:47.000+08:00",
+      "status": "accepted",
       "creator_name": "",
-      "created_at": "2017-04-27T22:11:06.000+08:00",
-      "updated_at": "2017-04-27T22:21:11.000+08:00"
+      "created_at": "2017-05-10T14:54:06.000+08:00",
+      "updated_at": "2017-05-10T15:01:47.000+08:00",
+      "not_through_reason": ""
     }
   }
 }
@@ -998,276 +1154,6 @@ roles:[
 
 
 
-
-
-# Part6 版权方管理
-
-## 6.1、版权方列表接口
-
-### HTTP请求
-
-`GET /api/v1/providers`
-
-### Request 请求参数
-
-
-```shell
-  curl -i -X GET   --header "Authorization: Token token=O8ATFEm4KxFJmT0jEg5FLYA==" http://localhost:3000/api/v1/providers
-```
-### Response 响应
-
-> 响应数据:
-
-```json
-{
-  "providers": [
-    {
-      "id": 2,
-      "name": "test",
-      "property": "company",
-      "contact": "sdfdfd",
-      "tel": null,
-      "address": "fdsfsdfsdf",
-      "email": null,
-      "bank_name": null,
-      "account_no": null,
-      "user_name": null,
-      "cycle": null,
-      "start_time": null,
-      "status": "todo:待确定,agree:通过,disagree:未通过"
-    }
-  ],
-  "meta": {
-    "page": 1,
-    "total": 1,
-    "size": 10
-  }
-}
-```
-
-## 6.2、新建版权方
-
-### HTTP请求
-
-`POST  /api/v1/providers`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| name   | 是    | name  |
-| property  | 是  | 属性 个人:personal公司:company|
-| contact | 否    | 联系人   |
-| tel | 否    | 电话   |
-| address | 否    | 联系地址   |
-| email | 否    | 邮箱   |
-| bank_name | 否    | 开户行   |
-| account_no | 否    | 结算账户   |
-| user_name | 否    | 账户名   |
-| cycle | 否    | 结算周期   |
-| start_time | 否    | 结算开始时间   |
-| status | 否    | todo:待确定,agree:通过,disagree:未通过   |
-
-### Request 请求
-
-```json
-{
-  "provider":
-  {   
-    "name": "eeeee",
-    "property": "company",
-    "email": "fdsfdsf",
-    "address": "fdfdfd",
-    "tel" : "323233232",
-    "contact": "ddsdd",
-    "status" : "agree",
-    "cycle": "一周",
-    "start_time": "2017-04-08",
-    "bank_name": "开户行",
-    "account_no": "结算账户",
-    "user_name": "账户名"
-  }
-}
-
-```
-
-### Response 响应
-
-> 响应数据:
-
-```json
-{
-  "provider":
-  {   
-    "name": "eeeee",
-    "property": "company",
-    "email": "fdsfdsf",
-    "address": "fdfdfd",
-    "tel" : "323233232",
-    "contact": "ddsdd",
-    "status" : "agree"
-  }
-}
-```
-
-
-## 6.3、修改版权方
-
-### HTTP请求
-
-`PUT  /api/v1/providers/1`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| name   | 是    | name  |
-| property  | 是  | 属性 个人:personal公司:company|
-| contact | 否    | 联系人   |
-| tel | 否    | 电话   |
-| address | 否    | 联系地址   |
-| email | 否    | 邮箱   |
-| bank_name | 否    | 开户行   |
-| account_no | 否    | 结算账户   |
-| user_name | 否    | 账户名   |
-| cycle | 否    | 结算周期   |
-| start_time | 否    | 结算开始时间   |
-
-### Request 请求
-
-```json
-{
-  "provider":
-  {   
-    "name": "eeeee",
-    "property": "company",
-    "email": "fdsfdsf",
-    "address": "fdfdfd",
-    "tel" : "323233232",
-    "contact": "ddsdd",
-    "status" : "agree",
-    "cycle": "一周",
-    "start_time": "2017-04-08",
-    "bank_name": "开户行",
-    "account_no": "结算账户",
-    "user_name": "账户名"
-  }
-}
-
-```
-
-### Response 响应
-
-> 响应数据:
-
-```json
-{
-  "provider":
-  {   
-    "name": "eeeee",
-    "property": "company",
-    "email": "fdsfdsf",
-    "address": "fdfdfd",
-    "tel" : '323233232'
-    "contact": "ddsdd"
-    "status" : "agree"
-  }
-}
-```
-
-
-
-## 6.4、版权方详情
-
-### HTTP请求
-
-`GET  /api/v1/providers/1`
-
-### Response 响应
-
-> 响应数据:
-
-```json
-{
-  "provider":
-  {   
-    "name": "eeeee",
-    "property": "company",
-    "email": "fdsfdsf",
-    "address": "fdfdfd",
-    "tel" : "323233232",
-    "contact": "ddsdd",
-    "status" : "agree"
-  }
-}
-```
-
-
-## 6.5、删除版权方
-
-### HTTP请求
-
-`DELETE  /api/v1/providers/1`
-
-### Response 响应
-
-> 响应数据:
- NULL
-
-
-## 6.6、批量通过版权方
-
-### HTTP请求
-
-`POST  /api/v1/providers/verify`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| provider_ids   | 是    | 版权方ids  |
-
-
-### Request 请求
-
-```json
-{
- "provider_ids": [1,2]
-}
-
-```
-
-### Response 响应
-
-> 响应数据:
-null
-
-## 6.7、批量通过版权方
-
-### HTTP请求
-
-`POST  /api/v1/providers/verify`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| provider_ids   | 是    | 版权方ids  |
-| reason  |  是    |  未通过原因 |
-
-### Request 请求
-
-```json
-{
- "provider_ids": [1,2],
- "reason": "dddd"
-}
-
-```
-### Response 响应
-
-> 响应数据:
-null
 
 
 # Part7 合约管理
@@ -1338,10 +1224,10 @@ null
          "start_time":"2016-11-17","end_time":"2017-12-17",
          "allow_overdue":false,"pay_type":"default",
          "pay_amount":10,"desc":"dfdfdfsss",
-         "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+         "contract_resources_attributes": [{"url":"33333","file_name":"eeeeee"}],
          "authorizes_attributes":[{"currency_id":1,"account_id":1,
          "start_time":"2016-11-17","end_time":"2016-12-17",
-          "contract_resources_attributes":[{"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+          "contract_resources_attributes":[{"url":"33333","file_name":"eeeeee"}],
           "authorized_businesses_attributes":[{"authorized_range_id":1,"divided_point":50,
           "authorized_area_ids":[124]}]
           }]
@@ -1375,10 +1261,10 @@ null
      "start_time":"2016-11-17","end_time":"2017-12-17",
      "allow_overdue":false,"pay_type":"default",
      "pay_amount":10,"desc":"dfdfdfsss",
-     "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+     "contract_resources_attributes":[{"id":1,"url":"33333","file_name":"eeeeee"}],
      "authorizes_attributes":[{"id":2,"currency_id":1,"account_id":1,
      "start_time":"2016-11-17","end_time":"2016-12-17",
-      "contract_resources_attributes":[{"id":2,"field":1,"resource_attributes":{"url":"33333","native_name":"eeeeee"}}],
+      "contract_resources_attributes":[{"id":1,"url":"33333","file_name":"eeeeee"}],
       "authorized_businesses_attributes":[{"id":2,"authorized_range_id":1,"divided_point":50,
       "authorized_area_ids":[124]}]
       }]
@@ -1416,9 +1302,8 @@ null
                 "id": 2,
                 "target_id": 18,
                 "target_type": "Cp::Contract",
-                "resource_id": 20,
-                "field": 1,
-                "resource_url": "33333"
+                "file_name": "dfdf",
+                "url": "33333"
               }
             ],
           "authorizes":[{"id":29,"currency_id":1,"account_id":1,
@@ -1428,9 +1313,8 @@ null
                     "id": 1,
                     "target_id": 18,
                     "target_type": "Cp::Authorize",
-                    "resource_id": 20,
-                    "field": 1,
-                    "resource_url": "33333"
+                    "file_name": "dfdfd",
+                    "url": "33333"
                   }
                 ],
               "authorized_businesses":[{"id":93,"business_id":1,
@@ -1521,8 +1405,8 @@ null
 | 参数名                              | 是否必需 | 描述                       |
 | -------------------------------- | ---- | ------------------------ |
 | exchange_rate                           | 是    | 标志是货币                    |
-| currency                             | 是    | 货币                     |
-| settlement_currency                       | 是    | 结算货币                    |
+| currency_id                             | 是    | 货币_id                     |
+| settlement_currency_id                       | 是    | 结算货币_id                    |
 | exchange_ratio                     | 是   |      汇率                |
 | status                      | 是   | 状态 [:enabled, :disabled] |
 | operator                      | 是   | 操作人                       |
@@ -1532,8 +1416,8 @@ null
 ```json
 {
 	"exchange_rate":{
-		"currency":"韩币",
-		"settlement_currency":"人民币",
+		"currency_id":3,
+		"settlement_currency_id":1,
 		"exchange_ratio":"1:12",
 		"status":"enabled",
 		"operator":"aasd"
@@ -1548,15 +1432,22 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币",
-  "settlement_currency": "人民币",
-  "exchange_ratio": "1:12",
-  "status": "enabled",
-  "deleted": false,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:13:45.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd",
+    "created_at": "2017-05-11T17:08:08.000+08:00",
+    "updated_at": "2017-05-11T17:11:52.000+08:00"
+  }
 }
 ```
 ## 8.2. 删除货币接口
@@ -1580,15 +1471,20 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币",
-  "settlement_currency": "人民币",
-  "exchange_ratio": "1:12",
-  "status": "enabled",
-  "deleted": true,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:13:45.000+08:00"
+  "exchange_rate": {
+    "id": 8,
+    "currency": {
+      "id": 3,
+      "name": "美元"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```
 
@@ -1603,8 +1499,8 @@ null
 | 参数名                              | 是否必需 | 描述                       |
 | -------------------------------- | ---- | ------------------------ |
 | exchange_rate                           | 是    | 标志是货币                    |
-| currency                             | 否    | 货币                     |
-| settlement_currency                       | 否    | 结算货币                    |
+| currency_id                             | 否    | 货币                     |
+| settlement_currency_id                       | 否    | 结算货币                    |
 | exchange_ratio                     | 否   |      汇率                |
 | status                      | 否   | 状态 [:enabled, :disabled] |
 | operator                      | 否   | 操作人                       |
@@ -1614,10 +1510,10 @@ null
 ```json
 {
 	"exchange_rate":{
-		"currency":"韩币1",
-		"settlement_currency":"人民dddd币1",
+		"currency_id":2,
+		"settlement_currency":1,
 		"exchange_ratio":"1:12",
-		"status":"disabled",
+		"status":"enabled",
 		"operator":"aasd"
 	}
 
@@ -1630,15 +1526,20 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币1",
-  "settlement_currency": "人民dddd币1",
-  "exchange_ratio": "1:12",
-  "status": "disabled",
-  "operator": "aasd",
-  "deleted": false,
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T12:28:15.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```
 ## 8.4. 查看货币列表接口
@@ -1658,19 +1559,56 @@ null
 > 响应数据:
 
 ```json
-[
-  {
-    "id": 2,
-    "currency": "韩币11111111",
-    "settlement_currency": "人民dddd币1",
-    "exchange_ratio": "1:12",
-    "status": "disabled",
-    "deleted": false,
-    "operator": "aasd",
-    "created_at": "2017-04-20T12:13:45.000+08:00",
-    "updated_at": "2017-04-20T14:25:41.000+08:00"
+{
+  "exchange_rates": [
+    {
+      "id": 7,
+      "currency": {
+        "id": 2,
+        "name": "英镑"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    },
+    {
+      "id": 6,
+      "currency": {
+        "id": 3,
+        "name": "美元"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    },
+    {
+      "id": 5,
+      "currency": {
+        "id": 2,
+        "name": "英镑"
+      },
+      "settlement_currency": {
+        "id": 1,
+        "name": "人民币"
+      },
+      "exchange_ratio": "1:12",
+      "status": "enabled",
+      "operator": "aasd"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "total": 3
   }
-]
+}
 ```
 ## 8.5. 查看货币详情接口
 
@@ -1692,14 +1630,19 @@ null
 
 ```json
 {
-  "id": 2,
-  "currency": "韩币11111111",
-  "settlement_currency": "人民dddd币1",
-  "exchange_ratio": "1:12",
-  "status": "disabled",
-  "deleted": false,
-  "operator": "aasd",
-  "created_at": "2017-04-20T12:13:45.000+08:00",
-  "updated_at": "2017-04-20T14:25:41.000+08:00"
+  "exchange_rate": {
+    "id": 7,
+    "currency": {
+      "id": 2,
+      "name": "英镑"
+    },
+    "settlement_currency": {
+      "id": 1,
+      "name": "人民币"
+    },
+    "exchange_ratio": "1:12",
+    "status": "enabled",
+    "operator": "aasd"
+  }
 }
 ```

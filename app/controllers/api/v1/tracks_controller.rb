@@ -3,14 +3,13 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = Track.recent.page(page).per(size)
-
-    render json: @tracks, meta: page_info(@tracks)
+    @tracks = Track.includes(:albums,:artists,:audits,:contract).recent.page(page).per(size)
+    render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
   def show
     @track = Track.find params[:id]
-    render json: @track
+    render json: {track: @track.as_json(Track.as_show_json_options)}
   end
 
   def create
@@ -58,7 +57,7 @@ class Api::V1::TracksController < Api::V1::BaseController
       album_ids: [],
       accompany_artists_attributes: [:id,:name,:_destroy],
       track_composers_attributes: [:id,:name,:op_type,:point,:_destroy],
-      track_resources_attributes: [:id, :field, :_destroy, resource_attributes: [:id, :url, :native_name]]
+      track_resources_attributes: [:id,:file_type, :file_name,:url, :_destroy]
      )
   end
 

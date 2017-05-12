@@ -18,7 +18,7 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   def update
     @provider = get_provider
     if @provider.update(provider_params)
-      render json: @provider
+      render json: {provider: @provider}
     else
       render json: @provider.errors, status: :unprocessable_entity
     end
@@ -27,29 +27,30 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   def create
     @provider = Provider.new(provider_params)
     if @provider.save
-      render json: @provider
+      render json: {provider: @provider}
     else
       render json: @provider.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
-    get_provider.destroy
+    @provider = get_provider
+    @provider.destroy
     head :ok
   end
 
   def verify
-      @provider =  Provider.find(params[:id])
-      if @provider.accept! 
-          head :ok
-      end
+    @providers =  Provider.where(id: params[:provider_ids])
+    if @providers.update_all(status: :accept)
+        head :ok
+    end
   end
 
   def unverify
-      @providers =  Provider.where(id: params[:provider_ids])
-      if @providers.update_all(status: :reject,reason: params[:reason])
-          head :ok
-      end
+    @providers =  Provider.where(id: params[:provider_ids])
+    if @providers.update_all(status: :reject,reason: params[:reason])
+        head :ok
+    end
   end
 
   private

@@ -7,18 +7,9 @@ class ArtistSerializer < ActiveModel::Serializer
              :description,
              :deleted,
              :country,
-             :resources,
+             :songs,
+             :images,
              :approve
-
-  def resources
-    object.artist_resources.map do |resource|
-      Hash[{
-        id: resource.id,
-        field: resource.field,
-        resource: resource.resource
-      }]
-    end
-  end
 
   def approve
     @createAudit = object.audits.select { |audit|  audit.action == 'create'}.first
