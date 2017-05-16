@@ -3,7 +3,8 @@ module Api
     class ConstantsController < BaseController
 
       def genres
-        render json: CONSTANTS['genres']
+        @genres = Genre.all
+        render json: {genres: @genres}
       end
 
       def album_types
@@ -12,6 +13,11 @@ module Api
 
       def artist_types
         render json: CONSTANTS['artist_types']
+      end
+
+      def languages
+        @languages = Language.all
+        render json: {languages: @languages}
       end
 
     end

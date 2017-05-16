@@ -37,6 +37,7 @@ default: &default
   artist_types:
     individual:         个人
     band:               乐队
+    
 
 
 development:

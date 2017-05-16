@@ -70,9 +70,7 @@ Rails.application.routes.draw do
           resources :revenues
           resources :constants, only: [] do
             collection do
-              get :genres
-              get :album_types
-              get :artist_types
+              get :genres,:languages,:album_types,:artist_types
             end
           end# constants
 

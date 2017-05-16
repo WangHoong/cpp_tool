@@ -11,6 +11,7 @@ class Api::V1::AuthorizedRangesController < Api::V1::BaseController
      #repository.save(revenue)
     #  p repository.find(1).attributes['id']
 
+     #RevenueWorker.perform_async(1)
      render json: {ranges: @ranges}
   end
 

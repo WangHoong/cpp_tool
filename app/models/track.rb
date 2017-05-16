@@ -4,6 +4,7 @@ class Track < ApplicationRecord
   has_and_belongs_to_many :artists
   belongs_to :language
   belongs_to :provider
+  belongs_to :genre
   belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
   has_many :accompany_artists, as: :target, :dependent => :destroy
