@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.text     "remark",                limit: 65535,                              comment: "备注"
     t.integer  "status",                              default: 0,                  comment: "专辑状态 0: 待审核，1: 已审核"
     t.boolean  "deleted",                             default: false,              comment: "true删除,false未删除"
+    t.string   "not_through_reason",                                               comment: "未通过原因"
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.index ["name"], name: "index_albums_on_name", using: :btree

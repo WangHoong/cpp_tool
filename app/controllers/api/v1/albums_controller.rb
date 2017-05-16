@@ -24,7 +24,6 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Post /albums
   def create
-    puts album_params.to_h
     @album = Album.new(album_params)
     if @album.save
       render json: @album
@@ -45,9 +44,25 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Post /albums/approve
   def approve
-    @albums = get_albums_by_ids
-    @albums.update_all(status: :accept)
-    render json: @albums
+    def approve
+      case !!params[:id]
+      when true
+        @album = get_album
+        begin
+            Album.approve(album_params, @album)
+            render json: @album
+        rescue  Workflow::NoTransitionAllowed => e
+            render json: {status: 403, error: e}, status: :forbidden
+        end
+      else
+        @albums = get_albums_by_ids
+        if Album.batchApprove(@albums)
+          render json: @albums
+        else
+          render json: @albums.errors, status: :unprocessable_entity
+        end
+      end
+    end
   end
 
   private
@@ -69,6 +84,8 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :format,
             :label,
             :upc,
+            :not_through_reason,
+            :status,
             :remark,
             :release_version,
             primary_artist_ids: [],
