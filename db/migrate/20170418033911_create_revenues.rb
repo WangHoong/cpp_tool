@@ -1,6 +1,6 @@
-class CreateReports < ActiveRecord::Migration[5.0]
+class CreateRevenues < ActiveRecord::Migration[5.0]
   def change
-    create_table :reports do |t|
+    create_table :revenues do |t|
       t.integer  "dsp_id"
       t.integer  "currency_id"
       t.date     "start_time"

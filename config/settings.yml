@@ -6,10 +6,9 @@ default: &default
   analysis_info_type: 'analysis_info'
   distribution_type: 'distributions'
   remote_servers: ['127.0.0.1','54.223.86.5','54.223.222.214']
-  access_token: 'izrFiion7xEe2ccTj0v0mOcuNoT3FvpPqI31WLSCEBLvuz4xoju5MaoytEcg6Md773w'
   upload_category:
     cp_settlement: 'settlement'
-    sp_reports: 'reports'
+    sp_revenues: 'revenues'
 
 development:
   <<: *default
@@ -20,10 +19,3 @@ production:
 
 test:
   <<: *default
-
-ci:
-  <<: *default
-
-staging:
-  <<: *default
-  donkey_index: 'donkey_staging'

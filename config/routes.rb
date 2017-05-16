@@ -12,7 +12,7 @@ Rails.application.routes.draw do
             resources :settlements
           end
 
-          resources :reports do
+          resources :revenues do
             member do
               get :analyses_file
               put :processed
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
           resources :countries, only: [:index]
           resources :currencies, only: [:index]
           resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates
-          resources :reports
+          resources :revenues
           resources :constants, only: [] do
             collection do
               get :genres

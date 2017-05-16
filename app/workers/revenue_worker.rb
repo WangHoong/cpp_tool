@@ -1,11 +1,11 @@
-class ReportWorker
+class RevenueWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :report, retry: true
+  sidekiq_options queue: :revenue, retry: true
 
-  def perform(report_id)
-    report = Report.find(report_id)
-    response = report.analyses_data(:succeed)
-    time = report.analyses_date(:succeed)
+  def perform(revenue_id)
+    revenue = Revenue.find(revenue_id)
+    response = revenue.analyses_data(:succeed)
+    time = revenue.analyses_date(:succeed)
 
     bucket = {}
     start_date = Time.at(time['min_date']['value'] / 1000)
@@ -66,7 +66,7 @@ class ReportWorker
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['ReportStart', 'ReportEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
+        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
 
         value.each do |row|
           sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
@@ -127,8 +127,8 @@ class ReportWorker
 
     date = row['note']['start_date'].try(:to_datetime)
 
-    dataset['ReportStart'] = start_date
-    dataset['ReportEnd'] = end_date
+    dataset['RevenueStart'] = start_date
+    dataset['RevenueEnd'] = end_date
     dataset['Year'] = date && date.strftime('%Y')
     dataset['Month'] = date && date.strftime('%m')
     dataset['Day'] = date && date.strftime('%d')

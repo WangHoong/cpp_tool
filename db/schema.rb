@@ -227,6 +227,16 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.integer "optype", default: 0, comment: "0:sp,1:cp"
   end
 
+  create_table "donkey_jobs", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT" do |t|
+    t.integer  "task",                                 null: false
+    t.integer  "target_id",                            null: false
+    t.string   "target_type",             default: "", null: false
+    t.integer  "status",                  default: 0
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at"
+    t.string   "note",        limit: 200
+  end
+
   create_table "dsps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name",          limit: 100
     t.integer  "department_id"
@@ -307,8 +317,17 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "report_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "report_id"
+  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "url",                                      comment: "资源url"
+    t.boolean  "deleted",     default: false,              comment: "true删除,false未删除"
+    t.string   "native_name",                              comment: "资源原始名称"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
+  end
+
+  create_table "revenue_files", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "revenue_id"
     t.string   "file_name"
     t.string   "url"
     t.datetime "processed_at"
@@ -316,8 +335,9 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.datetime "updated_at",   null: false
   end
 
-  create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "revenues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dsp_id"
+    t.integer  "user_id"
     t.integer  "currency_id"
     t.date     "start_time"
     t.date     "end_time"
@@ -329,15 +349,6 @@ ActiveRecord::Schema.define(version: 20170509031253) do
     t.datetime "created_at",                                              null: false
     t.datetime "updated_at",                                              null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
-  end
-
-  create_table "resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "url",                                      comment: "资源url"
-    t.boolean  "deleted",     default: false,              comment: "true删除,false未删除"
-    t.string   "native_name",                              comment: "资源原始名称"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.index ["deleted"], name: "index_resources_on_deleted", using: :btree
   end
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

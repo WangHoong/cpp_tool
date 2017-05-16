@@ -1,4 +1,4 @@
-class ReportAnalysis
+class RevenueAnalysis
   attr_reader :attributes
 
   def initialize(attributes = {})

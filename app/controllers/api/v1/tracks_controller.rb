@@ -16,7 +16,7 @@ class Api::V1::TracksController < Api::V1::BaseController
     @track = Track.new track_params
 
     if @track.save!
-      render json: @track
+      render json: {track: @track}
     else
       render json: @track.errors
     end
@@ -25,7 +25,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def update
     @track = Track.find params[:id]
     if @track.update_attributes(track_params)
-      render json: @track
+      render json: {track: @track}
     else
       render json: @track.errors
     end

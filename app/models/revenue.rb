@@ -1,17 +1,17 @@
-class Report < ApplicationRecord
+class Revenue < ApplicationRecord
   enum status: [:processing, :processed, :confirmed, :accounted, :done]
 
   belongs_to :currency
   belongs_to :dsp
-  has_many :report_resources, dependent: :destroy
-	accepts_nested_attributes_for :report_resources, :allow_destroy => true
+  has_many :revenue_files, dependent: :destroy
+	accepts_nested_attributes_for :revenue_files, :allow_destroy => true
   validates :dsp_id, presence: true
-
+  before_save :update_files
   scope :date_between, lambda {|start_time, end_time| where("start_time >= ? AND end_time <= ?", start_time, end_time )}
 
   # state machines
   state_machine :status, initial: :processing do
-    after_transition on: :accounted!, do: :split_report
+    after_transition on: :accounted!, do: :split_revenue
     event :processed! do
       transition :processing => :processed
     end
@@ -34,12 +34,16 @@ class Report < ApplicationRecord
 
   end
 
+  attr_writer :file_urls
+	def file_urls
+		@file_urls ||= revenue_files.map(&:url)
+	end
 
   def analyses_data(type)
     fetch_all_analyses(type)
   end
 
-  def analyses_report(type)
+  def analyses_revenue(type)
     response = es_request(type, nil, {
       aggs: {
         total_price: {
@@ -83,8 +87,8 @@ class Report < ApplicationRecord
     else
       {
         errors: file_errors,
-        success: { 'total': success_count, 'report': analyses_report(:success) },
-        mismatched: { 'total': mismatched_count, 'report': analyses_report(:mismatched) }
+        success: { 'total': success_count, 'revenue': analyses_revenue(:success) },
+        mismatched: { 'total': mismatched_count, 'revenue': analyses_revenue(:mismatched) }
       }
     end
   end
@@ -106,10 +110,19 @@ class Report < ApplicationRecord
     end
   end
 
-  def split_report
-    ReportWorker.perform_async(@report.id)
+  def split_revenue
+    RevenueWorker.perform_async(@revenue.id)
   end
 
+  def update_files
+		if self.revenue_files.map(&:url) != file_urls
+			self.revenue_files.destroy_all
+			url_params = file_urls.map do |url|
+				{url: url}
+			end
+			self.revenue_files.new(url_params)
+		end
+	end
 
   def fetch_all_analyses(type)
     res = []
@@ -121,6 +134,7 @@ class Report < ApplicationRecord
 
     begin
       response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
+
       res += response['hits']['hits'].map { |r| r['_source'] }
     end while response['hits']['hits'].present?
 
@@ -143,7 +157,7 @@ class Report < ApplicationRecord
       es_type = SETTINGS['analysis_error_type']
       query.merge!({
         category: 3,
-        'report_file_id': files.last.id
+        'revenue_file_id': revenue_files.last.id
       })
     when :info
       es_type = SETTINGS['analysis_info_type']
@@ -157,7 +171,7 @@ class Report < ApplicationRecord
     end
 
     terms = [
-      {term: { 'note.report_id': self.id }},
+      {term: { 'note.revenue_id': self.id }},
       {term: { '_type': es_type }}
     ]
 
@@ -183,7 +197,7 @@ class Report < ApplicationRecord
  	class_attribute :as_list_json_options
   self.as_list_json_options={
   			only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
-        include: [:report_resources]
+        include: [:revenue_files]
   }
 
 
