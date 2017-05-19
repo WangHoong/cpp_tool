@@ -1,4 +1,4 @@
-class Cp::AuthorizesController < ApplicationController
+class Api::V1::Cp::AuthorizesController < ApplicationController
   before_action :get_contract
 
   def index
@@ -35,5 +35,5 @@ class Cp::AuthorizesController < ApplicationController
     @contract.authorizes.find(params[:id])
   end
 
-   
+
 end

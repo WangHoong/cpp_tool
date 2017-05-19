@@ -74,7 +74,7 @@ Rails.application.routes.draw do
             end
           end# constants
 
-
+     get "inbox_messages/unread", to: "home#inbox_messages"
     end #api
   end #v1
 end

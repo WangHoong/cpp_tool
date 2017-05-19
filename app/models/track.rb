@@ -28,18 +28,22 @@ class Track < ApplicationRecord
     contract.try(:contract_no)
   end
 
+  def genre_name
+     genre.try(:name)
+  end
+
   class_attribute :as_list_json_options
 	self.as_list_json_options={
-			only: [:id, :title,:isrc,:status,:language_id,:genre,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
+			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
       include: [:albums,:artists,:audits],
       methods: [:provider_name,:contract_name]
 	}
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-     only: [:id, :title,:isrc,:status,:language_id,:genre,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
-      include: [:albums,:artists,:audits,:track_resources],
-      methods: [:provider_name,:contract_name]
+     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
+      include: [:albums,:artists,:audits,:track_resources,:track_composers],
+      methods: [:provider_name,:contract_name,:genre_name]
   }
 
 end
