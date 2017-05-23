@@ -3,7 +3,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = Track.includes(:albums,:artists,:audits,:contract,:providers).recent.page(page).per(size)
+    @tracks = Track.includes(:albums,:artists,:audits,:contract,:provider).recent.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
