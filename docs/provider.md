@@ -226,13 +226,13 @@
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | provider_ids   | 是    | 版权方ids  |
-
+##如果单个审核 provider_ids:[1]
 
 ### Request 请求
 
 ```json
 {
- "provider_ids": [1,2]
+ "provider_ids": [1,2]  
 }
 
 ```
@@ -242,24 +242,24 @@
 > 响应数据:
 null
 
-## 6.7、批量通过版权方
+## 6.7、审核不通过版
 
 ### HTTP请求
 
-`POST  /api/v1/providers/verify`
+`POST  /api/v1/providers/unverify`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| provider_ids   | 是    | 版权方ids  |
+| id   | 是    | 版权方id |
 | reason  |  是    |  未通过原因 |
 
 ### Request 请求
 
 ```json
 {
- "provider_ids": [1,2],
+ "id": 1,
  "reason": "dddd"
 }
 

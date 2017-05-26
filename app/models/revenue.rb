@@ -73,7 +73,6 @@ class Revenue < ApplicationRecord
         }
       }
     })
-
     res = response['aggregations']
     res
   end
@@ -128,13 +127,12 @@ class Revenue < ApplicationRecord
     res = []
 
     response = es_request(type, nil, nil, {
-      search_type: 'scan',
+      #search_type: 'scan',
       scroll: '1m'
     })
 
     begin
       response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
-
       res += response['hits']['hits'].map { |r| r['_source'] }
     end while response['hits']['hits'].present?
 

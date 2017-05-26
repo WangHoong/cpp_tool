@@ -16,7 +16,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def create
     @revenue = Revenue.new(revenue_params)
     if @revenue.save
-      #RevenueWorker.perform_async(@revenue.id)
+      DonkeyJob.create(task: :parse_report, target: @revenue, status: :pending)
       render json: @revenue
     else
       render json: @revenue.errors, status: :unprocessable_entity

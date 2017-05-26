@@ -48,9 +48,18 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     render  json: {status: 200}, status: :ok
   end
 
+  def approve
+    @contracts = get_contract_list
+    if @contracts.update_all(status: :accept,reason: nil)
+        head :ok
+    else
+        render json: @contracts.errors, status: :unprocessable_entity
+    end
+  end
+
   def verify
-      @contracts = get_contract_list
-      if @contracts.update_all(status: :accept)
+      @contract = get_contract
+      if @contract.update(status: :accept,reason: nil)
           head :ok
       else
           render json: @contract.errors, status: :unprocessable_entity
@@ -58,8 +67,8 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   end
 
   def unverify
-      @contracts = get_contract_list
-      if @contracts.update_all(status: :reject,reason: params[:reason])
+      @contract = get_contract
+      if @contract.update(status: :reject,reason: params[:reason])
           head :ok
       else
         render json: @contract.errors, status: :unprocessable_entity

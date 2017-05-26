@@ -40,18 +40,32 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def verify
-    @providers =  Provider.where(id: params[:provider_ids])
-    if @providers.update_all(status: :accept)
+      @provider =  get_provider
+      if @provider.update(status: :accept,reason: nil)
+          head :ok
+      else
+          render json: @contract.errors, status: :unprocessable_entity
+      end
+  end
+
+  def unverify
+    @provider =  get_provider
+    if @provider.update(status: :reject,reason: params[:reason])
         head :ok
     end
   end
 
-  def unverify
-    @providers =  Provider.where(id: params[:provider_ids])
-    if @providers.update_all(status: :reject,reason: params[:reason])
+  def approve
+    @providers = Provider.where(id: params[:provider_ids])
+    if @providers.update_all(status: :accept,reason: nil)
         head :ok
+    else
+        render json: @providers.errors, status: :unprocessable_entity
     end
   end
+
+
+
 
   private
   def get_provider

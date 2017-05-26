@@ -6,7 +6,6 @@ class RevenueWorker
     revenue = Revenue.find(revenue_id)
     response = revenue.analyses_data(:succeed)
     time = revenue.analyses_date(:succeed)
-
     bucket = {}
     start_date = Time.at(time['min_date']['value'] / 1000)
     end_date = Time.at(time['max_date']['value'] / 1000)

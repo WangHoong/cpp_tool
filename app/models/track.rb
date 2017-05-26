@@ -14,7 +14,8 @@ class Track < ApplicationRecord
   has_many :track_composers
   accepts_nested_attributes_for :track_composers, :allow_destroy => true
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
-
+  enum status: [:pending,:accept,:reject]
+  
   validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
 

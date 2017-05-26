@@ -1375,14 +1375,14 @@ null
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| contract_ids   | 是    | 版权方ids  |
+| id   | 是    | 版权方id  |
 | reason  |  是    |  未通过原因 |
 
 ### Request 请求
 
 ```json
 {
- "contract_ids": [1,2],
+ "id": 1,
  "reason": "dddd"
 }
 

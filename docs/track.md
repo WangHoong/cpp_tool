@@ -202,3 +202,59 @@
 
 }
 ```
+
+
+
+## 6.6、批量通过
+
+### HTTP请求
+
+`POST  /api/v1/tracks/verify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| provider_ids   | 是    | 版权方ids  |
+##如果单个审核 provider_ids:[1]
+
+### Request 请求
+
+```json
+{
+ "provider_ids": [1,2]  
+}
+
+```
+
+### Response 响应
+
+> 响应数据:
+null
+
+## 6.7、审核不通过版
+
+### HTTP请求
+
+`POST  /api/v1/tracks/unverify`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| id   | 是    | 版权方id |
+| reason  |  是    |  未通过原因 |
+
+### Request 请求
+
+```json
+{
+ "id": 1,
+ "reason": "dddd"
+}
+
+```
+### Response 响应
+
+> 响应数据:
+null

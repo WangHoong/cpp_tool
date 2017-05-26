@@ -5,6 +5,9 @@ Rails.application.routes.draw do
           namespace :cp do
             resources :contracts do
               collection do
+                post :approve
+              end
+              member do
                 post :unverify,:verify
               end
               resources :authorizes,  except: [:create,:update]
@@ -38,6 +41,9 @@ Rails.application.routes.draw do
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :providers, only: [:index, :create, :show, :update, :destroy] do
             collection do
+              post :approve
+            end
+            member do
               post :unverify,:verify
             end
           end#providers
@@ -51,7 +57,14 @@ Rails.application.routes.draw do
           resources :authorized_ranges, only: [:index]
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
-          resources :tracks, only: [:index, :create, :show, :update, :destroy]
+          resources :tracks, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+              post :approve
+            end
+            member do
+              post :unverify,:verify
+            end
+          end
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :approve

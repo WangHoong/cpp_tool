@@ -10,7 +10,7 @@ class Sp::Contract < ApplicationRecord
   has_many :authorize_dues, -> {where('sp_authorizes.end_time <?',Time.now)},class_name: 'Sp::Authorize'
   accepts_nested_attributes_for :assets ,   :allow_destroy => true
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
-
+  enum status: [:pending,:accept,:reject]
   enum pay_type: [:default,:divide,:undivide]
 
   validates_presence_of :authorizes
@@ -48,7 +48,7 @@ class Sp::Contract < ApplicationRecord
       authorize_dues.size
    end
 
- 
+
 
 
 end
