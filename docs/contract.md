@@ -181,7 +181,7 @@
  NULL
 
 
-## 7.6、批量通过合约
+## 7.6、通过合约
 
 ### HTTP请求
 
@@ -237,7 +237,7 @@ null
 null
 
 
-## 7.7、批量不通过合约
+## 7.7、合约不通过
 
 ### HTTP请求
 
@@ -263,62 +263,3 @@ null
 
 > 响应数据:
 null
-
-# Part8 结算管理
-
-## 8.1. 创建货币接口
-
-### HTTP请求
-
-`post /api/v1/exchange_rates`
-
-### Request 请求参数
-
-| 参数名                              | 是否必需 | 描述                       |
-| -------------------------------- | ---- | ------------------------ |
-| exchange_rate                           | 是    | 标志是货币                    |
-| currency_id                             | 是    | 货币_id                     |
-| settlement_currency_id                       | 是    | 结算货币_id                    |
-| exchange_ratio                     | 是   |      汇率                |
-| status                      | 是   | 状态 [:enabled, :disabled] |
-| operator                      | 是   | 操作人                       |
-
-#### 请求示例
-`post /api/v1/exchange_rates`
-```json
-{
-	"exchange_rate":{
-		"currency_id":3,
-		"settlement_currency_id":1,
-		"exchange_ratio":"1:12",
-		"status":"enabled",
-		"operator":"aasd"
-	}
-
-}
-```
-
-### Response 响应
-
-> 响应数据:
-
-```json
-{
-  "exchange_rate": {
-    "id": 7,
-    "currency": {
-      "id": 2,
-      "name": "英镑"
-    },
-    "settlement_currency": {
-      "id": 1,
-      "name": "人民币"
-    },
-    "exchange_ratio": "1:12",
-    "status": "enabled",
-    "operator": "aasd",
-    "created_at": "2017-05-11T17:08:08.000+08:00",
-    "updated_at": "2017-05-11T17:11:52.000+08:00"
-  }
-}
-```
