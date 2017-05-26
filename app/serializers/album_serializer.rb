@@ -21,7 +21,7 @@ class AlbumSerializer < ActiveModel::Serializer
   end
 
   def approve
-    @createAudit = object.audits.empty? object.audits.select { |audit|  audit.action == 'create'}.first
+    @createAudit = object.audits.select { |audit|  audit.action == 'create'}.first
     @updateAudit = object.audits.select { |audit|  audit.action == 'update' && !!audit.audited_changes['status']}
     .sort { |x,y| y.created_at <=> x.created_at }
     .first
