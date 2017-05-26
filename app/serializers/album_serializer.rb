@@ -30,7 +30,7 @@ class AlbumSerializer < ActiveModel::Serializer
       approver_name: @updateAudit&&@updateAudit['username'] || '',
       approve_at: @updateAudit&&@updateAudit['created_at'] || '',
       status: object&&object['status'] || '',
-      creator_name: @updateAudit&&@createAudit['username'] || '',
+      creator_name: @createAudit&&@createAudit['username'] || '',
       created_at: object&&object['created_at'] || '',
       updated_at: object&&object['updated_at'] || '',
       not_through_reason: object&&object['not_through_reason'] || ''
