@@ -209,23 +209,16 @@
 
 ### HTTP请求
 
-`POST  /api/v1/tracks/verify`
+`POST  /api/v1/tracks/:id/verify`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| provider_ids   | 是    | 版权方ids  |
-##如果单个审核 provider_ids:[1]
+| id   | 是    | 版权方id  |
 
-### Request 请求
 
-```json
-{
- "provider_ids": [1,2]  
-}
 
-```
 
 ### Response 响应
 
@@ -236,7 +229,7 @@ null
 
 ### HTTP请求
 
-`POST  /api/v1/tracks/unverify`
+`POST  /api/v1/tracks/:id/unverify`
 
 ### Request 请求参数
 
@@ -251,6 +244,33 @@ null
 {
  "id": 1,
  "reason": "dddd"
+}
+
+```
+### Response 响应
+
+> 响应数据:
+null
+
+
+## 6.8、批量审核通过
+
+### HTTP请求
+
+`POST  /api/v1/tracks/approve`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| track_ids   | 是    | 版权方id |
+
+
+### Request 请求
+
+```json
+{
+ "track_ids": [1,2]
 }
 
 ```
