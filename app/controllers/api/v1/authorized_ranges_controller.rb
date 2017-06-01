@@ -3,18 +3,11 @@ class Api::V1::AuthorizedRangesController < Api::V1::BaseController
 
   def index
     @ranges = AuthorizedRange.all.order(id: :desc)
-    #revenue = Revenue.find(1)
-    #response = revenue.analyses_data(:succeed)
-    #time = revenue.analyses_date(:succeed)
 
-    # repository = AnalysisRepository.new(index: 'donkey_test')
-     #repository.index = SETTINGS['donkey_index'].to_sym
-     #repository.create_index! force: true
-     #revenue = RevenueAnalysis.new(id: 1,text: 'test')
-     #repository.save(revenue)
-    #  p repository.find(1).attributes['id']
+     Services::RooService.validate_revenue(1)
 
-     #RevenueWorker.perform_async(1)
+     #Services::RooService.seach_revenue(1)
+
      render json: {ranges: @ranges}
   end
 
