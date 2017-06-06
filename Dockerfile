@@ -16,9 +16,6 @@ RUN mkdir -p /app
 WORKDIR /app
 ADD . $app
 
-# 创建数据存放目录
-RUN mkdir -p /data
-
 VOLUME ["/app/log"]
 
 # 用户配置数据存储目录
