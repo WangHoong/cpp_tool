@@ -14,7 +14,7 @@ class RevenueFile < ApplicationRecord
           match: { 'note.revenue_file_id': self.id }
         }
       },
-      search_type: 'scan',
+      #search_type: 'scan',
       scroll: '1m'
     )
 

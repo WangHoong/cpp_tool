@@ -4,6 +4,7 @@ class Cp::Contract < ApplicationRecord
   audited
   belongs_to :provider
   belongs_to :department
+  has_one :trade, as: :target, :dependent => :destroy
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
@@ -17,6 +18,7 @@ class Cp::Contract < ApplicationRecord
   enum pay_type: [:default,:divide,:undivide]
   enum status: [:pending,:accept,:reject]
 
+  after_create :set_pay_amount_total
   #validates_presence_of :authorizes
 
   scope :recent, -> { order('cp_contracts.id DESC') }
@@ -77,6 +79,7 @@ class Cp::Contract < ApplicationRecord
      end
    end
 
+
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:reason,:desc,:created_at, :updated_at],
@@ -91,5 +94,16 @@ class Cp::Contract < ApplicationRecord
 
     }
 
+
+   private
+
+   def set_pay_amount_total
+     if pay_amount.to_i > 0
+        trade = self.build_trade(provider_id: provider_id,amount: pay_amount,status: :prepay)
+        if trade.save
+           provider.update(current_amount: provider.current_amount + trade.amount)
+        end
+     end
+   end
 
 end

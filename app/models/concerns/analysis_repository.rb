@@ -3,7 +3,8 @@ class AnalysisRepository
 
   def initialize(options={})
     index  options[:index] || SETTINGS['donkey_index'].to_sym
-    client Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'], log: true
+    type  options[:type] || SETTINGS['analysis_info_type'].to_sym
+    client Elasticsearch::Client.new url: SETTINGS['elasticsearch_server']
   end
   #index SETTINGS['donkey_index'].to_sym
   #client Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'], log: true

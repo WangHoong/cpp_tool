@@ -1,5 +1,6 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
 
+  before_action :get_artist ,only:[:show, :update,:destroy,:tracks]
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
@@ -10,7 +11,6 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Get /artists/:id
   def show
-    get_artist
     if @artist
     render json: @artist
     else
@@ -20,7 +20,6 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Put /artists/:id
   def update
-    get_artist
     if @artist.update(artist_params)
     render json: @artist
     else
@@ -40,7 +39,6 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Delete /artists/:id
   def destroy
-    get_artist
     if @artist.destroy
     render json: @artist
     else
@@ -67,6 +65,13 @@ class Api::V1::ArtistsController < Api::V1::BaseController
         render json: @artists.errors, status: :unprocessable_entity
       end
     end
+  end
+
+  def tracks
+    page = params.fetch(:page, 1).to_i
+    size = params[:size]
+    @tracks = @artist.tracks.includes(:albums).recent.page(page).per(size)
+    render json: {tracks: @tracks, meta: page_info(@tracks)}
   end
 
   private
