@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :internal do
-      resources :albums, only: [:index]
+      resources :tasks, only: [:index]
     end
     namespace :v1 do
           namespace :cp do

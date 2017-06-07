@@ -391,12 +391,12 @@ ActiveRecord::Schema.define(version: 20170606102815) do
   end
 
   create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.integer  "source_id",                            comment: "资源 ID"
-    t.integer  "source_type",                          comment: "资源类型"
-    t.integer  "status",      default: 0,              comment: "状态 0：未处理，1：已完成，2：处理中，-1：失败"
-    t.string   "message",                              comment: "失败原因"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "album_id",                            comment: "专辑 ID"
+    t.integer  "status",     default: 0,              comment: "状态 0：未处理，1：已完成，2：处理中，-1：失败"
+    t.string   "message",                             comment: "失败原因"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["album_id", "status"], name: "index_tasks_on_album_id_and_status", using: :btree
   end
 
   create_table "track_composers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
