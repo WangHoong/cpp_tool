@@ -92,7 +92,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'workflow', '~> 1.2.0'
 
 #export xlsx
-gem 'axlsx'
+gem 'axlsx_rails'
+
 #import xlsx
 gem "roo"
 

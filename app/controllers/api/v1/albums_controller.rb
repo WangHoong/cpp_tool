@@ -16,9 +16,9 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def update
     @albums = get_album
     if @albums.update(album_params)
-    render json: @albums
+      render json: @albums
     else
-    render json: @albums.errors, status: :unprocessable_entity
+      render json: @albums.errors, status: :unprocessable_entity
     end
   end
 
@@ -36,9 +36,9 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def destroy
     @album = get_album
     if @album.destroy
-    render json: @album
+      render json: @album
     else
-    render json: @album.errors, status: :unprocessable_entity
+      render json: @album.errors, status: :unprocessable_entity
     end
   end
 
@@ -46,23 +46,34 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def approve
     def approve
       case !!params[:id]
-      when true
-        @album = get_album
-        begin
+        when true
+          @album = get_album
+          begin
             Album.approve(album_params, @album)
             render json: @album
-        rescue  Workflow::NoTransitionAllowed => e
+          rescue Workflow::NoTransitionAllowed => e
             render json: {status: 403, error: e}, status: :forbidden
-        end
-      else
-        @albums = get_albums_by_ids
-        if Album.batchApprove(@albums)
-          render json: @albums
+          end
         else
-          render json: @albums.errors, status: :unprocessable_entity
-        end
+          @albums = get_albums_by_ids
+          if Album.batchApprove(@albums)
+            render json: @albums
+          else
+            render json: @albums.errors, status: :unprocessable_entity
+          end
       end
     end
+  end
+
+  # POST /albums/export
+  def export
+    ids = (params[:ids] || '').split(',')
+    return render text: '请选择要导出的id列表' if ids.empty?
+
+    @albums = Album.where(id: ids)
+    return render text: '没有找到您要导出的数据' unless @albums
+
+    render xlsx: 'albums/export.xlsx.axlsx', filename: '专辑列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
   private
