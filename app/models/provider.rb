@@ -3,6 +3,9 @@ class Provider < ApplicationRecord
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum status: [:pending,:accept,:reject]
 	enum property: [:personal,:company]
+
+  has_many :trades
+
 	validates :name, presence: true
 
 

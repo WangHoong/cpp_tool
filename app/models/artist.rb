@@ -16,6 +16,8 @@ class Artist < ApplicationRecord
 						class_name: 'ArtistResource', dependent: :destroy
 	has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
 
+	has_and_belongs_to_many :tracks, join_table:'artists_tracks'
+
 	accepts_nested_attributes_for :songs, :allow_destroy => true
 	accepts_nested_attributes_for :images, :allow_destroy => true
 

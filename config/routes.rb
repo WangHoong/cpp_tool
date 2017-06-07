@@ -75,6 +75,7 @@ Rails.application.routes.draw do
         			post :approve
         		end
             member do
+              get :tracks
               post :approve
             end
           end #artists
