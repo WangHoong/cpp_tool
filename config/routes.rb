@@ -79,6 +79,7 @@ Rails.application.routes.draw do
         		end
             member do
               get :tracks
+              get :albums
               post :approve
             end
           end #artists
