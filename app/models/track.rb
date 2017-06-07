@@ -1,5 +1,5 @@
 class Track < ApplicationRecord
-  audited
+  audited only: [:status]
   has_and_belongs_to_many :albums
   has_and_belongs_to_many :artists
   belongs_to :language
@@ -34,18 +34,36 @@ class Track < ApplicationRecord
      genre.try(:name)
   end
 
+  def approve
+    @create_audit =  audits.where(action: 'create').first
+    @update_audits = audits.where(action: 'update')
+    {
+      create_user: @create_audit.user.try(:name),
+      update_audits: @update_audits.as_json(only: [:user_id,:username,:action,:audited_changes,:created_at])
+    }
+ end
+
+
   class_attribute :as_list_json_options
 	self.as_list_json_options={
-			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
-      include: [:albums,:artists,:audits],
+			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+      include: [:albums,:artists],
       methods: [:provider_name,:contract_name]
 	}
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark],
-      include: [:albums,:artists,:audits,:track_resources,:track_composers],
+     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+      include: [:albums,:artists,:track_resources,:track_composers],
       methods: [:provider_name,:contract_name,:genre_name]
   }
+
+  class_attribute :as_artlist_tracks_json_options
+	self.as_artlist_tracks_json_options={
+			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+      include: [:albums,:artists]
+	}
+
+
 
 end

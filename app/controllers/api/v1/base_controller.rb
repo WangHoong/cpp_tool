@@ -6,11 +6,11 @@ class Api::V1::BaseController < ApplicationController
   protected
 
   def authenticate_user!
-    current_user
+    authenticate
     return unauthenticated! unless @current_user
   end
 
-  def current_user
+  def authenticate
     token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
     @current_user ||= User.first
     #@current_user ||= user_in_payload Auth.payload(token)

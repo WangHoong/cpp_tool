@@ -9,6 +9,7 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def show
     @track = get_track
+
     render json: {track: @track.as_json(Track.as_show_json_options)}
   end
 

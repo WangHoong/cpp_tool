@@ -92,7 +92,7 @@ class Revenue < ApplicationRecord
     else
       success_count = es_request(:succeed)['hits']['total']
       mismatched_count = es_request(:mismatched)['hits']['total']
-     
+
       data = {
         errors: file_errors,
         success: { 'total': success_count, 'revenue': analyses_revenue(:success) },
@@ -195,9 +195,7 @@ class Revenue < ApplicationRecord
     body = options.merge({
       query: { bool: {must: terms} }
     })
-p body
-p search_config
-p '-------------'
+ 
     EsClient.instance.search({
       body: body
     }.merge(search_config))
