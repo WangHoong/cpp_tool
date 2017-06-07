@@ -1,9 +1,7 @@
 class Api::V1::BaseController < ApplicationController
 
   before_action :authenticate_user!
-
-
-
+  attr_accessor :current_user
 
   protected
 
@@ -17,6 +15,7 @@ class Api::V1::BaseController < ApplicationController
     @current_user ||= User.first
     #@current_user ||= user_in_payload Auth.payload(token)
   end
+
 
   #def access_token
   #  request.headers["Authorization"] || params[:access_token] || cookies["accessToken"]

@@ -18,15 +18,16 @@ module Services
             repository = AnalysisRepository.new(type: type)
             repository.save(note)
           else
-            (2..spreadsheet.last_row).each do |i|
+            (2..spreadsheet.last_row).each  do |i|
                row = spreadsheet.row(i)
                track = Track.find_by(title: row[6])
                album = Album.find_by(name: row[7])
                artist = Artist.find_by(name: row[8])
                dsp = Dsp.find_by(name: row[2])
                date = Date.strptime(row[0], "%Y%m").to_date
+               income = row[10] * row[11].to_i
                hs_note = {sheet_name: spreadsheet.sheets.first,line_num: i,revenue_file_id: revenue_file.id,revenue_id: id,
-                 dsp_id: revenue.dsp_id,dsp_name: revenue.dsp.try(:name),start_date: revenue.start_time,end_date: revenue.end_time,income: revenue.income}
+                 dsp_id: revenue.dsp_id,dsp_name: revenue.dsp.try(:name),start_date: revenue.start_time,end_date: revenue.end_time,income: income}
                if date < revenue.start_time  or  date > revenue.end_time
                  result = {data: nil,note: hs_note, err_message: '歌曲结算周期不在报表结算周期内',category: 3,created_at: Time.now}
                elsif track.blank?
@@ -45,6 +46,7 @@ module Services
                note = RevenueAnalysis.new(result)
                repository = AnalysisRepository.new(type: type)
                repository.save(note)
+               revenue.processed!  if spreadsheet.last_row == i
             end
           end
        end
@@ -54,6 +56,7 @@ module Services
     def self.seach_revenue(id)
       revenue =  Revenue.find(id)
       @client ||= Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'], log: true
+      #@result = @client.search({"aggs":{"total_price":{"sum":{"field":"note.income"}}},"size":0,"query":{"bool":{"must":[{"term":{"note.revenue_id":1}},{"term":{"_type":"analysis_result"}},{"term":{"category":1}}]}}})
       @result = @client.search({body: {query: {bool: {must: [{term: {"note.revenue_id": revenue.id}}, {term: {category: 3}}]}}},scroll: "1m", index: SETTINGS['donkey_index']})
       @result['hits']['hits'].each do |node|
         p node

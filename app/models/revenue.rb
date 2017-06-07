@@ -34,6 +34,15 @@ class Revenue < ApplicationRecord
 
   end
 
+  def self.as_list_json_options
+     as_list_json = {
+    			only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
+          include: [:revenue_files],
+          methods: [:analyse_result]
+        }
+  end
+
+
   attr_writer :file_urls
 	def file_urls
 		@file_urls ||= revenue_files.map(&:url)
@@ -78,17 +87,18 @@ class Revenue < ApplicationRecord
   end
 
   def analyse_result
-    success_count = es_request(:succeed)['hits']['total']
-    mismatched_count = es_request(:mismatched)['hits']['total']
-
     if self.processing?
       "解析中"
     else
-      {
+      success_count = es_request(:succeed)['hits']['total']
+      mismatched_count = es_request(:mismatched)['hits']['total']
+
+      data = {
         errors: file_errors,
         success: { 'total': success_count, 'revenue': analyses_revenue(:success) },
         mismatched: { 'total': mismatched_count, 'revenue': analyses_revenue(:mismatched) }
       }
+      return data
     end
   end
 
@@ -154,8 +164,8 @@ class Revenue < ApplicationRecord
     when :mismatched
       es_type = SETTINGS['analysis_error_type']
       query.merge!({
-        category: 3,
-        'revenue_file_id': revenue_files.last.id
+        category: 3
+        #'revenue_file_id': revenue_files.last.id
       })
     when :info
       es_type = SETTINGS['analysis_info_type']
@@ -185,18 +195,11 @@ class Revenue < ApplicationRecord
     body = options.merge({
       query: { bool: {must: terms} }
     })
-
+ 
     EsClient.instance.search({
       body: body
     }.merge(search_config))
   end
-
-
- 	class_attribute :as_list_json_options
-  self.as_list_json_options={
-  			only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
-        include: [:revenue_files]
-  }
 
 
 end

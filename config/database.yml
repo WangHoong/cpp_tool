@@ -21,9 +21,6 @@ default: &default
 
 development:
   <<: *default
-  #username: root
-  #password: root
-  #host: localhost
   database: cpp_tool_dev
 
 

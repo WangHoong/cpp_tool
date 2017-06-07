@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
 
     # Authorization related methods and callbacks
     #include CanCan::ControllerAdditions
