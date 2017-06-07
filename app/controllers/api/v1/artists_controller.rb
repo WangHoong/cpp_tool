@@ -1,6 +1,6 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
 
-  before_action :get_artist ,only:[:show, :update,:destroy,:tracks]
+  before_action :get_artist ,only:[:show, :update,:destroy,:tracks,:albums]
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
@@ -70,7 +70,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def tracks
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = @artist.tracks.includes(:albums).recent.page(page).per(size)
+    @tracks = @artist.tracks.recent.page(page).per(size)
     render json: {tracks: @tracks, meta: page_info(@tracks)}
   end
 

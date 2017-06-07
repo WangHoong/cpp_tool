@@ -1,22 +1,21 @@
 class Api::V1::BaseController < ApplicationController
 
   before_action :authenticate_user!
-
-
-
+  attr_accessor :current_user
 
   protected
 
   def authenticate_user!
-    authenticate
+    current_user
     return unauthenticated! unless @current_user
   end
 
-  def authenticate
+  def current_user
     token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
     @current_user ||= User.first
     #@current_user ||= user_in_payload Auth.payload(token)
   end
+
 
   #def access_token
   #  request.headers["Authorization"] || params[:access_token] || cookies["accessToken"]

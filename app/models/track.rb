@@ -7,6 +7,7 @@ class Track < ApplicationRecord
   belongs_to :genre
   belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
+  has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
   has_many :accompany_artists, as: :target, :dependent => :destroy
   accepts_nested_attributes_for :accompany_artists, :allow_destroy => true
   has_many :track_resources
@@ -15,8 +16,8 @@ class Track < ApplicationRecord
   accepts_nested_attributes_for :track_composers, :allow_destroy => true
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   enum status: [:pending,:accept,:reject]
-  
-  validates :title, presence: true , uniqueness: true
+
+  #validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
 
   scope :recent, -> { order('id DESC') }

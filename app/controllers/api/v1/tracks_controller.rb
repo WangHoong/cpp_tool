@@ -13,6 +13,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   def create
+    p current_user
     @track = Track.new track_params
 
     if @track.save!
@@ -82,6 +83,7 @@ class Api::V1::TracksController < Api::V1::BaseController
       :track_id,
       :contract_id,
       :authorize_id,
+      :provider_id,
       album_ids: [],
       artist_ids: [],
       accompany_artists_attributes: [:id,:name,:_destroy],
