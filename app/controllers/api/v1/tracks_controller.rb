@@ -13,7 +13,6 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   def create
-    p current_user
     @track = Track.new track_params
 
     if @track.save!

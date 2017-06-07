@@ -71,7 +71,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @tracks = @artist.tracks.recent.page(page).per(size)
-    render json: {tracks: @tracks, meta: page_info(@tracks)}
+    render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
   private
