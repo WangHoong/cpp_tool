@@ -71,8 +71,6 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     return render text: '请选择要导出的id列表' if ids.empty?
 
     @albums = Album.where(id: ids)
-    return render text: '没有找到您要导出的数据' unless @albums
-
     render xlsx: 'albums/export.xlsx.axlsx', filename: '专辑列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
