@@ -3,7 +3,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = Track.includes(:albums,:artists,:audits,:contract,:provider).recent.page(page).per(size)
+    @tracks = Track.includes(:albums, :artists, :audits, :contract, :provider).recent.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
@@ -39,33 +39,44 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def approve
     @tracks = Track.where(id: params[:track_ids])
-    if @tracks.update_all(status: :accept,reason: nil)
-        head :ok
+    if @tracks.update_all(status: :accept, reason: nil)
+      head :ok
     else
-        render json: @tracks.errors, status: :unprocessable_entity
+      render json: @tracks.errors, status: :unprocessable_entity
     end
   end
 
   def verify
-      @track = get_track
-      if @tracks.update_all(status: :accept,reason: nil)
-          head :ok
-      else
-          render json: @tracks.errors, status: :unprocessable_entity
-      end
+    @track = get_track
+    if @tracks.update_all(status: :accept, reason: nil)
+      head :ok
+    else
+      render json: @tracks.errors, status: :unprocessable_entity
+    end
   end
 
   def unverify
     @track = get_track
-    if @track.update(status: :reject,reason: params[:reason])
-        head :ok
+    if @track.update(status: :reject, reason: params[:reason])
+      head :ok
     end
+  end
+
+  # POST /tracks/export
+  def export
+    ids = (params[:ids] || '').split(',')
+    return render text: '请选择要导出的id列表' if ids.empty?
+
+    @tracks = Track.includes(:albums, :artists, :contract, :provider).recent.where(id: ids)
+    return render text: '没有找到您要导出的数据' unless @tracks
+
+    render xlsx: 'tracks/export.xlsx.axlsx', filename: '歌曲列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
   private
 
   def get_track
-      Track.find params[:id]
+    Track.find params[:id]
   end
 
   def track_params

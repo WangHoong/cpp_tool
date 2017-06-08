@@ -8,6 +8,7 @@ class Track < ApplicationRecord
   belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
+
   has_many :accompany_artists, as: :target, :dependent => :destroy
   accepts_nested_attributes_for :accompany_artists, :allow_destroy => true
   has_many :track_resources
@@ -20,10 +21,10 @@ class Track < ApplicationRecord
   #validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
 
-  scope :recent, -> { order('id DESC') }
+  scope :recent, -> {order('id DESC')}
 
   def provider_name
-     provider.try(:name)
+    provider.try(:name)
   end
 
   def contract_name
@@ -31,7 +32,7 @@ class Track < ApplicationRecord
   end
 
   def genre_name
-     genre.try(:name)
+    genre.try(:name)
   end
  
 

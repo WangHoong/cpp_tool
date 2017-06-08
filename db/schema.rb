@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606102815) do
+ActiveRecord::Schema.define(version: 20170607093512) do
 
   create_table "accompany_artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -67,14 +67,23 @@ ActiveRecord::Schema.define(version: 20170606102815) do
     t.index ["track_id"], name: "track_id", using: :btree
   end
 
-  create_table "artist_associations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.integer  "association_id"
+  create_table "artist_albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "album_id"
     t.integer  "artist_id"
-    t.string   "association_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.string   "album_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "association_id", using: :btree
     t.index ["artist_id"], name: "artist_id", using: :btree
-    t.index ["association_id"], name: "association_id", using: :btree
+  end
+
+  create_table "artist_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "artist_id"
+    t.string   "name"
+    t.string   "language_name"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["artist_id"], name: "index_artist_names_on_artist_id", using: :btree
   end
 
   create_table "artist_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -88,17 +97,18 @@ ActiveRecord::Schema.define(version: 20170606102815) do
 
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.integer  "country_id",                                                    comment: "国籍"
+    t.integer  "country_id",                                                        comment: "国籍"
     t.string   "country_name"
-    t.integer  "gender_type",                                                   comment: "0男，1女，2组合"
-    t.integer  "label_id",                                                      comment: "唱片公司ID"
+    t.integer  "gender_type",                                                       comment: "0男，1女，2组合"
+    t.integer  "label_id",                                                          comment: "唱片公司ID"
     t.string   "label_name"
-    t.text     "description",        limit: 65535,                              comment: "艺人介绍"
-    t.boolean  "deleted",                          default: false,              comment: "true删除,false未删除"
-    t.string   "status",                           default: "0",                comment: "0待审批 ,1审批通过，2审批未通过"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.text     "description",            limit: 65535,                              comment: "艺人介绍"
+    t.boolean  "deleted",                              default: false,              comment: "true删除,false未删除"
+    t.string   "status",                               default: "0",                comment: "0待审批 ,1审批通过，2审批未通过"
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.string   "not_through_reason"
+    t.integer  "multi_language_name_id"
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
   end
@@ -359,13 +369,13 @@ ActiveRecord::Schema.define(version: 20170606102815) do
     t.integer  "currency_id"
     t.date     "start_time"
     t.date     "end_time"
-    t.float    "income",         limit: 24, default: 0.0
-    t.integer  "status",                    default: 0
-    t.integer  "process_status",            default: 0
-    t.boolean  "is_std",                    default: false
-    t.boolean  "is_split",                  default: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.decimal  "income",         precision: 10, scale: 2, default: "0.0"
+    t.integer  "status",                                  default: 0
+    t.integer  "process_status",                          default: 0
+    t.boolean  "is_std",                                  default: false
+    t.boolean  "is_split",                                default: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
   end
 
@@ -383,7 +393,7 @@ ActiveRecord::Schema.define(version: 20170606102815) do
     t.index ["user_id"], name: "index_roles_users_on_user_id", using: :btree
   end
 
-  create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer  "album_id",                            comment: "专辑 ID"
     t.integer  "status",     default: 0,              comment: "状态 0：未处理，1：已完成，2：处理中，-1：失败"
     t.string   "message",                             comment: "失败原因"

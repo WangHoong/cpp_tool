@@ -6,10 +6,15 @@ class ArtistSerializer < ActiveModel::Serializer
              :gender_type,
              :description,
              :deleted,
+             :website,
              :country,
              :songs,
+             :albums,
              :images,
-             :approve
+             :approve,
+             :artist_names,
+             :created_at,
+             :updated_at
 
   def approve
     @createAudit = object.audits.select { |audit|  audit.action == 'create'}.first

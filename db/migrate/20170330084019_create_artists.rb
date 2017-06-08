@@ -7,6 +7,8 @@ class CreateArtists < ActiveRecord::Migration[5.0]
       t.integer  "gender_type",                                                                            comment: "0男，1女，2组合"
       t.integer  "label_id",                                                                               comment: "唱片公司ID"
       t.string   "label_name"
+      t.integer  "multi_language_name_id"
+      t.string   "website"
       t.text     "description",        limit: 65535,                                                       comment: "艺人介绍"
       t.boolean  "deleted",         default: false,                                                        comment: "true删除,false未删除"
       t.string   "status"               ,default: 0,                                                       comment: "pending,accepted,rejected"

@@ -14,14 +14,14 @@ class Album < ApplicationRecord
   belongs_to :language
 
   # primary artist album association
-  has_many :primary_artist_types, -> { where association_type: 'AlbumOfPrimaryArtist' },
-            class_name: 'ArtistAssociation', :foreign_key => :association_id,
+  has_many :primary_artist_types, -> { where album_type: 'AlbumOfPrimaryArtist' },
+            class_name: 'ArtistAlbum', :foreign_key => :album_id,
             dependent: :destroy
   has_many :primary_artists, :through => :primary_artist_types, class_name: 'Artist', :source => :artist
 
   # featuring artist album association
-  has_many :featuring_artist_types, -> { where association_type: 'AlbumOfFeaturingArtist' },
-            class_name: 'ArtistAssociation', :foreign_key => :association_id,
+  has_many :featuring_artist_types, -> { where album_type: 'AlbumOfFeaturingArtist' },
+            class_name: 'ArtistAlbum', :foreign_key => :album_id,
             dependent: :destroy
   has_many :featuring_artists, :through => :featuring_artist_types, class_name: 'Artist', :source => :artist
 

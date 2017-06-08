@@ -63,6 +63,7 @@ Rails.application.routes.draw do
           resources :tracks, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :approve
+              get :export
             end
             member do
               post :unverify,:verify
@@ -71,14 +72,18 @@ Rails.application.routes.draw do
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :approve
+              get :export
             end
           end
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
         			post :approve
+              get :export
+              post :export
         		end
             member do
-              get :tracks 
+              get :tracks
+              get :albums
               post :approve
             end
           end #artists
