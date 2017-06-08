@@ -12,10 +12,15 @@ class ArtistSerializer < ActiveModel::Serializer
              :albums,
              :images,
              :approve,
-             :artist_names,
              :created_at,
              :updated_at
-
+  has_many :artist_names
+  class ArtistNameSerializer < ActiveModel::Serializer
+    attributes :name, :language_name
+    def language_name
+      object.language.name
+    end
+  end
   def approve
     @createAudit = object.audits.select { |audit|  audit.action == 'create'}.first
     @updateAudit = object.audits.select { |audit|  audit.action == 'update' && !!audit.audited_changes['status']}
