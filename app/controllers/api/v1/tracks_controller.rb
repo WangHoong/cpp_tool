@@ -68,8 +68,6 @@ class Api::V1::TracksController < Api::V1::BaseController
     return render text: '请选择要导出的id列表' if ids.empty?
 
     @tracks = Track.includes(:albums, :artists, :contract, :provider).recent.where(id: ids)
-    return render text: '没有找到您要导出的数据' unless @tracks
-
     render xlsx: 'tracks/export.xlsx.axlsx', filename: '歌曲列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
@@ -81,26 +79,26 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def track_params
     params.fetch(:track, {}).permit(
-      :title,
-      :isrc,
-      :status,
-      :genre_id,
-      :is_agent,
-      :ost,
-      :label,
-      :lyric,
-      :remark,
-      :language_id,
-      :track_id,
-      :contract_id,
-      :authorize_id,
-      :provider_id,
-      album_ids: [],
-      artist_ids: [],
-      accompany_artists_attributes: [:id,:name,:_destroy],
-      track_composers_attributes: [:id,:name,:op_type,:point,:_destroy],
-      track_resources_attributes: [:id,:file_type, :file_name,:url, :_destroy]
-     )
+        :title,
+        :isrc,
+        :status,
+        :genre_id,
+        :is_agent,
+        :ost,
+        :label,
+        :lyric,
+        :remark,
+        :language_id,
+        :track_id,
+        :contract_id,
+        :authorize_id,
+        :provider_id,
+        album_ids: [],
+        artist_ids: [],
+        accompany_artists_attributes: [:id, :name, :_destroy],
+        track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
+        track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
+    )
   end
 
 end
