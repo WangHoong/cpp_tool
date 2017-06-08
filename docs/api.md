@@ -490,6 +490,9 @@ roles:[
 | description                      | 否    | 备注                       |
 | label_id                         | 否    | 唱片公司ID                   |
 | label_name                       | 否    | 唱片公司名称                   |
+| website                          | 否    | 网站                    |
+| artist_names_attributes_name     | 否   |  艺人多语言姓名名称          |
+| artist_names_attributes_language | 否   |  艺人多语言姓名语言          |
 | songs_attributes_url         | 否    | 资源URL                    |
 | songs_attributes_native_name | 否    | 文件原始名称                   |
 | images_attributes_url         | 否    | 资源URL                    |
@@ -499,22 +502,27 @@ roles:[
 `post /api/v1/artists`
 ```json
 {
-	"artist":{
-		"name":"222222",
-		"country_id":"1",
-		"gender_type":"female",
-		"description":"aaaaaaaaaaaaaa",
-		"label_id":"1",
-		"label_name":"dddaaa",
-		"songs_attributes":[{
-			"url":"1aaaaadd44444ssssaa,,.ssa.mp3",
-			"native_name":"1ddaalllllll"
-		}],
-		"images_attributes":[{
-			"url":"1saa,,.ssa.avi",
-			"native_name":"1ddaalllllll"
-		}]
-	}
+  "artist":{
+    "name":"test_multi_name",
+    "country_id":"1",
+    "gender_type":"female",
+    "description":"aaaaaaaaaaaaaa",
+    "label_id":"1",
+    "website": "www.maplegz.com",
+    "artist_names_attributes": [{
+    	"name": "maple",
+    	"language_name": "英语"
+    }],
+    "label_name":"dddaaa",
+    "songs_attributes":[{
+      "url":"1aaaaadd44444ssssaa,,.ssa.mp3",
+      "native_name":"1ddaalllllll"
+    }],
+    "images_attributes":[{
+      "url":"1saa,,.ssa.avi",
+      "native_name":"1ddaalllllll"
+    }]
+  }
 
 }
 ```
@@ -528,11 +536,16 @@ roles:[
   "artist": {
     "id": 12,
     "name": "222222",
+    {
+  "artist": {
+    "id": 72,
+    "name": "test_multi_name",
     "label_id": 1,
     "label_name": "dddaaa",
     "gender_type": "female",
     "description": "aaaaaaaaaaaaaa",
     "deleted": false,
+    "website": "www.maplegz.com",
     "country": {
       "id": 1,
       "continent_id": 3,
@@ -546,22 +559,22 @@ roles:[
     },
     "songs": [
       {
-        "id": 20,
+        "id": 560,
         "url": "1aaaaadd44444ssssaa,,.ssa.mp3",
         "deleted": false,
         "native_name": "1ddaalllllll",
-        "created_at": "2017-05-10T14:47:53.000+08:00",
-        "updated_at": "2017-05-10T14:47:53.000+08:00"
+        "created_at": "2017-06-07T17:54:34.000+08:00",
+        "updated_at": "2017-06-07T17:54:34.000+08:00"
       }
     ],
     "images": [
       {
-        "id": 21,
+        "id": 561,
         "url": "1saa,,.ssa.avi",
         "deleted": false,
         "native_name": "1ddaalllllll",
-        "created_at": "2017-05-10T14:47:53.000+08:00",
-        "updated_at": "2017-05-10T14:47:53.000+08:00"
+        "created_at": "2017-06-07T17:54:34.000+08:00",
+        "updated_at": "2017-06-07T17:54:34.000+08:00"
       }
     ],
     "approve": {
@@ -569,10 +582,20 @@ roles:[
       "approve_at": "",
       "status": "pending",
       "creator_name": "",
-      "created_at": "2017-05-10T14:47:53.000+08:00",
-      "updated_at": "2017-05-10T14:47:53.000+08:00",
+      "created_at": "2017-06-07T17:54:33.000+08:00",
+      "updated_at": "2017-06-07T17:54:33.000+08:00",
       "not_through_reason": ""
-    }
+    },
+    "artist_names": [
+      {
+        "id": 3,
+        "artist_id": 72,
+        "name": "maple",
+        "language_name": "英语",
+        "created_at": "2017-06-07T17:54:34.000+08:00",
+        "updated_at": "2017-06-07T17:54:34.000+08:00"
+      }
+    ]
   }
 }
 ```
