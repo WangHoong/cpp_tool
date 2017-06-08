@@ -1,11 +1,11 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
 
-  before_action :get_artist ,only:[:show, :update,:destroy,:tracks,:albums]
+  before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums]
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:songs, :images, :country, :audits).recent.page(page).per(size)
+    @artists = Artist.includes(:songs, :images, :country, :audits,:albums,:artist_names).recent.page(page).per(size)
     render json: @artists, meta: page_info(@artists)
   end
 
@@ -70,7 +70,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def tracks
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = @artist.tracks.includes(:albums,:artists,:audits).recent.page(page).per(size)
+    @tracks = @artist.tracks.includes(:albums, :artists, :audits).recent.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_artlist_tracks_json_options), meta: page_info(@tracks)}
   end
 
@@ -80,8 +80,6 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     return render text: '请选择要导出的id列表' if ids.empty?
 
     @artists = Artist.where(id: ids)
-    return render text: '没有找到您要导出的数据' unless @artists
-
     render xlsx: 'artists/export.xlsx.axlsx', filename: '艺人列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
