@@ -38,6 +38,12 @@ module Services
                   analysis_revenue_save(result)
                   next
                 end
+                if track.provider_id.nil?
+                  result = {data: nil,note: hs_note, err_message: '版权方不存在',category: 3,created_at: Time.now}
+                  analysis_revenue_save(result)
+                  next
+                end
+
                 album = Album.find_by(name: row[7])
                 if album.nil?
                    result = {data: nil,note: hs_note, err_message: '专辑无法匹配',category: 3,created_at: Time.now}
@@ -51,8 +57,8 @@ module Services
                   next
                 end
 
-               hs_note = hs_note.merge({provider_id: track.try(:provider_id)})
-               data = {date: row[0],title: row[6],album: row[7],artist: row[8],dsp: row[2]}
+               hs_note = hs_note.merge(track_id: track.id,provider_id: track.provider_id,provider_name: track.provider.try(:name))
+               data = {date: row[0],title: row[6],album: row[7],artist: row[8],dsp: row[2],isrc: row[4],upc: row[5],sales_type: row[9],unit_price: row[10],count: row[11],exchange_rate: row[15].to_f}
                result = {data: data,note: hs_note, err_message: '匹配成功',category: 1,created_at: Time.now}
                analysis_revenue_save(result,SETTINGS['analysis_success_type'])
                revenue.processed!  if spreadsheet.last_row == i
@@ -68,15 +74,6 @@ module Services
       repository.save(note)
     end
 
-    def self.seach_revenue(id)
-      revenue =  Revenue.find(id)
-      @client ||= Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'], log: true
-      #@result = @client.search({"aggs":{"total_price":{"sum":{"field":"note.income"}}},"size":0,"query":{"bool":{"must":[{"term":{"note.revenue_id":1}},{"term":{"_type":"analysis_result"}},{"term":{"category":1}}]}}})
-      @result = @client.search({body: {query: {bool: {must: [{term: {"note.revenue_id": revenue.id}}, {term: {category: 3}}]}}},scroll: "1m", index: SETTINGS['donkey_index']})
-      @result['hits']['hits'].each do |node|
-        p node
-      end
-    end
 
   end
 end

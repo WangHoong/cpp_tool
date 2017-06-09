@@ -2,6 +2,7 @@ class RevenueWorker
   include Sidekiq::Worker
   sidekiq_options queue: :revenue, retry: true
 
+
   def perform(revenue_id)
     revenue = Revenue.find(revenue_id)
     response = revenue.analyses_data(:succeed)
@@ -31,11 +32,11 @@ class RevenueWorker
     end
 
     info = {}
-
+    currency = Currency.first
     bucket.each do |key, value|
       amount = 0
       info['provider_id'] = key
-      info['currency_id'] = get_currency(key).try(:id)
+      info['currency_id'] = currency.id
       info['dsp_id'] = value[0]['note']['dsp_id']
       info['file_url'] = res[key][0]
 
@@ -56,16 +57,16 @@ class RevenueWorker
 
 
   private
-  def gen_settlement_workbook(bucket, start_date, end_date)
+  def  gen_settlement_workbook(bucket, start_date, end_date)
     res = {}
     bucket.each do |key, value|
       provider = get_provider(key)
-      currency = provider.try(:currency)
+      currency = Currency.first
 
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
+        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit','Count', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
 
         value.each do |row|
           sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
@@ -77,16 +78,14 @@ class RevenueWorker
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
         sheet.add_row ['CP名称', provider.try(:name)]
         sheet.add_row ['结算货币', currency.try(:name)]
-        sheet.add_row ['DSP', 'DateStart', 'DateEnd', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue' ]
+        sheet.add_row ['DSP', 'DateStart', 'DateEnd', 'Total', 'Currency', 'ExchangeRate', 'AmountDue' ]
 
         value.each do |row|
-          type = row['data']['业务模式']
-
+          type = row['data']['sales_type']
           if set[type].blank?
             set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income').merge! row['data'].slice('业务模式', '数量', '结算货币', '汇率'))
             next
           end
-
           set[type]['income'] += row['note']['income']
         end
 
@@ -113,17 +112,9 @@ class RevenueWorker
     provider
   end
 
-  def get_currency(provider_id)
-    provider = get_provider(provider_id)
-    # TODO: Currency should not be nil
-    currency = Currency.find(provider.try(:currency_id)) rescue Currency.first
-
-    currency
-  end
 
   def build_detail_row(row, start_date, end_date)
     dataset = {}
-
     date = row['note']['start_date'].try(:to_datetime)
 
     dataset['RevenueStart'] = start_date
@@ -133,14 +124,19 @@ class RevenueWorker
     dataset['Day'] = date && date.strftime('%d')
     dataset['OwnerPropertyID'] = 'null'
     dataset['DSP'] = row['note']['dsp_name']
-    dataset['ISRC'] = row['data']['ISRC']
-    dataset['UPC'] = row['data']['UPC']
+    dataset['ISRC'] = row['data']['isrc']
+    dataset['UPC'] = row['data']['upc']
     dataset['PropertyID'] = row['note']['track_id']
     dataset['LabelName'] = row['note']['provider_name']
-    dataset.merge! row['data'].slice('歌曲名', '艺人', '专辑名', '业务模式', '数量')
+    dataset['Title'] = row['data']['title']
+    dataset['Artist'] = row['data']['artist']
+    dataset['Album'] = row['data']['album']
+    dataset['TypeOfSales'] =  row['data']['sales_type']
+    dataset['SalesUnit'] =  row['data']['unit_price']
+    dataset['Count'] =  row['data']['count']
     dataset['Total'] = row['note']['income']
     dataset['Currency'] = 'CNY'
-    dataset['ExchangeRate'] = 1
+    dataset['ExchangeRate'] = row['data']['exchange_rate'].to_f
     dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
 
     dataset
@@ -152,14 +148,10 @@ class RevenueWorker
     dataset['DSP'] = value['dsp_name']
     dataset['DateStart'] = value['start_date'] && value['start_date'].to_datetime
     dataset['DateEnd'] = value['start_date'] && value['end_date'].to_datetime
-    dataset['TypeOfSales'] = key
-    dataset['SalesUnit'] = value['数量'].to_f
     dataset['Total'] = value['income'].to_f
-    dataset['Currency'] = value['结算货币']
-    dataset['ExchangeRate'] = (value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
+    dataset['Currency'] = 'CNY'
+    dataset['ExchangeRate'] = 1 #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
     dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
 
     dataset
   end
-
-end
