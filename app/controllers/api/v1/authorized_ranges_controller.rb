@@ -5,7 +5,7 @@ class Api::V1::AuthorizedRangesController < Api::V1::BaseController
     @ranges = AuthorizedRange.all.order(id: :desc)
 
      # Services::RevenueTask.validate_revenue(1)
-       ReportWork.perform_work(1)
+      # ReportWork.perform_work(1)
      render json: {ranges: @ranges}
   end
 
