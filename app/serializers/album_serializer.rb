@@ -10,8 +10,8 @@ class AlbumSerializer < ActiveModel::Serializer
     :approve
   has_many :primary_artists
   has_many :featuring_artists
-  has_many :songs
-  has_many :images
+  has_many :covers
+  has_many :materials
   belongs_to :language
   class ArtistSerializer < ActiveModel::Serializer
     attributes :id, :name

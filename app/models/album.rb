@@ -26,17 +26,17 @@ class Album < ApplicationRecord
   has_many :featuring_artists, :through => :featuring_artist_types, class_name: 'Artist', :source => :artist
 
   # songs resource association
-  has_many :song_resources, -> { where resource_type: 'song' },
+  has_many :material_resources, -> { where resource_type: 'material' },
             class_name: 'AlbumResource', dependent: :destroy
-  has_many :songs, :through => :song_resources, class_name: 'Resource', :source => :resource
+  has_many :materials, :through => :material_resources, class_name: 'Resource', :source => :resource
 
   # images resource association
-  has_many :image_resources, -> { where resource_type: 'image' },
+  has_many :cover_resources, -> { where resource_type: 'cover' },
             class_name: 'AlbumResource', dependent: :destroy
-  has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
+  has_many :covers, :through => :cover_resources, class_name: 'Resource', :source => :resource
 
 
   accepts_nested_attributes_for :primary_artists, :allow_destroy => true
-  accepts_nested_attributes_for :songs, :allow_destroy => true
-  accepts_nested_attributes_for :images, :allow_destroy => true
+  accepts_nested_attributes_for :materials, :allow_destroy => true
+  accepts_nested_attributes_for :covers, :allow_destroy => true
 end
