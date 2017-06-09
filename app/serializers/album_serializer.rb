@@ -7,7 +7,8 @@ class AlbumSerializer < ActiveModel::Serializer
     :release_version,
     :remark,
     :upc,
-    :approve
+    :approve,
+    :tracks
   has_many :primary_artists
   has_many :featuring_artists
   has_many :covers

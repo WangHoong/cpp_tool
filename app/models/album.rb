@@ -12,6 +12,7 @@ class Album < ApplicationRecord
   scope :recent, -> { order('id DESC') }
 
   belongs_to :language
+  has_and_belongs_to_many :tracks
 
   # primary artist album association
   has_many :primary_artist_types, -> { where album_type: 'AlbumOfPrimaryArtist' },
