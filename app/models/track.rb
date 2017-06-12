@@ -34,7 +34,7 @@ class Track < ApplicationRecord
   def genre_name
     genre.try(:name)
   end
- 
+
 
   class_attribute :as_list_json_options
 	self.as_list_json_options={

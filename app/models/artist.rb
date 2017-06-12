@@ -1,7 +1,7 @@
 class Artist < ApplicationRecord
 	include Workflow
 	include ApproveWorkflow
-	audited
+	audited 
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum gender_type: [:male,:female,:team]
 	validates :name, presence: true
@@ -17,7 +17,7 @@ class Artist < ApplicationRecord
            class_name: 'ArtistResource', dependent: :destroy
   has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
 
-	has_and_belongs_to_many :tracks 
+	has_and_belongs_to_many :tracks
 
   # artist album association
   has_many :artist_albums, class_name: 'ArtistAlbum'
