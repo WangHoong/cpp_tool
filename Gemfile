@@ -98,3 +98,6 @@ gem 'axlsx_rails'
 gem "roo"
 
 gem 'awesome_nested_set'
+
+#add sentry exception log service
+gem 'sentry-raven'

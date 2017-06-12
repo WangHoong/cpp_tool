@@ -9,7 +9,8 @@ class Album < ApplicationRecord
 
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 
-  scope :recent, -> { order('id DESC') }
+  scope :recent, -> { select('name').order('id DESC') }
+  scope :list ,->{select('id,name.desc').order('id ASC')}
 
   belongs_to :language
   has_and_belongs_to_many :tracks
