@@ -18,7 +18,7 @@ class ArtistSerializer < ActiveModel::Serializer
   class ArtistNameSerializer < ActiveModel::Serializer
     attributes :name, :language_name
     def language_name
-      object.language.name
+      object.language.try(:name)
     end
   end
   def approve

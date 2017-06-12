@@ -17,7 +17,7 @@ class Artist < ApplicationRecord
            class_name: 'ArtistResource', dependent: :destroy
   has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
 
-	has_and_belongs_to_many :tracks, join_table:'artists_tracks'
+	has_and_belongs_to_many :tracks 
 
   # artist album association
   has_many :artist_albums, class_name: 'ArtistAlbum'
@@ -28,5 +28,12 @@ class Artist < ApplicationRecord
 	accepts_nested_attributes_for :artist_names, :allow_destroy => true
 
   scope :recent, -> {order('id DESC')}
+
+
+	class_attribute :as_list_json_options
+	self.as_list_json_options={
+			only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_name,:country_id,:not_through_reason,:website],
+			include: [:albums,:tracks]
+	}
 
 end
