@@ -1,6 +1,6 @@
 class Album < ApplicationRecord
-  include Workflow
-	include ApproveWorkflow
+  # include Workflow
+	# include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
   validates :label, presence: true
@@ -9,8 +9,7 @@ class Album < ApplicationRecord
 
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 
-  scope :recent, -> { select('name').order('id DESC') }
-  scope :list ,->{select('id,name.desc').order('id ASC')}
+  scope :recent, -> { order('id DESC') }
 
   belongs_to :language
   has_and_belongs_to_many :tracks
