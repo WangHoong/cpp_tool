@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
 
+    include Response
+    include ExceptionHandler
+
     # Authorization related methods and callbacks
     #include CanCan::ControllerAdditions
     #include ActionController::Cookies
