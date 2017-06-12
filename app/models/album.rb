@@ -1,6 +1,6 @@
 class Album < ApplicationRecord
-  # include Workflow
-	# include ApproveWorkflow
+  include Workflow
+	include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
   validates :label, presence: true
