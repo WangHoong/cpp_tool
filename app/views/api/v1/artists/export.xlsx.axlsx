@@ -1,4 +1,5 @@
 wb = xlsx_package.workbook
+
 wb.add_worksheet(name: "艺人列表") do |sheet|
   row_name = ['编号', '姓名','国家','性别','创建时间','更新时间']
   sheet.add_row row_name
