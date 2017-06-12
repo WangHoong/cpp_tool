@@ -8,10 +8,10 @@ Rails.application.routes.draw do
           namespace :cp do
             resources :contracts do
               collection do
-                post :approve
+                post :accept
               end
               member do
-                post :unverify,:verify
+                post :reject
               end
               resources :authorizes,  except: [:create,:update]
             end #contracts
@@ -44,10 +44,10 @@ Rails.application.routes.draw do
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :providers, only: [:index, :create, :show, :update, :destroy] do
             collection do
-              post :approve
+              post :accept
             end
             member do
-              post :unverify,:verify
+              post :reject
             end
           end#providers
           resources :roles do
@@ -62,29 +62,30 @@ Rails.application.routes.draw do
           resources :banks, only: [:index, :create, :show, :update, :destroy]
           resources :tracks, only: [:index, :create, :show, :update, :destroy] do
             collection do
-              post :approve
+              post :accept
               get :export
             end
             member do
-              post :unverify,:verify
+              post :reject
             end
           end
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
             collection do
-              post :approve
+              post :accept
               get :export
+            end
+            member do
+              post :reject
             end
           end
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
-        			post :approve
               get :export
-              post :export
+        			post :accept
         		end
             member do
-              get :tracks
-              get :albums
-              post :approve
+              get :albums,:tracks
+              post :reject
             end
           end #artists
           resources :countries, only: [:index]

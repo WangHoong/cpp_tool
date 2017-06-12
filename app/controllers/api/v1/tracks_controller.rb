@@ -3,7 +3,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @tracks = Track.includes(:albums, :artists, :audits, :contract, :provider).recent.page(page).per(size)
+    @tracks = Track.includes(:albums, :artists,:audits, :contract, :provider).recent.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
@@ -37,37 +37,39 @@ class Api::V1::TracksController < Api::V1::BaseController
     @track.destroy
   end
 
-  def approve
-    @tracks = Track.where(id: params[:track_ids])
-    if @tracks.update_all(status: :accept, reason: nil)
-      head :ok
-    else
-      render json: @tracks.errors, status: :unprocessable_entity
-    end
-  end
-
-  def verify
-    @track = get_track
-    if @tracks.update_all(status: :accept, reason: nil)
-      head :ok
-    else
-      render json: @tracks.errors, status: :unprocessable_entity
-    end
-  end
-
-  def unverify
-    @track = get_track
-    if @track.update(status: :reject, reason: params[:reason])
-      head :ok
-    end
-  end
+  #批量审核通过
+   def accept
+     begin
+       @tracks = get_track_by_ids.limit(20)
+       comment = '审核通过'
+       @tracks.each do |track|
+         track.accept!
+         track.create_auditables(current_user,'accept',comment)
+       end
+         head :ok
+     rescue => e
+         api_error(status: 500,error: e)
+     end
+   end
+  #拒绝通过
+   def reject
+     comment =  params['not_through_reason']
+     begin
+       @track = Track.find(params[:id])
+       @track.reject!(comment)
+       @track.create_auditables(current_user,'reject',comment)
+       head :ok
+     rescue => e
+       api_error(status: 500,error: e)
+     end
+   end
 
   # POST /tracks/export
   def export
     ids = (params[:ids] || '').split(',')
     return render text: '请选择要导出的id列表' if ids.empty?
 
-    @tracks = Track.includes(:albums, :artists, :contract, :provider).recent.where(id: ids)
+    @tracks = Track.includes(:albums, :tracks, :contract, :provider).recent.where(id: ids)
     render xlsx: 'tracks/export.xlsx.axlsx', filename: '歌曲列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
@@ -75,6 +77,10 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def get_track
     Track.find params[:id]
+  end
+
+  def get_track_by_ids
+    Track.where(id: params[:track_ids])
   end
 
   def track_params
@@ -94,8 +100,8 @@ class Api::V1::TracksController < Api::V1::BaseController
         :authorize_id,
         :provider_id,
         album_ids: [],
-        artist_ids: [],
-        accompany_artists_attributes: [:id, :name, :_destroy],
+        track_ids: [],
+        accompany_tracks_attributes: [:id, :name, :_destroy],
         track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
         track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )

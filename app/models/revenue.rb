@@ -1,4 +1,5 @@
 class Revenue < ApplicationRecord
+  include Workflow
   enum status: [:processing, :processed, :confirmed, :accounted, :done]
 
   belongs_to :currency
@@ -195,7 +196,7 @@ class Revenue < ApplicationRecord
     body = options.merge({
       query: { bool: {must: terms} }
     })
- 
+
     EsClient.instance.search({
       body: body
     }.merge(search_config))

@@ -5,7 +5,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:songs, :images, :country, :audits,:albums,:artist_names).recent
+    @artists = Artist.includes(:songs, :tracks, :images, :country, :audits,:albums,:artist_names).recent
     @artists = @artists.db_query(name: params[:name]) if params[:name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)
@@ -49,6 +49,34 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     end
   end
 
+#批量审核通过
+ def accept
+   begin
+     @artists = get_artist_by_ids.limit(20)
+     comment = '审核通过'
+     @artists.each do |artist|
+       artist.accept!
+       artist.create_auditables(current_user,'accept',comment)
+     end
+       head :ok
+   rescue => e
+       api_error(status: 500,error: e)
+   end
+ end
+#拒绝通过
+ def reject
+   comment =  params['not_through_reason']
+   begin
+     @artist = Artist.find(params[:id])
+     @artist.reject!(comment)
+     @artist.create_auditables(current_user,'reject',comment)
+     head :ok
+   rescue => e
+     api_error(status: 500,error: e)
+   end
+ end
+
+=begin
   # post /artists/approve
   def approve
     case !!params[:id]
@@ -69,7 +97,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
         end
     end
   end
-
+=end
   def tracks
     page = params.fetch(:page, 1).to_i
     size = params[:size]

@@ -39,30 +39,34 @@ class Api::V1::ProvidersController < Api::V1::BaseController
     head :ok
   end
 
-  def verify
-      @provider =  get_provider
-      if @provider.update(status: :accept,reason: nil)
-          head :ok
-      else
-          render json: @contract.errors, status: :unprocessable_entity
-      end
-  end
+  #批量审核通过
+   def accept
+     begin
+       @providers = get_provider_by_ids.limit(20)
+       comment = '审核通过'
+       @providers.each do |provider|
+         provider.accept!
+         provider.create_auditables(current_user,'accept',comment)
+       end
+         head :ok
+     rescue => e
+         api_error(status: 500,error: e)
+     end
+   end
+  #拒绝通过
+   def reject
+     comment =  params['not_through_reason']
+     begin
+       @provider = Provider.find(params[:id])
+       @provider.reject!(comment)
+       @provider.create_auditables(current_user,'reject',comment)
+       head :ok
+     rescue => e
+       api_error(status: 500,error: e)
+     end
+   end
 
-  def unverify
-    @provider =  get_provider
-    if @provider.update(status: :reject,reason: params[:reason])
-        head :ok
-    end
-  end
 
-  def approve
-    @providers = Provider.where(id: params[:provider_ids])
-    if @providers.update_all(status: :accept,reason: nil)
-        head :ok
-    else
-        render json: @providers.errors, status: :unprocessable_entity
-    end
-  end
 
 
 
@@ -70,6 +74,10 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   private
   def get_provider
     Provider.find(params[:id])
+  end
+
+  def get_provider_by_ids
+     Provider.where(id: params[:provider_ids])
   end
 
   def provider_params

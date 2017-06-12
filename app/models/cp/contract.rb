@@ -1,4 +1,6 @@
 class Cp::Contract < ApplicationRecord
+  include Workflow
+  include ApproveWorkflow
   self.table_name=:cp_contracts
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited

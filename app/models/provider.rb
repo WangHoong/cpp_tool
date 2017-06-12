@@ -1,5 +1,7 @@
 class Provider < ApplicationRecord
-	#include Workflow
+	include Workflow
+	include ApproveWorkflow
+	audited
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum status: [:pending,:accept,:reject]
 	enum property: [:personal,:company]

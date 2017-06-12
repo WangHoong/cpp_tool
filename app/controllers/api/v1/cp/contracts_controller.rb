@@ -40,40 +40,40 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
       render json: @contract.errors, status: :unprocessable_entity
     end
   end
-
-
-
+ 
   def destroy
     get_contract.destroy
     render  json: {status: 200}, status: :ok
   end
 
-  def approve
-    @contracts = get_contract_list
-    if @contracts.update_all(status: :accept,reason: nil)
-        head :ok
-    else
-        render json: @contracts.errors, status: :unprocessable_entity
-    end
-  end
+  #批量审核通过
+   def accept
+     begin
+       @contracts = get_contract_list.limit(20)
+       comment = '审核通过'
+       @contracts.each do |contract|
+         contract.accept!
+         contract.create_auditables(current_user,'accept',comment)
+       end
+         head :ok
+     rescue => e
+         api_error(status: 500,error: e)
+     end
+   end
+  #拒绝通过
+   def reject
+     comment =  params['not_through_reason']
+     begin
+       @contract = ::Cp::Contract.find(params[:id])
+       @contract.reject!(comment)
+       @contract.create_auditables(current_user,'reject',comment)
+       head :ok
+     rescue => e
+       api_error(status: 500,error: e)
+     end
+   end
 
-  def verify
-      @contract = get_contract
-      if @contract.update(status: :accept,reason: nil)
-          head :ok
-      else
-          render json: @contract.errors, status: :unprocessable_entity
-      end
-  end
 
-  def unverify
-      @contract = get_contract
-      if @contract.update(status: :reject,reason: params[:reason])
-          head :ok
-      else
-        render json: @contract.errors, status: :unprocessable_entity
-      end
-  end
 
   private
 
