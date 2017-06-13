@@ -94,6 +94,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         :label,
         :lyric,
         :remark,
+        :copyright_attribution,
         :language_id,
         :track_id,
         :contract_id,

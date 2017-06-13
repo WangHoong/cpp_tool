@@ -77,6 +77,35 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     render xlsx: 'albums/export.xlsx.axlsx', filename: '专辑列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
+  # get /albums/:id/materials
+  def materials
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 5
+    @album = get_album
+    @materials = @album.materials
+    @covers = @album.covers
+    render json: {
+      albums: {
+        materials: @materials,
+        covers: @covers
+      }
+    }
+  end
+
+  # get /albums/:id/tracks
+  def tracks
+    page = params.fetch(:page, 1).to_i
+    size = params[:size]
+    @album = get_album
+    @tracks = @album.tracks.recent.page(page).per(size)
+    render json: {
+      albums: {
+        tracks: @tracks.as_json(Track.as_album_list_json_options)
+      },
+      meta: page_info(@tracks)
+    }
+  end
+
   private
   def get_album
     Album.find(params[:id])
@@ -99,6 +128,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :not_through_reason,
             :status,
             :remark,
+            :covers_order,
             :original_label_number,
             :release_date,
             :release_version,

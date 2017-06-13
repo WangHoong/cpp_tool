@@ -12,6 +12,7 @@ class CreateTracks < ActiveRecord::Migration[5.0]
       t.string   :ost
       t.string   :lyric,                                                                                               comment: "作词"
       t.string   :label
+      t.string   :copyright_attribution, comment: "版权最终归属"
       t.boolean  :is_agent,      default: false
       t.boolean  :deleted,      default: false
       t.string   :status               ,default: 0,                                                       comment: "pending,accepted,rejected"
