@@ -6,6 +6,7 @@ class Artist < ApplicationRecord
 	enum status: [:pending,:accepted,:rejected]
   validates :name, presence: true
   belongs_to :country
+  has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
   has_many :artist_names
   # songs resource association
   has_many :song_resources, -> {where resource_type: 'song'},
@@ -22,6 +23,8 @@ class Artist < ApplicationRecord
   # artist album association
   has_many :artist_albums, class_name: 'ArtistAlbum'
   has_many :albums, :through => :artist_albums, class_name: 'Album', :source => :album
+
+  before_save :add_audit_comment
 
   accepts_nested_attributes_for :songs, :allow_destroy => true
   accepts_nested_attributes_for :images, :allow_destroy => true
@@ -41,5 +44,15 @@ class Artist < ApplicationRecord
 			include: [:albums,:tracks],
       methods: [:country_name]
 	}
+
+  private
+
+  def add_audit_comment
+    unless audited_changes.empty?
+       self.audit_comment = '艺人数据发生变更' if self.id
+       self.audit_comment = '新建艺人' if self.id.blank?
+    end
+  end
+
 
 end

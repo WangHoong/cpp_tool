@@ -1,8 +1,8 @@
 include Workflow
 module ApproveWorkflow
 
-def create_auditables(user,action,comment)
-	write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
+def create_auditables(user,action,comment,column_changes)
+	write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User',audited_changes: column_changes, comment: comment)
 end
 
 def self.included(base)
@@ -29,4 +29,5 @@ def self.included(base)
      end
    end
  end
+ 
 end

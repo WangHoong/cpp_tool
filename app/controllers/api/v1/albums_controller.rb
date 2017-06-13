@@ -86,23 +86,32 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-       @albums = get_albums_by_ids.limit(20)
+       @albums = get_album_by_ids.limit(20)
        comment = '审核通过'
        @albums.each do |album|
-         album.accept!
-         album.create_auditables(current_user,'accept',comment)
+         album.without_auditing do
+           album.accept!
+         end
+         if album.previous_changes.present?
+           changes = {status: album.previous_changes['status']}
+           album.create_auditables(current_user,'accept',comment,changes)
+         end
        end
        head :ok
    end
   #拒绝通过
    def reject
-      comment =  params['not_through_reason']
-       @album = Album.find(params[:id])
-       @album.reject!(comment)
-       @album.create_auditables(current_user,'reject',comment)
-       head :ok
+      comment =  params['not_through_reason'] || '审核未通过'
+       @album = get_album
+       @album.without_auditing do
+         @album.reject!(comment)
+       end
+       if @album.previous_changes.present?
+          changes = {status: @album.previous_changes['status']}
+          @album.create_auditables(current_user,'reject',comment,changes)
+        end
+        head :ok
    end
-
 
   private
   def get_album

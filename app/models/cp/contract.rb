@@ -21,6 +21,7 @@ class Cp::Contract < ApplicationRecord
   enum status: [:pending,:accept,:reject]
 
   after_create :set_pay_amount_total
+  before_save :add_audit_comment
   #validates_presence_of :authorizes
 
   scope :recent, -> { order('cp_contracts.id DESC') }
@@ -81,7 +82,7 @@ class Cp::Contract < ApplicationRecord
      end
    end
 
- 
+
 
    class_attribute :as_list_json_options
    self.as_list_json_options={
@@ -99,6 +100,13 @@ class Cp::Contract < ApplicationRecord
 
 
    private
+
+   def add_audit_comment
+     unless audited_changes.empty?
+        self.audit_comment = '合约数据发生变更' if self.id
+        self.audit_comment = '新建合约' if self.id.blank?
+     end
+   end
 
    def set_pay_amount_total
      if pay_amount.to_i > 0
