@@ -126,6 +126,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :format,
             :label,
             :upc,
+            :cd_volume,
             :not_through_reason,
             :status,
             :remark,
