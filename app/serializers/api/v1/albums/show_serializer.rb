@@ -1,7 +1,5 @@
 class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
   attributes :tracks_length,
-    :primary_artists,
-    :featuring_artists,
     :release_date,
     :has_explict,
     :language,
@@ -14,10 +12,6 @@ class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
   def tracks_length
     object.tracks.size
   end
-  def primary_artists
-    @primary_artists = object.primary_artists
-  end
-  def featuring_artists
-    @featuring_artists = object.featuring_artists
-  end
+  has_many :primary_artists, serializer: Api::V1::Albums::ArtistSerializer
+  has_many :featuring_artists, serializer: Api::V1::Albums::ArtistSerializer
 end
