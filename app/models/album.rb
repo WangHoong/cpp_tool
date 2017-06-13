@@ -3,7 +3,7 @@ class Album < ApplicationRecord
 	include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
-  validates :label, presence: true
+  validates :label, :original_label_number, :release_date, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true
 

@@ -99,6 +99,8 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :not_through_reason,
             :status,
             :remark,
+            :original_label_number,
+            :release_date,
             :release_version,
             primary_artist_ids: [],
             featuring_artist_ids: [],

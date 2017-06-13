@@ -10,6 +10,8 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "genre",                                           comment: "曲风"
       t.string   "label",                                           comment: "唱片公司"
       t.datetime "original_release_date",                           comment: "最初发行日期"
+      t.string   "original_label_number",                           comment: "原唱片公司编号"
+      t.string   "release_date",                                    comment: "发行日期"
       t.string   "p_line_copyright",                                comment: "℗ "
       t.string   "c_line_copyright",                                comment: "©"
       t.boolean  "has_explict",                                     comment: "是否包含限制内容，0:no,1:yes,2:clean"
