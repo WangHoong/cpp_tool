@@ -1,5 +1,6 @@
 class Track < ApplicationRecord
-  audited only: [:status]
+  include ApproveWorkflow
+  audited
   has_and_belongs_to_many :albums
   has_and_belongs_to_many :artists
   belongs_to :language
@@ -18,7 +19,7 @@ class Track < ApplicationRecord
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   enum status: [:pending,:accepted,:rejected]
 
-  #validates :title, presence: true , uniqueness: true
+  validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
 
   scope :recent, -> {order('id DESC')}
@@ -35,9 +36,6 @@ class Track < ApplicationRecord
     genre.try(:name)
   end
 
-  def create_auditables(user,action,comment)
-    write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
-  end
 
   class_attribute :as_list_json_options
 	self.as_list_json_options={

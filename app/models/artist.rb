@@ -1,5 +1,4 @@
 class Artist < ApplicationRecord
-  include Workflow
   include ApproveWorkflow
   audited
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
@@ -31,9 +30,6 @@ class Artist < ApplicationRecord
   scope :recent, -> {order('id DESC')}
 
 
-  def create_auditables(user,action,comment)
-    write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
-  end
 
   def country_name
       country.try(:cname)

@@ -1,5 +1,4 @@
 class Provider < ApplicationRecord
-	include Workflow
 	include ApproveWorkflow
 	audited
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
@@ -18,8 +17,6 @@ class Provider < ApplicationRecord
 			include: [audits: {only: [:id,:user_id,:username,:action,:version,:remote_address,:comment,:created_at]}]
 	}
 
-	def create_auditables(user,action,comment)
-		write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
-	end
+
 
 end
