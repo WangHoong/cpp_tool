@@ -78,6 +78,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     @tracks = @album.tracks.recent.page(page).per(size)
     render json: {
       albums: {
+        tracks_order: @album.tracks_order,
         tracks: @tracks.as_json(Track.as_album_list_json_options)
       },
       meta: page_info(@tracks)
@@ -128,6 +129,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :status,
             :remark,
             :covers_order,
+            :tracks_order,
             :original_label_number,
             :release_date,
             :release_version,
