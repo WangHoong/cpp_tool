@@ -61,7 +61,7 @@ class Api::V1::TracksController < Api::V1::BaseController
     ids = (params[:ids] || '').split(',')
     return render text: '请选择要导出的id列表' if ids.empty?
 
-    @tracks = Track.includes(:albums, :tracks, :contract, :provider).recent.where(id: ids)
+    @tracks = Track.includes(:albums, :artists, :contract, :provider).recent.where(id: ids)
     render xlsx: 'tracks/export.xlsx.axlsx', filename: '歌曲列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
@@ -88,13 +88,12 @@ class Api::V1::TracksController < Api::V1::BaseController
         :remark,
         :copyright_attribution,
         :language_id,
-        :track_id,
         :contract_id,
         :authorize_id,
         :provider_id,
         album_ids: [],
-        track_ids: [],
-        accompany_tracks_attributes: [:id, :name, :_destroy],
+        artist_ids: [],
+        accompany_artists_attributes: [:id, :name, :_destroy],
         track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
         track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )

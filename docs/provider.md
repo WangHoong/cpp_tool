@@ -215,44 +215,26 @@
  NULL
 
 
-## 6.6、批量通过版权方
+
+## 6.6、审核不通过版
 
 ### HTTP请求
 
-`POST  /api/v1/providers/:id/verify`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| id   | 是    | 版权方id  |
-
-
-
-### Response 响应
-
-> 响应数据:
-null
-
-## 6.7、审核不通过版
-
-### HTTP请求
-
-`POST  /api/v1/providers/:id/unverify`
+`POST  /api/v1/providers/:id/reject`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | id   | 是    | 版权方id |
-| reason  |  是    |  未通过原因 |
+| not_through_reason  |  是    |  未通过原因 |
 
 ### Request 请求
 
 ```json
 {
- "id": 1,
- "reason": "dddd"
+"id": 1,
+"not_through_reason": "dddd"
 }
 
 ```
@@ -262,24 +244,24 @@ null
 null
 
 
-## 6.8、批量审核通过
+## 6.7、批量审核通过
 
 ### HTTP请求
 
-`POST  /api/v1/providers/approve`
+`POST  /api/v1/providers/accept`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| provider_ids   | 是    | ids |
+| provider_ids   | 是    | 版权方id |
 
 
 ### Request 请求
 
 ```json
 {
- "provider_ids": [1,2]
+"provider_ids": [1,2]
 }
 
 ```
