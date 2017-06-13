@@ -50,7 +50,7 @@ class Track < ApplicationRecord
   class_attribute :as_album_list_json_options
 	self.as_album_list_json_options={
 			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution],
-      methods: [:provider_name, :primary_artist]
+      methods: [:provider_name, :primary_artists]
 	}
 
   class_attribute :as_show_json_options
