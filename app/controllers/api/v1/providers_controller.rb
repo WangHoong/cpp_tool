@@ -3,7 +3,7 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @providers = Provider.order(id: :desc)
+    @providers = Provider.includes(:audits).order(id: :desc)
     @providers = @providers.where(name: params[:q]) if params[:q]
     @providers = @providers.page(page).per(size)
     render json: {providers: @providers.as_json(Provider.as_list_json_options), meta: page_info(@providers)}
@@ -41,35 +41,22 @@ class Api::V1::ProvidersController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-     begin
        @providers = get_provider_by_ids.limit(20)
        comment = '审核通过'
        @providers.each do |provider|
          provider.accept!
          provider.create_auditables(current_user,'accept',comment)
        end
-         head :ok
-     rescue => e
-         api_error(status: 500,error: e)
-     end
+       head :ok
    end
   #拒绝通过
    def reject
-     comment =  params['not_through_reason']
-     begin
-       @provider = Provider.find(params[:id])
+       comment =  params['not_through_reason']
+       @provider = get_provider
        @provider.reject!(comment)
        @provider.create_auditables(current_user,'reject',comment)
        head :ok
-     rescue => e
-       api_error(status: 500,error: e)
-     end
    end
-
-
-
-
-
 
   private
   def get_provider

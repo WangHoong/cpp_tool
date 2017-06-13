@@ -39,7 +39,6 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-     begin
        @tracks = get_track_by_ids.limit(20)
        comment = '审核通过'
        @tracks.each do |track|
@@ -47,21 +46,14 @@ class Api::V1::TracksController < Api::V1::BaseController
          track.create_auditables(current_user,'accept',comment)
        end
          head :ok
-     rescue => e
-         api_error(status: 500,error: e)
-     end
    end
   #拒绝通过
    def reject
-     comment =  params['not_through_reason']
-     begin
+       comment =  params['not_through_reason']
        @track = Track.find(params[:id])
        @track.reject!(comment)
        @track.create_auditables(current_user,'reject',comment)
        head :ok
-     rescue => e
-       api_error(status: 500,error: e)
-     end
    end
 
   # POST /tracks/export

@@ -16,7 +16,7 @@ class Track < ApplicationRecord
   has_many :track_composers
   accepts_nested_attributes_for :track_composers, :allow_destroy => true
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
-  enum status: [:pending,:accept,:reject]
+  enum status: [:pending,:accepted,:rejected]
 
   #validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
@@ -35,6 +35,9 @@ class Track < ApplicationRecord
     genre.try(:name)
   end
 
+  def create_auditables(user,action,comment)
+    write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
+  end
 
   class_attribute :as_list_json_options
 	self.as_list_json_options={
@@ -46,7 +49,7 @@ class Track < ApplicationRecord
   class_attribute :as_show_json_options
   self.as_show_json_options={
      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists,:track_resources,:track_composers,:audits],
+      include: [:albums,:artists,:track_resources,:track_composers,audits: {only: [:id,:user_id,:username,:action,:version,:remote_address,:comment,:created_at]}],
       methods: [:provider_name,:contract_name,:genre_name]
   }
 
