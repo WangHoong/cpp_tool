@@ -385,72 +385,59 @@
     }
   }
 }
-
 ```
-## 3.6. 批量审核通过专辑接口
+
+
+## 3.6、审核不通过版
 
 ### HTTP请求
 
-`post /api/v1/albums/approve`
+`POST  /api/v1/albums/:id/reject`
 
 ### Request 请求参数
 
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| id   | 是    | 版权方id |
+| not_through_reason  |  是    |  未通过原因 |
 
-| 参数名        | 是否必需 | 描述     |
-| ---------- | ---- | ------ |
-| album_ids | 是    | 专辑ID数组 |
+### Request 请求
 
-#### 请求示例
-
-`put /api/v1/albums/approve`
 ```json
 {
-"album_ids":[10]
+"id": 1,
+"not_through_reason": "dddd"
 }
-```
 
+```
 ### Response 响应
 
 > 响应数据:
+null
+
+
+## 3.7、批量审核通过
+
+### HTTP请求
+
+`POST  /api/v1/albums/accept`
+
+### Request 请求参数
+
+| 参数名    | 是否必需 | 描述    |
+| ------ | ---- | ----- |
+| album_ids   | 是    | 版权方id |
+
+
+### Request 请求
 
 ```json
 {
-  "albums": [
-    {
-      "id": 10,
-      "name": "222",
-      "genre": "pop",
-      "format": "ep",
-      "label": "111",
-      "release_version": "v1022200",
-      "remark": "1111111",
-      "upc": "222222",
-      "status": "agree",
-      "primary_artists": [
-        {
-          "id": 2,
-          "name": "sfsfsfffs"
-        }
-      ],
-      "featuring_artists": [],
-      "songs": [
-        {
-          "id": 17,
-          "url": "update",
-          "native_name": "update"
-        }
-      ],
-      "images": [
-        {
-          "id": 15,
-          "url": "www.taihe.com",
-          "native_name": "sss"
-        }
-      ],
-      "language": {
-        "name": "英语"
-      }
-    }
-  ]
+"album_ids": [1,2]
 }
+
 ```
+### Response 响应
+
+> 响应数据:
+null

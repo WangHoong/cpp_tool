@@ -181,81 +181,52 @@
  NULL
 
 
-## 7.6、通过合约
+## 7.6、审核不通过版
 
 ### HTTP请求
 
-`POST  /api/v1/cp/contracts/:id/verify`
+`POST  /api/v1/cp/contracts/:id/reject`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| id   | 是    | id |
-
+| id   | 是    | 版权方id |
+| not_through_reason  |  是    |  未通过原因 |
 
 ### Request 请求
 
 ```json
 {
- "id": 1
+"id": 1,
+"not_through_reason": "dddd"
 }
 
 ```
-
 ### Response 响应
 
 > 响应数据:
 null
-
 
 
 ## 7.7、批量审核通过
 
 ### HTTP请求
 
-`POST  /api/v1/contracts/approve`
+`POST  /api/v1/cp/contracts/accept`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| contract_ids   | 是    | ids |
+| contract_ids   | 是    | 版权方id |
 
 
 ### Request 请求
 
 ```json
 {
- "contract_ids": [1,2]
-}
-
-```
-### Response 响应
-
-> 响应数据:
-null
-
-
-## 7.8、合约不通过
-
-### HTTP请求
-
-`POST  /api/v1/cp/contracts/:id/unverify`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| id   | 是    | 版权方id  |
-| reason  |  是    |  未通过原因 |
-
-### Request 请求
-
-```json
-{
- "id": 1,
- "reason": "dddd"
+"contract_ids": [1,2]
 }
 
 ```

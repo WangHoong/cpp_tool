@@ -204,46 +204,32 @@
 ```
 
 
-
-## 6.6、批量通过
-
-### HTTP请求
-
-`POST  /api/v1/tracks/:id/verify`
-
-### Request 请求参数
-
-| 参数名    | 是否必需 | 描述    |
-| ------ | ---- | ----- |
-| id   | 是    | 版权方id  |
-
-
-
-
 ### Response 响应
 
 > 响应数据:
 null
 
-## 6.7、审核不通过版
+
+
+## 5.6、审核不通过版
 
 ### HTTP请求
 
-`POST  /api/v1/tracks/:id/unverify`
+`POST  /api/v1/tracks/:id/reject`
 
 ### Request 请求参数
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
 | id   | 是    | 版权方id |
-| reason  |  是    |  未通过原因 |
+| not_through_reason  |  是    |  未通过原因 |
 
 ### Request 请求
 
 ```json
 {
  "id": 1,
- "reason": "dddd"
+ "not_through_reason": "dddd"
 }
 
 ```
@@ -253,11 +239,11 @@ null
 null
 
 
-## 6.8、批量审核通过
+## 5.7、批量审核通过
 
 ### HTTP请求
 
-`POST  /api/v1/tracks/approve`
+`POST  /api/v1/tracks/accept`
 
 ### Request 请求参数
 
