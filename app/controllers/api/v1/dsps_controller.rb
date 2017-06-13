@@ -7,8 +7,6 @@ class Api::V1::DspsController < Api::V1::BaseController
     render json: {dsps: @dsps.as_json(Dsp.as_list_json_options) , meta: page_info(@dsps)}
   end
 
-
-
     def show
       @dsp = Dsp.find(params[:id])
       render json: {dsp: @dsp.as_json(Dsp.as_list_json_options)}
@@ -37,10 +35,34 @@ class Api::V1::DspsController < Api::V1::BaseController
       head :ok
     end
 
+    #批量审核通过
+     def accept
+         @dsps = get_dsp_by_ids.limit(20)
+         comment = '审核通过'
+         @dsps.each do |dsp|
+           dsp.accept!
+           dsp.create_auditables(current_user,'accept',comment)
+         end
+         head :ok
+     end
+    #拒绝通过
+     def reject
+         comment =  params['not_through_reason']
+         @dsp = get_dsp
+         @dsp.reject!(comment)
+         @dsp.create_auditables(current_user,'reject',comment)
+         head :ok
+     end
+ 
+
   private
     def get_dsp
       Dsp.find(params[:id])
     end
+
+   def get_dsp_by_ids
+     Dsp.where(id: params[:dsp_ids])
+   end
 
     def dsp_params
       params.require(:dsp).permit(:name,:department_id,:is_agent,:contact,:address,:tel,:email,:desc)

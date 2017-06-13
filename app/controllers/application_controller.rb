@@ -30,6 +30,6 @@ class ApplicationController < ActionController::Base
     end
 
     def api_error(opts = {})
-        render head: true, status: opts[:status], error: opts[:error]
+        render head: true, status: opts[:status] 
     end
 end

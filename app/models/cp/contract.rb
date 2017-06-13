@@ -81,6 +81,7 @@ class Cp::Contract < ApplicationRecord
      end
    end
 
+ 
 
    class_attribute :as_list_json_options
    self.as_list_json_options={

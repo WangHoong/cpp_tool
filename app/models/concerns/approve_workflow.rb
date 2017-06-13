@@ -1,20 +1,12 @@
+include Workflow
 module ApproveWorkflow
 
-def self.included(base)
-  def base.approve(params, obj)
-    case params['status']
-    when 'accept'
-      obj.accept!
-    when 'reject'
-      obj.reject!(params['not_through_reason'])
-    else
-      raise Workflow::NoTransitionAllowed, "There is no the #{params['status']} state"
-    end
-  end
+def create_auditables(user,action,comment)
+	write_audit(action: action,user_id: user.id,username: user.name, user_type: 'User', comment: comment)
+end
 
-  def base.batchApprove(objs)
-    objs && objs.update(status: :accepted, not_through_reason: nil)
-  end
+def self.included(base)
+
    base.workflow_column :status
    base.workflow do
      state :pending do

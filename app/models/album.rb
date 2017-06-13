@@ -1,5 +1,4 @@
 class Album < ApplicationRecord
-  include Workflow
 	include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
@@ -42,4 +41,7 @@ class Album < ApplicationRecord
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
   accepts_nested_attributes_for :album_names, :allow_destroy => true
+
+
+
 end

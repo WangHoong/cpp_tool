@@ -1,9 +1,10 @@
 class Dsp < ApplicationRecord
+	include ApproveWorkflow
+	audited
 	validates :name, presence: true
   belongs_to :department
-  has_many :contracts
-	has_many :sp_contracts, class_name: 'Sp::Contract'
-	has_many :sp_authorizes, class_name: 'Sp::Authorize', through: :sp_contracts, source: :authorizes
+  enum status: [:pending,:accepted,:rejected]
+
 
   def department_name
     self.department.try(:name)

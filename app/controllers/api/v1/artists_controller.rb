@@ -51,53 +51,23 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
 #批量审核通过
  def accept
-   begin
      @artists = get_artist_by_ids.limit(20)
      comment = '审核通过'
      @artists.each do |artist|
        artist.accept!
        artist.create_auditables(current_user,'accept',comment)
      end
-       head :ok
-   rescue => e
-       api_error(status: 500,error: e)
-   end
+     head :ok
  end
 #拒绝通过
  def reject
-   comment =  params['not_through_reason']
-   begin
+    comment =  params['not_through_reason']
      @artist = Artist.find(params[:id])
      @artist.reject!(comment)
      @artist.create_auditables(current_user,'reject',comment)
      head :ok
-   rescue => e
-     api_error(status: 500,error: e)
-   end
  end
 
-=begin
-  # post /artists/approve
-  def approve
-    case !!params[:id]
-      when true
-        get_artist
-        begin
-          Artist.approve(artist_params, @artist)
-          render json: @artist
-        rescue Workflow::NoTransitionAllowed => e
-          render json: {status: 403, error: e}, status: :forbidden
-        end
-      else
-        @artists = get_artist_by_ids
-        if Artist.batchApprove(@artists)
-          render json: @artists
-        else
-          render json: @artists.errors, status: :unprocessable_entity
-        end
-    end
-  end
-=end
   def tracks
     page = params.fetch(:page, 1).to_i
     size = params[:size]
