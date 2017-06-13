@@ -45,29 +45,6 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     end
   end
 
-  # Post /albums/approve
-  def approve
-    def approve
-      case !!params[:id]
-        when true
-          @album = get_album
-          begin
-            Album.approve(album_params, @album)
-            render json: @album
-          rescue Workflow::NoTransitionAllowed => e
-            render json: {status: 403, error: e}, status: :forbidden
-          end
-        else
-          @albums = get_albums_by_ids
-          if Album.batchApprove(@albums)
-            render json: @albums
-          else
-            render json: @albums.errors, status: :unprocessable_entity
-          end
-      end
-    end
-  end
-
   # POST /albums/export
   def export
     ids = (params[:ids] || '').split(',')
@@ -106,6 +83,26 @@ class Api::V1::AlbumsController < Api::V1::BaseController
       meta: page_info(@tracks)
     }
   end
+
+  #批量审核通过
+   def accept
+       @albums = get_albums_by_ids.limit(20)
+       comment = '审核通过'
+       @albums.each do |album|
+         album.accept!
+         album.create_auditables(current_user,'accept',comment)
+       end
+       head :ok
+   end
+  #拒绝通过
+   def reject
+      comment =  params['not_through_reason']
+       @album = Album.find(params[:id])
+       @album.reject!(comment)
+       @album.create_auditables(current_user,'reject',comment)
+       head :ok
+   end
+
 
   private
   def get_album
