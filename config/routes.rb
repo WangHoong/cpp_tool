@@ -75,6 +75,7 @@ Rails.application.routes.draw do
               get :export
             end
             member do
+              get :materials, :tracks
               post :reject
             end
           end

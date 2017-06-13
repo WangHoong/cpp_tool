@@ -3,7 +3,7 @@ class Album < ApplicationRecord
 	include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
-  validates :label, presence: true
+  validates :label, :original_label_number, :release_date, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true
 
@@ -12,6 +12,7 @@ class Album < ApplicationRecord
   scope :recent, -> { order('id DESC') }
 
   belongs_to :language
+  has_many :album_names
   has_and_belongs_to_many :tracks
 
   # primary artist album association
@@ -40,4 +41,5 @@ class Album < ApplicationRecord
   accepts_nested_attributes_for :primary_artists, :allow_destroy => true
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
+  accepts_nested_attributes_for :album_names, :allow_destroy => true
 end

@@ -4,12 +4,15 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
     @albums = Album.recent.page(page).per(size)
-    render json: @albums, meta: page_info(@albums)
+    render json: @albums,
+      each_serializer: Api::V1::Albums::IndexSerializer,
+      meta: page_info(@albums)
   end
 
   # Get /albums/:id
   def show
-    render json: get_album
+    render json: get_album,
+      serializer: Api::V1::Albums::ShowSerializer
   end
 
   # Put /albums/:id
@@ -74,6 +77,36 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     render xlsx: 'albums/export.xlsx.axlsx', filename: '专辑列表.xlsx', xlsx_author: 'topdmc.com'
   end
 
+  # get /albums/:id/materials
+  def materials
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 5
+    @album = get_album
+    @materials = @album.materials
+    @covers = @album.covers
+    render json: {
+      albums: {
+        coversOrder: @album.covers_order,
+        materials: @materials,
+        covers: @covers
+      }
+    }
+  end
+
+  # get /albums/:id/tracks
+  def tracks
+    page = params.fetch(:page, 1).to_i
+    size = params[:size]
+    @album = get_album
+    @tracks = @album.tracks.recent.page(page).per(size)
+    render json: {
+      albums: {
+        tracks: @tracks.as_json(Track.as_album_list_json_options)
+      },
+      meta: page_info(@tracks)
+    }
+  end
+
   private
   def get_album
     Album.find(params[:id])
@@ -96,11 +129,15 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :not_through_reason,
             :status,
             :remark,
+            :covers_order,
+            :original_label_number,
+            :release_date,
             :release_version,
             primary_artist_ids: [],
             featuring_artist_ids: [],
-            songs_attributes: [:id, :url, :native_name, :_destroy],
-            images_attributes: [:id, :url, :native_name, :_destroy]
+            materials_attributes: [:id, :url, :native_name, :_destroy],
+            covers_attributes: [:id, :url, :native_name, :_destroy],
+            album_names_attributes: [:id, :name, :language_id, :_destroy]
         )
   end
 end

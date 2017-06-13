@@ -46,6 +46,12 @@ class Track < ApplicationRecord
       methods: [:provider_name,:contract_name]
 	}
 
+  class_attribute :as_album_list_json_options
+	self.as_album_list_json_options={
+			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution],
+      methods: [:provider_name]
+	}
+
   class_attribute :as_show_json_options
   self.as_show_json_options={
      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
