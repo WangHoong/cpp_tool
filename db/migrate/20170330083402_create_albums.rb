@@ -8,6 +8,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.integer  "catalog_tier",                                    comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
       t.integer  "language_id",                                     comment: "语言"
       t.string   "genre",                                           comment: "曲风"
+      t.integer  "cd_volume",                                       comment: "CD 数量"
       t.string   "label",                                           comment: "唱片公司"
       t.string   "covers_order",                                    comment: "封面顺序，逗号分割的id"
       t.datetime "original_release_date",                           comment: "最初发行日期"
