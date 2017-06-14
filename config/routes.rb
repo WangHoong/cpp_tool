@@ -73,7 +73,7 @@ Rails.application.routes.draw do
           resources :albums, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept
-              get :export
+              get :export, :query
             end
             member do
               get :materials, :tracks

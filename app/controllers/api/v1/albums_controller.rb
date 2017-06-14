@@ -49,6 +49,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def export
     ids = (params[:ids] || '').split(',')
     return render text: '请选择要导出的id列表' if ids.empty?
+    return render text: '一次最多导出2000条数据' if ids.length > 2000
 
     @albums = Album.where(id: ids)
     render xlsx: 'albums/export.xlsx.axlsx', filename: '专辑列表.xlsx', xlsx_author: 'topdmc.com'
@@ -63,11 +64,21 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     @covers = @album.covers
     render json: {
       albums: {
-        coversOrder: @album.covers_order,
         materials: @materials,
         covers: @covers
       }
     }
+  end
+
+  # get /albums/query?name="..."
+  def query
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 10
+    puts "=============  #{size} =========="
+    @albums = Album.where("name LIKE ?", "%#{params[:name]}%").page(page).per(size)
+    render json: @albums,
+      each_serializer: Api::V1::Albums::IndexSerializer,
+      meta: page_info(@albums)
   end
 
   # get /albums/:id/tracks
@@ -75,9 +86,11 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @album = get_album
-    @tracks = @album.tracks.recent.page(page).per(size)
-    render json: {tracks: @tracks.as_json(Track.as_album_list_json_options),
-                   tracks_order: @album.tracks_order, meta: page_info(@tracks) }
+    @tracks = @album.tracks.album_order.page(page).per(size)
+    render json: {
+      tracks: @tracks.as_json(Track.as_album_list_json_options),
+      meta: page_info(@tracks)
+    }
   end
 
   #批量审核通过
@@ -132,16 +145,16 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :not_through_reason,
             :status,
             :remark,
-            :covers_order,
-            :tracks_order,
+            :has_explict,
             :original_label_number,
             :release_date,
             :release_version,
             primary_artist_ids: [],
             featuring_artist_ids: [],
             materials_attributes: [:id, :url, :native_name, :_destroy],
-            covers_attributes: [:id, :url, :native_name, :_destroy],
-            album_names_attributes: [:id, :name, :language_id, :_destroy]
+            covers_attributes: [:id, :url, :native_name, :position, :_destroy],
+            album_names_attributes: [:id, :name, :language_id, :_destroy],
+            tracks_attributes: [:id, :position]
         )
   end
 end

@@ -78,6 +78,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def export
     ids = (params[:ids] || '').split(',')
     return render text: '请选择要导出的id列表' if ids.empty?
+    return render text: '一次最多导出2000条数据' if ids.length > 2000
 
     @tracks = Track.includes(:albums, :artists, :contract, :provider).recent.where(id: ids)
     render xlsx: 'tracks/export.xlsx.axlsx', filename: '歌曲列表.xlsx', xlsx_author: 'topdmc.com'

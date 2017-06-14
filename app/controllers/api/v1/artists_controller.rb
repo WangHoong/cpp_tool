@@ -88,7 +88,9 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # POST /artists/export
   def export
     ids = (params[:ids] || '').split(',')
+
     return render text: '请选择要导出的id列表' if ids.empty?
+    return render text: '一次最多导出2000条数据' if ids.length > 2000
 
     @artists = Artist.where(id: ids)
     render xlsx: 'artists/export.xlsx.axlsx', filename: '艺人列表.xlsx', xlsx_author: 'topdmc.com'
