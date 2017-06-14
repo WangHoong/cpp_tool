@@ -39,24 +39,36 @@ class Api::V1::ProvidersController < Api::V1::BaseController
     head :ok
   end
 
+
   #批量审核通过
    def accept
        @providers = get_provider_by_ids.limit(20)
        comment = '审核通过'
        @providers.each do |provider|
-         provider.accept!
-         provider.create_auditables(current_user,'accept',comment)
+         provider.without_auditing do
+           provider.accept!
+         end
+         if provider.previous_changes.present?
+          changes = {status: provider.previous_changes['status']}
+          provider.create_auditables(current_user,'accept',comment,changes)
+         end
        end
        head :ok
    end
   #拒绝通过
    def reject
-       comment =  params['not_through_reason']
+      comment =  params['not_through_reason'] || '审核未通过'
        @provider = get_provider
-       @provider.reject!(comment)
-       @provider.create_auditables(current_user,'reject',comment)
-       head :ok
+       @provider.without_auditing do
+         @provider.reject!(comment)
+       end
+       if @provider.previous_changes.present?
+          changes = {status: @provider.previous_changes['status']}
+          @provider.create_auditables(current_user,'reject',comment,changes)
+        end
+        head :ok
    end
+
 
   private
   def get_provider
@@ -68,6 +80,6 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def provider_params
-    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
+    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:not_through_reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
   end
 end

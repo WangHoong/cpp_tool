@@ -1,4 +1,4 @@
-class Api::V1::Cp::AuthorizesController < ApplicationController
+class Api::V1::Cp::AuthorizesController < Api::V1::BaseController
   before_action :get_contract
 
   def index
@@ -29,7 +29,7 @@ class Api::V1::Cp::AuthorizesController < ApplicationController
   private
 
   def get_contract
-    @contract =  Cp::Contract.find(params[:contract_id])
+    @contract = Cp::Contract.find(params[:contract_id])
   end
   def get_authorize
     @contract.authorizes.find(params[:id])

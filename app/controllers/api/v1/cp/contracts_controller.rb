@@ -48,23 +48,32 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-       @contracts = get_contract_list.limit(20)
+       @contracts = get_contract_by_ids.limit(20)
        comment = '审核通过'
        @contracts.each do |contract|
-         contract.accept!
-         contract.create_auditables(current_user,'accept',comment)
+         contract.without_auditing do
+           contract.accept!
+         end
+         if contract.previous_changes.present?
+          changes = {status: contract.previous_changes['status']}
+          contract.create_auditables(current_user,'accept',comment,changes)
+         end
        end
        head :ok
    end
   #拒绝通过
    def reject
-       comment =  params['not_through_reason']
-       @contract = ::Cp::Contract.find(params[:id])
+     comment =  params['not_through_reason'] || '审核未通过'
+     @contract = get_contract
+     @contract.without_auditing do
        @contract.reject!(comment)
-       @contract.create_auditables(current_user,'reject',comment)
-       head :ok
+     end
+     if @contract.previous_changes.present?
+        changes = {status: @contract.previous_changes['status']}
+        @contract.create_auditables(current_user,'reject',comment,changes)
+      end
+      head :ok
    end
-
 
 
   private
@@ -74,7 +83,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   end
 
   def get_contract_list
-      ::Cp::Contract.where(id: params[:contract_ids])
+     ::Cp::Contract.where(id: params[:contract_ids])
   end
 
   def contract_params
@@ -88,7 +97,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :allow_overdue,
             :desc,
             :status,
-            :reason,
+            :not_through_reason,
             :pay_type,
             :pay_amount,
             :contract_resources_attributes => [:id,:url,:file_name,:_destroy],

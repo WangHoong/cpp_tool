@@ -13,7 +13,7 @@ class Album < ApplicationRecord
   belongs_to :language
   has_many :album_names
   has_and_belongs_to_many :tracks
-
+  has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
   # primary artist album association
   has_many :primary_artist_types, -> { where album_type: 'AlbumOfPrimaryArtist' },
             class_name: 'ArtistAlbum', :foreign_key => :album_id,
@@ -41,7 +41,15 @@ class Album < ApplicationRecord
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
   accepts_nested_attributes_for :album_names, :allow_destroy => true
+  before_save :add_audit_comment
 
+  private
 
+  def add_audit_comment
+    unless audited_changes.empty?
+       self.audit_comment = '专辑数据发生变更' if self.id
+       self.audit_comment = '新建专辑' if self.id.blank?
+    end
+  end
 
 end

@@ -1,5 +1,4 @@
 class Cp::Contract < ApplicationRecord
-  include Workflow
   include ApproveWorkflow
   self.table_name=:cp_contracts
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
@@ -21,6 +20,7 @@ class Cp::Contract < ApplicationRecord
   enum status: [:pending,:accept,:reject]
 
   after_create :set_pay_amount_total
+  before_save :add_audit_comment
   #validates_presence_of :authorizes
 
   scope :recent, -> { order('cp_contracts.id DESC') }
@@ -81,17 +81,17 @@ class Cp::Contract < ApplicationRecord
      end
    end
 
- 
+
 
    class_attribute :as_list_json_options
    self.as_list_json_options={
-       only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:reason,:desc,:created_at, :updated_at],
+       only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:not_through_reason,:desc,:created_at, :updated_at],
        methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name]
    }
 
    class_attribute :as_show_json_options
     self.as_show_json_options={
-      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:pay_amount,:reason,:desc,:created_at, :updated_at],
+      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:pay_amount,:not_through_reason,:desc,:created_at, :updated_at],
       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name],
       include: [:contract_resources,authorizes: {include:[:contract_resources,authorized_businesses: {include:[:authorized_areas],methods: [:authorized_range_name]}]}],
 
@@ -99,6 +99,13 @@ class Cp::Contract < ApplicationRecord
 
 
    private
+
+   def add_audit_comment
+     unless audited_changes.empty?
+        self.audit_comment = '合约数据发生变更' if self.id
+        self.audit_comment = '新建合约' if self.id.blank?
+     end
+   end
 
    def set_pay_amount_total
      if pay_amount.to_i > 0

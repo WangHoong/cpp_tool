@@ -5,7 +5,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:songs, :tracks, :images, :country, :audits,:albums,:artist_names).recent
+    @artists = Artist.includes(:tracks, :country, :audits,:albums).recent
     @artists = @artists.db_query(name: params[:name]) if params[:name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)
@@ -15,7 +15,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Get /artists/:id
   def show
     if @artist
-      render json: @artist
+      render json: {artist: @artist.as_json(Artist.as_show_json_options)}
     else
       render json: @artist.errors, status: :unprocessable_entity
     end
@@ -54,18 +54,28 @@ class Api::V1::ArtistsController < Api::V1::BaseController
      @artists = get_artist_by_ids.limit(20)
      comment = '审核通过'
      @artists.each do |artist|
-       artist.accept!
-       artist.create_auditables(current_user,'accept',comment)
+       artist.without_auditing do
+         artist.accept!
+       end
+       if artist.previous_changes.present?
+        changes = {status: artist.previous_changes['status']}
+        artist.create_auditables(current_user,'accept',comment,changes)
+       end
      end
      head :ok
  end
 #拒绝通过
  def reject
-    comment =  params['not_through_reason']
-     @artist = Artist.find(params[:id])
-     @artist.reject!(comment)
-     @artist.create_auditables(current_user,'reject',comment)
-     head :ok
+    comment =  params['not_through_reason'] || '审核未通过'
+     @artist = get_artist
+     @artist.without_auditing do
+       @artist.reject!(comment)
+     end
+     if @artist.previous_changes.present?
+        changes = {status: @artist.previous_changes['status']}
+        @artist.create_auditables(current_user,'reject',comment,changes)
+      end
+      head :ok
  end
 
   def tracks
@@ -105,6 +115,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     params
         .require(:artist)
         .permit(
+            :id,
             :name,
             :country_id,
             :gender_type,
@@ -114,6 +125,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :website,
             :not_through_reason,
             :status,
+            :audit_comment,
             songs_attributes: [:id, :url, :native_name, :_destroy],
             images_attributes: [:id, :url, :native_name, :_destroy],
             artist_names_attributes: [:id, :name, :language_id, :_destroy]
