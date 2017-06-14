@@ -1,4 +1,4 @@
-class Api::V1::Cp::AuthorizesController < Api::V1::ApplicationController
+class Api::V1::Cp::AuthorizesController < Api::V1::BaseController
   before_action :get_contract
 
   def index
