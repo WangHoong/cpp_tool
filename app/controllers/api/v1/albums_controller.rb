@@ -75,8 +75,11 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def query
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @albums = Album.where("name LIKE ?", "%#{params[:name]}%").select(:id, :name)
-    render json: @albums
+    puts "=============  #{size} =========="
+    @albums = Album.where("name LIKE ?", "%#{params[:name]}%").page(page).per(size)
+    render json: @albums,
+      each_serializer: Api::V1::Albums::IndexSerializer,
+      meta: page_info(@albums)
   end
 
   # get /albums/:id/tracks
