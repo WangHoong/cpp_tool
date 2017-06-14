@@ -1,4 +1,4 @@
-class Cp::SettlementsController < ApplicationController
+class Cp::SettlementsController < Api::V1::ApplicationController
 
   def index
     page = params.fetch(:page, 1).to_i

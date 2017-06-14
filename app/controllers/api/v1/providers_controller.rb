@@ -80,6 +80,6 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def provider_params
-    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
+    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:not_through_reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
   end
 end

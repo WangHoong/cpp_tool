@@ -83,7 +83,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
   end
 
   def get_contract_list
-      ::Cp::Contract.where(id: params[:contract_ids])
+     ::Cp::Contract.where(id: params[:contract_ids])
   end
 
   def contract_params
@@ -97,7 +97,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
             :allow_overdue,
             :desc,
             :status,
-            :reason,
+            :not_through_reason,
             :pay_type,
             :pay_amount,
             :contract_resources_attributes => [:id,:url,:file_name,:_destroy],
