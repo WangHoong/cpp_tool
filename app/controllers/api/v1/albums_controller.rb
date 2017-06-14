@@ -70,6 +70,14 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     }
   end
 
+  # get /albums/query?name="..."
+  def query_name
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 10
+    @albums = Album.where("name LIKE ?", "%#{params[:name]}%").select(:id, :name)
+    render json: @albums
+  end
+
   # get /albums/:id/tracks
   def tracks
     page = params.fetch(:page, 1).to_i
@@ -128,6 +136,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :not_through_reason,
             :status,
             :remark,
+            :has_explict,
             :covers_order,
             :tracks_order,
             :original_label_number,
@@ -136,7 +145,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             primary_artist_ids: [],
             featuring_artist_ids: [],
             materials_attributes: [:id, :url, :native_name, :_destroy],
-            covers_attributes: [:id, :url, :native_name, :_destroy],
+            covers_attributes: [:id, :url, :native_name, :position, :_destroy],
             album_names_attributes: [:id, :name, :language_id, :_destroy]
         )
   end
