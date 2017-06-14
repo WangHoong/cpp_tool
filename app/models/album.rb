@@ -2,7 +2,7 @@ class Album < ApplicationRecord
 	include ApproveWorkflow
   audited
   validates :name, :language_id, :genre, :format, presence: true
-  validates :label, :original_label_number, :release_date, presence: true
+  validates :label, :original_label_number, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true
 
@@ -41,6 +41,7 @@ class Album < ApplicationRecord
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
   accepts_nested_attributes_for :album_names, :allow_destroy => true
+	accepts_nested_attributes_for :tracks
   before_save :add_audit_comment
 
   private

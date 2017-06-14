@@ -23,6 +23,7 @@ class Track < ApplicationRecord
 
 
   scope :recent, -> {order('id DESC')}
+  scope :album_order, -> { order('position ASC') }
 
   def provider_name
     provider.try(:name)
@@ -49,7 +50,7 @@ class Track < ApplicationRecord
 
   class_attribute :as_album_list_json_options
 	self.as_album_list_json_options={
-			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution],
+			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
       methods: [:provider_name, :primary_artists]
 	}
 

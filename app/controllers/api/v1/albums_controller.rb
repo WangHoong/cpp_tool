@@ -83,9 +83,11 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @album = get_album
-    @tracks = @album.tracks.recent.page(page).per(size)
-    render json: {tracks: @tracks.as_json(Track.as_album_list_json_options),
-                   tracks_order: @album.tracks_order, meta: page_info(@tracks) }
+    @tracks = @album.tracks.album_order.page(page).per(size)
+    render json: {
+      tracks: @tracks.as_json(Track.as_album_list_json_options),
+      meta: page_info(@tracks)
+    }
   end
 
   #批量审核通过
@@ -141,8 +143,6 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :status,
             :remark,
             :has_explict,
-            :covers_order,
-            :tracks_order,
             :original_label_number,
             :release_date,
             :release_version,
@@ -150,7 +150,8 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             featuring_artist_ids: [],
             materials_attributes: [:id, :url, :native_name, :_destroy],
             covers_attributes: [:id, :url, :native_name, :position, :_destroy],
-            album_names_attributes: [:id, :name, :language_id, :_destroy]
+            album_names_attributes: [:id, :name, :language_id, :_destroy],
+            tracks_attributes: [:id, :position]
         )
   end
 end
