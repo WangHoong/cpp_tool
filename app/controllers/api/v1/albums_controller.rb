@@ -71,7 +71,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   end
 
   # get /albums/query?name="..."
-  def query_name
+  def query
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
     @albums = Album.where("name LIKE ?", "%#{params[:name]}%").select(:id, :name)
