@@ -8,6 +8,8 @@ class Revenue < ApplicationRecord
 	accepts_nested_attributes_for :revenue_files, :allow_destroy => true
   validates :dsp_id, presence: true
   before_save :update_files
+  before_destroy :delete_analyses
+
   scope :date_between, lambda {|start_time, end_time| where("start_time >= ? AND end_time <= ?", start_time, end_time )}
 
   # state machines
@@ -202,5 +204,19 @@ class Revenue < ApplicationRecord
     }.merge(search_config))
   end
 
+
+
+  private
+  def delete_analyses
+    client = Elasticsearch::Client.new url: SETTINGS['elasticsearch_server']#,log:true
+    revenue = client.delete_by_query(
+      index: SETTINGS['donkey_index'],
+      body: {
+        query: {
+          match: { 'note.revenue_id': self.revenue_id }
+        }
+      }
+    )
+  end
 
 end
