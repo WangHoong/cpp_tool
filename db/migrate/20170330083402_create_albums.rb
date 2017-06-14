@@ -10,8 +10,6 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "genre",                                           comment: "曲风"
       t.integer  "cd_volume",                                       comment: "CD 数量"
       t.string   "label",                                           comment: "唱片公司"
-      t.string   "covers_order",                                    comment: "封面顺序，逗号分割的id"
-      t.string   "tracks_order",                                    comment: "歌曲顺序，逗号分割的id"
       t.datetime "original_release_date",                           comment: "最初发行日期"
       t.string   "original_label_number",                           comment: "原唱片公司编号"
       t.string   "release_date",                                    comment: "发行日期"
