@@ -14,7 +14,7 @@ class Cp::SettlementsController < Api::V1::BaseController
     @settlements = @settlements.where(settlement_date: params[:settlement_date]) if params[:settlement_date].present?
     @settlements = @settlements.page(page).per(size)
 
-    render json: @settlements , meta: meta_attributes(@settlements) ,root: "cp_settlements"
+    render json:{settlements: @settlements , meta: meta_attributes(@settlements) }
   end
 
 end

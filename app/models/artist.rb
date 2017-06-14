@@ -38,12 +38,22 @@ class Artist < ApplicationRecord
       country.try(:cname)
   end
 
+
+
 	class_attribute :as_list_json_options
 	self.as_list_json_options={
-			only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_id,:not_through_reason,:website],
+			only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_id,:not_through_reason,:website,:created_at,:updated_at],
 			include: [:albums,:tracks],
       methods: [:country_name]
 	}
+
+  class_attribute :as_show_json_options
+  self.as_show_json_options={
+      only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_id,:not_through_reason,:website,:created_at,:updated_at],
+      include: [:albums,:tracks,:images,:songs,:artist_names,audits: {only: [:id,:user_id,:username,:action,:version,:remote_address,:comment,:created_at]}],
+      methods: [:country_name]
+  }
+
 
   private
 

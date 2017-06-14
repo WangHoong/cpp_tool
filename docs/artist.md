@@ -525,7 +525,7 @@ null
 
 | 参数名    | 是否必需 | 描述    |
 | ------ | ---- | ----- |
-| track_ids   | 是    | 版权方id |
+| artist_ids   | 是    | 版权方id |
 
 
 ### Request 请求

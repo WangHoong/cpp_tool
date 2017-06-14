@@ -5,7 +5,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:songs, :tracks, :images, :country, :audits,:albums,:artist_names).recent
+    @artists = Artist.includes(:tracks, :country, :audits,:albums).recent
     @artists = @artists.db_query(name: params[:name]) if params[:name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)
@@ -15,7 +15,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   # Get /artists/:id
   def show
     if @artist
-      render json: @artist
+      render json: {artist: @artist.as_json(Artist.as_show_json_options)}
     else
       render json: @artist.errors, status: :unprocessable_entity
     end
