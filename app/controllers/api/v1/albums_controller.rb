@@ -3,7 +3,14 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @albums = Album.recent.page(page).per(size)
+    @albums = Album.includes(:tracks,:primary_artists,:audits).recent
+    @albums = @albums.db_query(:name,params[:name]) if params[:name].present?
+    @albums = @albums.db_query(:label,params[:label]) if params[:label].present?
+    @albums = @albums.where(status: params[:status]) if params[:status].present?
+    @albums = @albums.where(upc: params[:upc]) if params[:upc].present?
+    @albums = @albums.joins("LEFT JOIN artist_albums ON artist_albums.album_id=albums.id LEFT JOIN artists ON artist_albums.artist_id=artists.id ").where("artists.name=?",params[:artist_name]) if params[:artist_name].present?
+    @albums = @albums.where("release_date >= ? and release_date <=?",params[:start_time],params[:end_time]) if params[:start_time].present? and params[:end_time].present?
+    @albums = @albums.page(page).per(size)
     render json: @albums,
       each_serializer: Api::V1::Albums::IndexSerializer,
       meta: page_info(@albums)

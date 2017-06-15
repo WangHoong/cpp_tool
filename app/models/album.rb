@@ -1,6 +1,7 @@
 class Album < ApplicationRecord
 	include ApproveWorkflow
   audited
+	enum status: [:pending,:accepted,:rejected]
   validates :name, :language_id, :genre, :format, presence: true
   validates :label, :original_label_number, presence: true
   validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
@@ -13,6 +14,7 @@ class Album < ApplicationRecord
   belongs_to :language
   has_many :album_names
   has_and_belongs_to_many :tracks
+
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
   # primary artist album association
   has_many :primary_artist_types, -> { where album_type: 'AlbumOfPrimaryArtist' },

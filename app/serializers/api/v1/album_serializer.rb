@@ -4,6 +4,7 @@ class Api::V1::AlbumSerializer < ActiveModel::Serializer
     :genre,
     :format,
     :label,
+    :status,
     :release_version,
     :remark,
     :upc
