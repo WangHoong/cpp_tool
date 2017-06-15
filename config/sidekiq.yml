@@ -10,3 +10,4 @@
 :timeout: 30
 :queues:
   - [revenue, 1]
+  - [revenue_import, 2]

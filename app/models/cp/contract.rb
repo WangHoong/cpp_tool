@@ -17,7 +17,7 @@ class Cp::Contract < ApplicationRecord
   accepts_nested_attributes_for :authorizes ,   :allow_destroy => true
 
   enum pay_type: [:default,:divide,:undivide]
-  enum status: [:pending,:accept,:reject]
+  enum status: [:pending,:accepted,:rejected]
 
   after_create :set_pay_amount_total
   before_save :add_audit_comment

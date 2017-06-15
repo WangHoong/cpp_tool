@@ -2,7 +2,7 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def index
     page = params.fetch(:page, 1).to_i
-    size = params[:size]
+    size = params[:size] || 20
     @tracks = Track.includes(:albums, :artists,:audits, :contract, :provider).recent.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
@@ -35,6 +35,14 @@ class Api::V1::TracksController < Api::V1::BaseController
   def destroy
     @track = get_track
     @track.destroy
+  end
+
+  def albums
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 20
+    @track = get_track
+    @albums = @track.albums.recent.page(page).per(size)
+    render json: {albums: @albums, meta: page_info(@albums)}
   end
 
   #批量审核通过

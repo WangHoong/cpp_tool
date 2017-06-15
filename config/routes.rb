@@ -66,6 +66,7 @@ Rails.application.routes.draw do
               get :export
             end
             member do
+              get :albums 
               post :reject
             end
           end
