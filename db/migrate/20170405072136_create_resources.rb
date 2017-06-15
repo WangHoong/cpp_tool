@@ -7,6 +7,7 @@ class CreateResources < ActiveRecord::Migration[5.0]
       t.string  "position",                comment: "位置,用户各资源排序"
       t.timestamps
     end
-      add_index :resources, :deleted, :position
+    add_index :resources, :deleted
+    add_index :resources, :position  
   end
 end
