@@ -15,7 +15,7 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "release_date",                                    comment: "发行日期"
       t.string   "p_line_copyright",                                comment: "℗ "
       t.string   "c_line_copyright",                                comment: "©"
-      t.boolean  "has_explict",                                     comment: "是否包含限制内容，0:no,1:yes,2:clean"
+      t.integer  "has_explict",                                     comment: "是否包含限制内容，0:no,1:yes,2:clean"
       t.integer  "provider",                                        comment: "版权方ID"
       t.datetime "uploaded_at"
       t.integer  "upload_method",                                   comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"

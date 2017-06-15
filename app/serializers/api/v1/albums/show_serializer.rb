@@ -1,8 +1,8 @@
 class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
   attributes :tracks_length,
     :release_date,
-    :has_explict,
     :language,
+    :has_explict,
     :p_line_copyright,
     :remark,
     :original_label_number,
