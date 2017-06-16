@@ -2,7 +2,7 @@ class Track < ApplicationRecord
   include ApproveWorkflow
   audited
   has_and_belongs_to_many :albums
-  has_and_belongs_to_many :artists
+  has_and_belongs_to_many :artists, counter_cache: true
   belongs_to :language
   belongs_to :provider
   belongs_to :genre
@@ -17,10 +17,13 @@ class Track < ApplicationRecord
   accepts_nested_attributes_for :track_composers, :allow_destroy => true
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   enum status: [:pending,:accepted,:rejected]
-  before_save :add_audit_comment
+
   validates :title, presence: true , uniqueness: true
   validates :isrc, presence: true, uniqueness: true
 
+  before_save :add_audit_comment
+  before_destroy :dec_tracks_count
+  after_create :inc_tracks_count
 
   scope :recent, -> {order('id DESC')}
   scope :album_order, -> { order('position ASC') }
@@ -77,6 +80,18 @@ class Track < ApplicationRecord
 			 self.audit_comment = '新建歌曲' if self.id.blank?
 		end
 	end
+
+  def inc_tracks_count
+    self.artists.each do |artist|
+      Artist.increment_counter('tracks_count', artist.id)
+    end
+  end
+
+  def dec_tracks_count
+    self.artists.each do |artist|
+      Artist.decrement_counter('tracks_count', artist.id)
+    end
+  end
 
 
 end
