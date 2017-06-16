@@ -2,7 +2,7 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "歌曲列表") do |sheet|
   row_name = ['编号', '歌曲名','专辑名','艺人','代理版权方','创建时间','更新时间']
-  sheet.add_row row_name1
+  sheet.add_row row_name
 
   @tracks.each do |track|
     sheet.add_row [track.id, track.title,track.albums.map(&:name).join(','),track.artists.map(&:name).join(','),track.provider_name,track.created_at,track.updated_at]
