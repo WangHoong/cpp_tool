@@ -45,6 +45,8 @@ class Album < ApplicationRecord
   accepts_nested_attributes_for :album_names, :allow_destroy => true
 	accepts_nested_attributes_for :tracks
   before_save :add_audit_comment
+	before_destroy :dec_albums_count
+  after_create :inc_albums_count
 
   private
 
@@ -54,5 +56,17 @@ class Album < ApplicationRecord
        self.audit_comment = '新建专辑' if self.id.blank?
     end
   end
+
+	def inc_albums_count
+		self.primary_artists.each do |artist|
+			Artist.increment_counter('albums_count', artist.id)
+		end
+	end
+
+	def dec_albums_count
+		self.primary_artists.each do |album|
+			Artist.decrement_counter('albums_count', artist.id)
+		end
+	end
 
 end

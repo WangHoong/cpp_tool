@@ -40,7 +40,7 @@ module Services
         body: {
           query: cp_query(provider, start_date, end_date)
         },
-        search_type: 'scan',
+        #search_type: 'scan',
         scroll: '1m'
       )
 

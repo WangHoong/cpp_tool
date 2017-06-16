@@ -66,7 +66,6 @@ class Revenue < ApplicationRecord
       },
       size: 0
     })
-
     res = response['aggregations']['total_price']['value']
     res.round(2)
   end
@@ -142,12 +141,12 @@ class Revenue < ApplicationRecord
       #search_type: 'scan',
       scroll: '1m'
     })
-
+    
+    res = response['hits']['hits'].map { |r| r['_source']}
     begin
-      response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
-      res += response['hits']['hits'].map { |r| r['_source'] }
+     response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
+     res += response['hits']['hits'].map { |r| r['_source']}
     end while response['hits']['hits'].present?
-
     res
   end
 

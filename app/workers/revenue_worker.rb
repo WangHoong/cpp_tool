@@ -14,7 +14,7 @@ class RevenueWorker
     response.each do |ele|
       next if ele['note']['provider_id'].nil?
       provider_id = ele['note']['provider_id']
-
+    
       if bucket[provider_id].blank?
         bucket[provider_id] = []
       end
@@ -57,7 +57,7 @@ class RevenueWorker
 
 
   private
-  def  gen_settlement_workbook(bucket, start_date, end_date)
+  def gen_settlement_workbook(bucket, start_date, end_date)
     res = {}
     bucket.each do |key, value|
       provider = get_provider(key)
@@ -66,7 +66,7 @@ class RevenueWorker
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit','Count', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
+        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
 
         value.each do |row|
           sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
@@ -78,12 +78,12 @@ class RevenueWorker
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
         sheet.add_row ['CP名称', provider.try(:name)]
         sheet.add_row ['结算货币', currency.try(:name)]
-        sheet.add_row ['DSP', 'DateStart', 'DateEnd', 'Total', 'Currency', 'ExchangeRate', 'AmountDue' ]
+        sheet.add_row ['DSP', 'DateStart', 'DateEnd','TypeOfSales','SalesUnit','Total', 'Currency', 'ExchangeRate', 'AmountDue' ]
 
         value.each do |row|
           type = row['data']['sales_type']
           if set[type].blank?
-            set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income').merge! row['data'].slice('业务模式', '数量', '结算货币', '汇率'))
+            set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income').merge! row['data'].slice('sales_type','sales_unit', 'exchange_rate'))
             next
           end
           set[type]['income'] += row['note']['income']
@@ -132,8 +132,7 @@ class RevenueWorker
     dataset['Artist'] = row['data']['artist']
     dataset['Album'] = row['data']['album']
     dataset['TypeOfSales'] =  row['data']['sales_type']
-    dataset['SalesUnit'] =  row['data']['unit_price']
-    dataset['Count'] =  row['data']['count']
+    dataset['SalesUnit'] =  row['data']['sales_unit']
     dataset['Total'] = row['note']['income']
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = row['data']['exchange_rate'].to_f
@@ -148,10 +147,14 @@ class RevenueWorker
     dataset['DSP'] = value['dsp_name']
     dataset['DateStart'] = value['start_date'] && value['start_date'].to_datetime
     dataset['DateEnd'] = value['start_date'] && value['end_date'].to_datetime
+    dataset['TypeOfSales'] = value['sales_type']
+    dataset['SalesUnit'] =  value['sales_unit']
     dataset['Total'] = value['income'].to_f
     dataset['Currency'] = 'CNY'
-    dataset['ExchangeRate'] = 1 #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
+    dataset['ExchangeRate'] = value['exchange_rate'] #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
     dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
 
     dataset
   end
+
+end
