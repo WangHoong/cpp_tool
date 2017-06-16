@@ -10,14 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613033907) do
+ActiveRecord::Schema.define(version: 20170616074253) do
 
   create_table "accompany_artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.integer  "target_id"
-    t.string   "target_type"
-    t.datetime "updated_at"
-    t.datetime "created_at"
+    t.string  "name"
+    t.integer "target_id"
+    t.string  "target_type"
     t.index ["target_id", "target_type"], name: "index_target_id_and_target_type", using: :btree
   end
 
@@ -110,6 +108,16 @@ ActiveRecord::Schema.define(version: 20170613033907) do
     t.boolean  "deleted",       default: false
   end
 
+  create_table "artist_videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "video_id"
+    t.integer  "artist_id"
+    t.string   "artist_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["artist_type"], name: "by_artist_type", length: { artist_type: 10 }, using: :btree
+    t.index ["video_id", "artist_id"], name: "index_artist_videos_on_video_id_and_artist_id", using: :btree
+  end
+
   create_table "artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "country_id",                                                        comment: "国籍"
@@ -125,7 +133,7 @@ ActiveRecord::Schema.define(version: 20170613033907) do
     t.string   "not_through_reason"
     t.integer  "multi_language_name_id"
     t.string   "website",                                                           comment: "网站网址"
-    t.integer  "track_count",                          default: 0
+    t.integer  "tracks_count",                         default: 0
     t.integer  "albums_count",                         default: 0
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
@@ -408,13 +416,13 @@ ActiveRecord::Schema.define(version: 20170613033907) do
     t.integer  "currency_id"
     t.date     "start_time"
     t.date     "end_time"
-    t.decimal  "income",         precision: 10, scale: 2, default: "0.0"
-    t.integer  "status",                                  default: 0
-    t.integer  "process_status",                          default: 0
-    t.boolean  "is_std",                                  default: false
-    t.boolean  "is_split",                                default: false
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.float    "income",         limit: 24, default: 0.0
+    t.integer  "status",                    default: 0
+    t.integer  "process_status",            default: 0
+    t.boolean  "is_std",                    default: false
+    t.boolean  "is_split",                  default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.index ["dsp_id"], name: "index_reports_on_dsp_id", using: :btree
   end
 
@@ -514,6 +522,37 @@ ActiveRecord::Schema.define(version: 20170613033907) do
     t.datetime "updated_at",                                    null: false
     t.boolean  "is_admin",                      default: false
     t.index ["email"], name: "index_users_on_email", using: :btree
+  end
+
+  create_table "video_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "resource_id"
+    t.integer  "video_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["resource_id"], name: "by_resource_id", using: :btree
+    t.index ["resource_type"], name: "by_resource_type", length: { resource_type: 10 }, using: :btree
+    t.index ["video_id"], name: "by_video_id", using: :btree
+  end
+
+  create_table "video_tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "video_id"
+    t.integer  "track_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name",                                      comment: "名称"
+    t.integer  "format",                                    comment: "类型"
+    t.string   "label",                                     comment: "唱片公司"
+    t.datetime "release_date",                              comment: "发行日期"
+    t.string   "remark",                                    comment: "备注"
+    t.integer  "status",       default: 0,                  comment: "pending,accepted,rejected"
+    t.boolean  "deleted",      default: false,              comment: "true删除,false未删除"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["name"], name: "by_name", length: { name: 10 }, using: :btree
   end
 
 end

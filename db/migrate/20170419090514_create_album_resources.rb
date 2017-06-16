@@ -6,5 +6,8 @@ class CreateAlbumResources < ActiveRecord::Migration[5.0]
       t.string  :resource_type
       t.timestamps
     end
+    add_index :album_resources, :resource_id
+    add_index :album_resources, :album_id
+    add_index :album_resources, :resource_type
   end
 end

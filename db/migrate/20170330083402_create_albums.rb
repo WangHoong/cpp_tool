@@ -28,10 +28,11 @@ class CreateAlbums < ActiveRecord::Migration[5.0]
       t.string   "record_location",                                 comment: "录音地点"
       t.text     "remark",                                          comment: "备注"
       t.boolean  "deleted",         default: false,                 comment: "true删除,false未删除"
-      t.string   "status"               ,default: 0,                comment: "pending,accepted,rejected"
+      t.integer   "status"               ,default: 0,                comment: "pending,accepted,rejected"
       t.text     "not_through_reason",        limit: 65535,         comment: "未通过原因"
       t.timestamps
     end
     add_index :albums, :name
+    add_index :albums, :status
   end
 end

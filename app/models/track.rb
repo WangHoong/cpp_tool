@@ -2,7 +2,8 @@ class Track < ApplicationRecord
   include ApproveWorkflow
   audited
   has_and_belongs_to_many :albums
-  has_and_belongs_to_many :artists 
+  has_and_belongs_to_many :artists
+  has_and_belongs_to_many :videos
   belongs_to :language
   belongs_to :provider
   belongs_to :genre
@@ -26,7 +27,7 @@ class Track < ApplicationRecord
   after_create :inc_tracks_count
 
   scope :recent, -> {order('id DESC')}
-  scope :album_order, -> { order('position ASC') }
+  scope :position_order, -> { order('position ASC') }
 
   def provider_name
     provider.try(:name)
@@ -51,8 +52,8 @@ class Track < ApplicationRecord
       methods: [:provider_name,:contract_name]
 	}
 
-  class_attribute :as_album_list_json_options
-	self.as_album_list_json_options={
+  class_attribute :as_relationship_list_json_options
+	self.as_relationship_list_json_options={
 			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
       methods: [:provider_name, :primary_artists]
 	}
