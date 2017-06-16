@@ -66,7 +66,7 @@ Rails.application.routes.draw do
               get :export
             end
             member do
-              get :albums 
+              get :albums
               post :reject
             end
           end
@@ -80,6 +80,7 @@ Rails.application.routes.draw do
               post :reject
             end
           end
+          resources :videos, only: [:index, :create, :show, :update, :destroy]
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
               get :export

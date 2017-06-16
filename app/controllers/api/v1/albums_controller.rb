@@ -93,9 +93,9 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @album = get_album
-    @tracks = @album.tracks.album_order.page(page).per(size)
+    @tracks = @album.tracks.position_order.page(page).per(size)
     render json: {
-      tracks: @tracks.as_json(Track.as_album_list_json_options),
+      tracks: @tracks.as_json(Track.as_relationship_list_json_options),
       meta: page_info(@tracks)
     }
   end

@@ -40,10 +40,11 @@ class Album < ApplicationRecord
 
 
   accepts_nested_attributes_for :primary_artists, :allow_destroy => true
+	accepts_nested_attributes_for :featuring_artists, :allow_destroy => true
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
   accepts_nested_attributes_for :album_names, :allow_destroy => true
-	accepts_nested_attributes_for :tracks
+	accepts_nested_attributes_for :tracks, :allow_destroy => true
   before_save :add_audit_comment
 	before_destroy :dec_albums_count
   after_create :inc_albums_count
