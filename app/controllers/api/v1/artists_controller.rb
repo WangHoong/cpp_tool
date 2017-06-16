@@ -6,7 +6,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @artists = Artist.includes(:tracks, :country, :audits,:albums).recent
-    @artists = @artists.db_query(name: params[:name]) if params[:name].present?
+    @artists = @artists.db_query(:name,params[:name]) if params[:name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)
     render json: {artists: @artists.as_json(Artist.as_list_json_options),meta: page_info(@artists)}

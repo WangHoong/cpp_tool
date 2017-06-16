@@ -1,6 +1,6 @@
 default: &default
   elasticsearch_server: '127.0.0.1:9200'
-  donkey_index: 'donkey_test'
+  donkey_index: 'donkey_dev'
   analysis_error_type: 'analysis_error'
   analysis_success_type: 'analysis_result'
   analysis_info_type: 'analysis_info'
