@@ -6,7 +6,7 @@ class Api::V1::AuthorizedRangesController < Api::V1::BaseController
         #Services::RooService.roo_perform(1)
 
        #RevenueImportWorker.perform_async(1)
-     RevenueWorker.perform_async(1)
+     #RevenueWorker.perform_async(1)
 
       # ReportWork.perform_work(1)
       #  r = RevenueFile.first
