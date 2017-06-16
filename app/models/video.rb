@@ -10,8 +10,6 @@ class Video < ApplicationRecord
 
   has_and_belongs_to_many :tracks
 
-  has_many :video_tracks
-
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
 
   # primary artist video association

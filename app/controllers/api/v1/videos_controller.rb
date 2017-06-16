@@ -114,10 +114,10 @@ class Api::V1::VideosController < Api::V1::BaseController
             :release_date,
             primary_artist_ids: [],
             featuring_artist_ids: [],
-            tracks_ids: [],
+            track_ids: [],
             videos_attributes: [:id, :url, :native_name, :_destroy],
-            covers_attributes: [:id, :url, :native_name, :position, :_destroy],
-            tracks_attributes: [:id, :position]
+            covers_attributes: [:id, :url, :native_name, :position, :_destroy]
+            # tracks_attributes: [:id, :position]
         )
   end
 end
