@@ -2,7 +2,7 @@ class Track < ApplicationRecord
   include ApproveWorkflow
   audited
   has_and_belongs_to_many :albums
-  has_and_belongs_to_many :artists, counter_cache: true
+  has_and_belongs_to_many :artists 
   belongs_to :language
   belongs_to :provider
   belongs_to :genre
