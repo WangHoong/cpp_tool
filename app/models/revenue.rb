@@ -1,6 +1,6 @@
 class Revenue < ApplicationRecord
-  #include Workflow
-  enum status: [:processing, :processed, :confirmed, :accounted, :done]
+  include Workflow
+  enum status: [:processing, :processed, :confirmed, :accounted, :finished]
 
   belongs_to :currency
   belongs_to :dsp
@@ -12,6 +12,35 @@ class Revenue < ApplicationRecord
 
   scope :date_between, lambda {|start_time, end_time| where("start_time >= ? AND end_time <= ?", start_time, end_time )}
 
+   workflow_column :status
+   workflow do
+     state :processing do
+       event :process, :transitions_to => :processed
+     end
+
+     state :processed do
+       event :confirm, :transitions_to => :confirmed
+     end
+
+     state :confirmed do
+       event :account, :transitions_to => :accounted
+     end
+
+     state :accounted do
+       event :finish, :transitions_to => :finished
+     end
+
+     state :finished
+
+     on_transition do |from, to, triggering_event, *event_args|
+       if to.to_s == 'accounted'
+         RevenueWorker.perform_async(self.id)
+       end
+     end
+
+   end
+
+=begin
   # state machines
   state_machine :status, initial: :processing do
     after_transition on: :accounted!, do: :split_revenue
@@ -36,7 +65,7 @@ class Revenue < ApplicationRecord
     end
 
   end
-
+=end
   def self.as_list_json_options
      as_list_json = {
     			only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
@@ -121,9 +150,7 @@ class Revenue < ApplicationRecord
     end
   end
 
-  def split_revenue
-    RevenueWorker.perform_async(@revenue.id)
-  end
+
 
   def update_files
 		if self.revenue_files.map(&:url) != file_urls
@@ -141,7 +168,7 @@ class Revenue < ApplicationRecord
       #search_type: 'scan',
       scroll: '1m'
     })
-    
+
     res = response['hits']['hits'].map { |r| r['_source']}
     begin
      response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
@@ -208,5 +235,8 @@ class Revenue < ApplicationRecord
     RevenueImportWorker.perform_async(self.id)
   end
 
+  def split_revenue
+    RevenueWorker.perform_async(self.id)
+  end
 
 end

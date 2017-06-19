@@ -1,1 +1,1 @@
-StateMachines::Machine.ignore_method_conflicts = true
+#StateMachines::Machine.ignore_method_conflicts = true

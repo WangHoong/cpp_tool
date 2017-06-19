@@ -89,7 +89,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
 
   def done
     @revenue = get_revenue
-    if @revenue.done!
+    if @revenue.finished!
       render json: @revenue
     else
       render json: @revenue.errors, status: :unprocessable_entity

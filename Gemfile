@@ -62,8 +62,8 @@ gem 'sidetiq'
 gem 'audited'
 
 # Revenue processing status
-gem 'state_machines'
-gem 'state_machines-activerecord'
+#gem 'state_machines'
+#gem 'state_machines-activerecord'
 
 # 软删除
 gem 'acts_as_paranoid', '~> 0.5.0'
