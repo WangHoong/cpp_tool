@@ -102,7 +102,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-       @albums = get_album_by_ids.limit(20)
+       @albums = get_albums_by_ids.limit(20)
        comment = '审核通过'
        @albums.each do |album|
          album.without_auditing do
