@@ -24,9 +24,6 @@ class Video < ApplicationRecord
             dependent: :destroy
   has_many :featuring_artists, :through => :featuring_artist_types, class_name: 'Artist', :source => :artist
 
-  # track video association
-  has_many :tracks, :through => :video_tracks, class_name: 'Track', :source => :track
-
   # video resource association
   has_many :video_resources, -> { where resource_type: 'video' },
             class_name: 'VideoResource', dependent: :destroy

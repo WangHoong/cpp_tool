@@ -80,7 +80,15 @@ Rails.application.routes.draw do
               post :reject
             end
           end
-          resources :videos, only: [:index, :create, :show, :update, :destroy]
+          resources :videos, only: [:index, :create, :show, :update, :destroy] do
+            collection do
+              post :accept
+            end
+            member do
+              get :tracks
+              post :reject
+            end
+          end
           resources :artists, only: [:index, :create, :show, :update, :destroy] do
             collection do
               get :export
