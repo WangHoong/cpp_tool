@@ -85,7 +85,7 @@ Rails.application.routes.draw do
               post :accept
             end
             member do
-              get :tracks, :albums
+              get :tracks, :albums, :materials
               post :reject
             end
           end
