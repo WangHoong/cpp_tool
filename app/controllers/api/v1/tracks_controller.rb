@@ -122,6 +122,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         artist_ids: [],
         accompany_artists_attributes: [:id, :name, :_destroy],
         track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
+        multi_languages_attributes: [:id, :name, :language_id, :_destroy],
         track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )
   end

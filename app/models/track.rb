@@ -2,6 +2,7 @@ class Track < ApplicationRecord
   include ApproveWorkflow
   audited
   has_and_belongs_to_many :albums
+  accepts_nested_attributes_for :albums, :allow_destroy => true
   has_and_belongs_to_many :artists
   has_and_belongs_to_many :videos
   belongs_to :language
@@ -16,6 +17,8 @@ class Track < ApplicationRecord
   accepts_nested_attributes_for :track_resources, :allow_destroy => true
   has_many :track_composers
   accepts_nested_attributes_for :track_composers, :allow_destroy => true
+  has_many :multi_languages, as: :multilanguage
+  accepts_nested_attributes_for :multi_languages, :allow_destroy => true
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   enum status: [:pending,:accepted,:rejected]
 
@@ -48,13 +51,24 @@ class Track < ApplicationRecord
   class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists],
+      include: [:albums,:artists,
+        multi_languages: {
+          only: [:name],
+          include: [language: { only: [:name]}]
+        }
+      ],
       methods: [:provider_name,:contract_name]
 	}
 
   class_attribute :as_relationship_list_json_options
 	self.as_relationship_list_json_options={
 			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
+      include: [
+        multi_languages: {
+          only: [:name],
+          include: [language: { only: [:name]}]
+        }
+      ],
       methods: [:provider_name, :primary_artists]
 	}
 
@@ -62,7 +76,18 @@ class Track < ApplicationRecord
   self.as_show_json_options={
      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,
            :copyright,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists,:track_resources,:track_composers,audits: {only: [:id,:user_id,:username,:action,:version,:remote_address,:comment,:created_at]}],
+      include: [:albums,:artists,:track_resources,:track_composers,
+        multi_languages: {
+          only: [:name],
+          include: [language: { only: [:name]}]
+        },
+        audits: {
+          only: [
+            :id,:user_id,:username,:action,:version,
+            :remote_address,:comment,:created_at
+          ]
+        }
+      ],
       methods: [:provider_name,:contract_name,:genre_name]
   }
 
@@ -70,7 +95,12 @@ class Track < ApplicationRecord
   class_attribute :as_artlist_tracks_json_options
 	self.as_artlist_tracks_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists]
+      include: [:albums,:artists,
+        multi_languages: {
+          only: [:name],
+          include: [language: { only: [:name]}]
+        },
+      ]
 	}
 
   private

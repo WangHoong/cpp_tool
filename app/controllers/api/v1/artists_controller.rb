@@ -130,7 +130,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
             :audit_comment,
             songs_attributes: [:id, :url, :native_name, :_destroy],
             images_attributes: [:id, :url, :native_name, :_destroy],
-            artist_names_attributes: [:id, :name, :language_id, :_destroy]
+            multi_languages_attributes: [:id, :name, :language_id, :_destroy]
         )
   end
 end

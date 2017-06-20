@@ -63,6 +63,17 @@ class Api::V1::VideosController < Api::V1::BaseController
     }
   end
 
+  # get /videos/:id/albums
+  def albums
+    page = params.fetch(:page, 1).to_i
+    size = params[:size]
+    @video = get_video
+    @albums = @video.albums.recent.page(page).per(size)
+    render json: @albums,
+      each_serializer: Api::V1::Videos::AlbumSerializer,
+      meta: page_info(@tracks)
+  end
+
   #批量审核通过
    def accept
        @videos = get_videos_by_ids.limit(20)
@@ -116,7 +127,8 @@ class Api::V1::VideosController < Api::V1::BaseController
             featuring_artist_ids: [],
             track_ids: [],
             videos_attributes: [:id, :url, :native_name, :_destroy],
-            covers_attributes: [:id, :url, :native_name, :position, :_destroy]
+            covers_attributes: [:id, :url, :native_name, :position, :_destroy],
+            multi_languages_attributes: [:id, :name, :language_id, :_destroy]
             # tracks_attributes: [:id, :position]
         )
   end

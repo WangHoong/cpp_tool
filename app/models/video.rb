@@ -34,6 +34,9 @@ class Video < ApplicationRecord
             class_name: 'VideoResource', dependent: :destroy
   has_many :covers, :through => :cover_resources, class_name: 'Resource', :source => :resource
 
+  has_many :multi_languages, as: :multilanguage
+
+  accepts_nested_attributes_for :multi_languages, :allow_destroy => true
   accepts_nested_attributes_for :primary_artists, :allow_destroy => true
   accepts_nested_attributes_for :featuring_artists, :allow_destroy => true
   accepts_nested_attributes_for :videos, :allow_destroy => true

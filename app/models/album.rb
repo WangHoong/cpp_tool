@@ -12,7 +12,7 @@ class Album < ApplicationRecord
   scope :recent, -> { order('id DESC') }
 
   belongs_to :language
-  has_many :album_names
+  has_many :multi_languages, as: :multilanguage
   has_and_belongs_to_many :tracks
 
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
@@ -43,7 +43,7 @@ class Album < ApplicationRecord
 	accepts_nested_attributes_for :featuring_artists, :allow_destroy => true
   accepts_nested_attributes_for :materials, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
-  accepts_nested_attributes_for :album_names, :allow_destroy => true
+  accepts_nested_attributes_for :multi_languages, :allow_destroy => true
 	accepts_nested_attributes_for :tracks, :allow_destroy => true
   before_save :add_audit_comment
 	before_destroy :dec_albums_count
