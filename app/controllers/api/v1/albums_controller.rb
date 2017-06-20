@@ -161,7 +161,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             featuring_artist_ids: [],
             materials_attributes: [:id, :url, :native_name, :_destroy],
             covers_attributes: [:id, :url, :native_name, :position, :_destroy],
-            album_names_attributes: [:id, :name, :language_id, :_destroy],
+            multi_languages_attributes: [:id, :name, :language_id, :_destroy],
             tracks_attributes: [:id, :position]
         )
   end

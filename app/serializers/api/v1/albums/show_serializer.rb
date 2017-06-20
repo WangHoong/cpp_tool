@@ -6,7 +6,6 @@ class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
     :p_line_copyright,
     :remark,
     :original_label_number,
-    :album_names,
     :cd_volume,
     :updated_at
   def tracks_length

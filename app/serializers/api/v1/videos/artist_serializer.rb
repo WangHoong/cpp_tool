@@ -1,10 +1,10 @@
 class Api::V1::Videos::ArtistSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :artist_names
-  def artist_names
-    @artist_names = object.artist_names
-    @artist_names.map { |artist| {
+             :multi_languages
+  def multi_languages
+    @multi_languages = object.multi_languages
+    @multi_languages.map { |artist| {
       name: artist.name,
       language: artist.language.name
     }}

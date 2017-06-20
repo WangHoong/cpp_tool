@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170616074253) do
+ActiveRecord::Schema.define(version: 20170620074837) do
 
   create_table "accompany_artists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170616074253) do
     t.string   "not_through_reason"
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.integer  "tracks_count"
     t.index ["name"], name: "index_albums_on_name", using: :btree
     t.index ["status"], name: "index_albums_on_status", using: :btree
   end
@@ -336,6 +337,17 @@ ActiveRecord::Schema.define(version: 20170616074253) do
     t.string "name", collation: "utf8_general_ci"
   end
 
+  create_table "multi_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name"
+    t.integer  "language_id"
+    t.integer  "multilanguage_id"
+    t.string   "multilanguage_type"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["multilanguage_id"], name: "by_multilanguage_id", using: :btree
+    t.index ["multilanguage_type"], name: "by_multilanguage_type", length: { multilanguage_type: 10 }, using: :btree
+  end
+
   create_table "permission_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "parent_id"
@@ -497,6 +509,13 @@ ActiveRecord::Schema.define(version: 20170616074253) do
     t.index ["title"], name: "index_tracks_on_title", using: :btree
   end
 
+  create_table "tracks_videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "video_id"
+    t.integer  "track_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "trades", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "provider_id"
     t.decimal  "amount",      precision: 11, scale: 2, default: "0.0"
@@ -535,23 +554,18 @@ ActiveRecord::Schema.define(version: 20170616074253) do
     t.index ["video_id"], name: "by_video_id", using: :btree
   end
 
-  create_table "video_tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.integer  "video_id"
-    t.integer  "track_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.string   "name",                                      comment: "名称"
-    t.integer  "format",                                    comment: "类型"
-    t.string   "label",                                     comment: "唱片公司"
-    t.datetime "release_date",                              comment: "发行日期"
-    t.string   "remark",                                    comment: "备注"
-    t.integer  "status",       default: 0,                  comment: "pending,accepted,rejected"
-    t.boolean  "deleted",      default: false,              comment: "true删除,false未删除"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.string   "name",                                                          comment: "名称"
+    t.integer  "format",                                                        comment: "类型"
+    t.string   "label",                                                         comment: "唱片公司"
+    t.datetime "release_date",                                                  comment: "发行日期"
+    t.string   "remark",                                                        comment: "备注"
+    t.integer  "status",                           default: 0,                  comment: "pending,accepted,rejected"
+    t.boolean  "deleted",                          default: false,              comment: "true删除,false未删除"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.text     "not_through_reason", limit: 65535,                              comment: "未通过原因"
+    t.integer  "tracks_count",                     default: 0
     t.index ["name"], name: "by_name", length: { name: 10 }, using: :btree
   end
 
