@@ -1,5 +1,5 @@
 class Api::V1::TracksController < Api::V1::BaseController
-
+   
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 20
@@ -30,7 +30,8 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   def update
-    @track = Track.find params[:id]
+    @track = get_track
+    @track.status = :pending
     if @track.update_attributes(track_params)
       render json: {track: @track}
     else

@@ -14,6 +14,7 @@ class Api::V1::DspsController < Api::V1::BaseController
 
   def update
     @dsp = get_dsp
+    @dsp.status = :pending  
     if @dsp.update(dsp_params)
       render json: @dsp
     else

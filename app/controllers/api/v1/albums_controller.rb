@@ -24,11 +24,12 @@ class Api::V1::AlbumsController < Api::V1::BaseController
 
   # Put /albums/:id
   def update
-    @albums = get_album
-    if @albums.update(album_params)
-      render json: @albums
+    @album = get_album
+    @album.status = :pending
+    if @album.update(album_params)
+      render json: @album
     else
-      render json: @albums.errors, status: :unprocessable_entity
+      render json: @album.errors, status: :unprocessable_entity
     end
   end
 

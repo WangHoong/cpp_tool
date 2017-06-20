@@ -17,6 +17,7 @@ class Api::V1::ProvidersController < Api::V1::BaseController
 
   def update
     @provider = get_provider
+    @provider.status = :pending  
     if @provider.update(provider_params)
       render json: {provider: @provider}
     else

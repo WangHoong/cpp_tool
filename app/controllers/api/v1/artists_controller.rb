@@ -23,6 +23,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   # Put /artists/:id
   def update
+    @artist.status = :pending
     if @artist.update(artist_params)
       render json: @artist
     else
