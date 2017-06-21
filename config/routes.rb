@@ -60,6 +60,7 @@ Rails.application.routes.draw do
           resources :authorized_ranges, only: [:index]
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
+          resources :tasks, only: [:create]
           resources :tracks, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept
