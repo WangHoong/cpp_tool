@@ -217,9 +217,6 @@
     <orderEntry type="library" scope="PROVIDED" name="spring-watcher-listen (v2.0.1, RVM: ruby-2.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v3.7.1, RVM: ruby-2.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.2.0, RVM: ruby-2.3.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="state_machines (v0.4.0, RVM: ruby-2.3.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="state_machines-activemodel (v0.4.0, RVM: ruby-2.3.0) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="state_machines-activerecord (v0.4.0, RVM: ruby-2.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v0.19.4, RVM: ruby-2.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thread_safe (v0.3.6, RVM: ruby-2.3.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="timers (v4.1.2, RVM: ruby-2.3.0) [gem]" level="application" />
