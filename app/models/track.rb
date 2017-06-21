@@ -3,7 +3,20 @@ class Track < ApplicationRecord
   audited
   has_and_belongs_to_many :albums
   accepts_nested_attributes_for :albums, :allow_destroy => true
-  has_and_belongs_to_many :artists
+  #has_and_belongs_to_many :artists
+
+  # primary artist track association
+  has_many :primary_artist_types, -> { where artist_type: 'Primary' },
+            class_name: 'ArtistTrack', :foreign_key => :track_id,
+            dependent: :destroy
+  has_many :primary_artists, :through => :primary_artist_types, class_name: 'Artist', :source => :artist
+
+  # featuring artist track association
+  has_many :featuring_artist_types, -> { where artist_type: 'Featuring' },
+            class_name: 'ArtistTrack', :foreign_key => :track_id,
+            dependent: :destroy
+  has_many :featuring_artists, :through => :featuring_artist_types, class_name: 'Artist', :source => :artist
+
   has_and_belongs_to_many :videos
   belongs_to :language
   belongs_to :provider
@@ -11,8 +24,7 @@ class Track < ApplicationRecord
   belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
-  has_many :accompany_artists, as: :target, :dependent => :destroy
-  accepts_nested_attributes_for :accompany_artists, :allow_destroy => true
+
   has_many :track_resources
   accepts_nested_attributes_for :track_resources, :allow_destroy => true
   has_many :track_composers
@@ -44,14 +56,10 @@ class Track < ApplicationRecord
     genre.try(:name)
   end
 
-  def primary_artists
-    artists.map { |artist| { name: artist.name, id: artist.id } }
-  end
-
   class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists,
+      include: [:albums,:primary_artists,
         multi_languages: {
           only: [:name],
           include: [language: { only: [:name]}]
@@ -62,21 +70,21 @@ class Track < ApplicationRecord
 
   class_attribute :as_relationship_list_json_options
 	self.as_relationship_list_json_options={
-			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
-      include: [
+			only: [:id, :title, :label,:label_code, :is_agent, :updated_at, :copyright_attribution, :position],
+      include: [:primary_artists,
         multi_languages: {
           only: [:name],
           include: [language: { only: [:name]}]
         }
       ],
-      methods: [:provider_name, :primary_artists]
+      methods: [:provider_name]
 	}
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,
+     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,:label_code,
            :copyright,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists,:track_resources,:track_composers,
+      include: [:albums,:primary_artists,:featuring_artists,:track_resources,:track_composers,
         multi_languages: {
           only: [:name],
           include: [language: { only: [:name]}]
@@ -95,7 +103,7 @@ class Track < ApplicationRecord
   class_attribute :as_artlist_tracks_json_options
 	self.as_artlist_tracks_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:artists,
+      include: [:albums,:primary_artists,
         multi_languages: {
           only: [:name],
           include: [language: { only: [:name]}]
@@ -113,13 +121,13 @@ class Track < ApplicationRecord
 	end
 
   def inc_tracks_count
-    self.artists.each do |artist|
+    self.primary_artists.each do |artist|
       Artist.increment_counter('tracks_count', artist.id)
     end
   end
 
   def dec_tracks_count
-    self.artists.each do |artist|
+    self.primary_artists.each do |artist|
       Artist.decrement_counter('tracks_count', artist.id)
     end
   end

@@ -1,5 +1,5 @@
 class Api::V1::TracksController < Api::V1::BaseController
-   
+
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 20
@@ -109,19 +109,21 @@ class Api::V1::TracksController < Api::V1::BaseController
         :is_agent,
         :ost,
         :label,
+        :label_code,
         :lyric,
         :remark,
         :pline,
         :cline,
         :copyright,
+        :version,
         :copyright_attribution,
         :language_id,
         :contract_id,
         :authorize_id,
         :provider_id,
         album_ids: [],
-        artist_ids: [],
-        accompany_artists_attributes: [:id, :name, :_destroy],
+        primary_artist_ids: [],
+        featuring_artist_ids: [],
         track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
         multi_languages_attributes: [:id, :name, :language_id, :_destroy],
         track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]

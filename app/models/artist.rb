@@ -18,7 +18,9 @@ class Artist < ApplicationRecord
            class_name: 'ArtistResource', dependent: :destroy
   has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
 
-  has_and_belongs_to_many :tracks
+
+  has_many :artist_tracks, class_name: 'ArtistTrack'
+  has_many :tracks, :through => :artist_tracks, class_name: 'Track', :source => :track
 
   # artist album association
   has_many :artist_albums, class_name: 'ArtistAlbum'
