@@ -49,68 +49,68 @@ class Track < ApplicationRecord
   end
 
   class_attribute :as_list_json_options
-	self.as_list_json_options={
-			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+  self.as_list_json_options={
+      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:artists,
-        multi_languages: {
-          only: [:name],
-          include: [language: { only: [:name]}]
-        }
+                multi_languages: {
+                    only: [:name],
+                    include: [language: { only: [:name]}]
+                }
       ],
       methods: [:provider_name,:contract_name]
-	}
+  }
 
   class_attribute :as_relationship_list_json_options
-	self.as_relationship_list_json_options={
-			only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
+  self.as_relationship_list_json_options={
+      only: [:id, :title, :label, :is_agent, :updated_at, :copyright_attribution, :position],
       include: [
-        multi_languages: {
-          only: [:name],
-          include: [language: { only: [:name]}]
-        }
+          multi_languages: {
+              only: [:name],
+              include: [language: { only: [:name]}]
+          }
       ],
       methods: [:provider_name, :primary_artists]
-	}
+  }
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-     only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,
-           :copyright,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,
+             :copyright,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:artists,:track_resources,:track_composers,
-        multi_languages: {
-          only: [:name],
-          include: [language: { only: [:name]}]
-        },
-        audits: {
-          only: [
-            :id,:user_id,:username,:action,:version,
-            :remote_address,:comment,:created_at
-          ]
-        }
+                multi_languages: {
+                    only: [:name],
+                    include: [language: { only: [:name]}]
+                },
+                audits: {
+                    only: [
+                        :id,:user_id,:username,:action,:version,
+                        :remote_address,:comment,:created_at
+                    ]
+                }
       ],
       methods: [:provider_name,:contract_name,:genre_name]
   }
 
- #艺人的歌曲列表
+  #艺人的歌曲列表
   class_attribute :as_artlist_tracks_json_options
-	self.as_artlist_tracks_json_options={
-			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+  self.as_artlist_tracks_json_options={
+      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:artists,
-        multi_languages: {
-          only: [:name],
-          include: [language: { only: [:name]}]
-        },
+                multi_languages: {
+                    only: [:name],
+                    include: [language: { only: [:name]}]
+                },
       ]
-	}
+  }
 
   private
 
-	def add_audit_comment
-		unless audited_changes.empty?
-			 self.audit_comment = '歌曲数据发生变更' if self.id
-			 self.audit_comment = '新建歌曲' if self.id.blank?
-		end
-	end
+  def add_audit_comment
+    unless audited_changes.empty?
+      self.audit_comment = '歌曲数据发生变更' if self.id
+      self.audit_comment = '新建歌曲' if self.id.blank?
+    end
+  end
 
   def inc_tracks_count
     self.artists.each do |artist|

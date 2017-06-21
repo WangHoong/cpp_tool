@@ -3,13 +3,13 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 20
-    @tracks = Track.includes(:albums,:artists,:audits,:contract,:provider).recent
-    @tracks =  @tracks.db_query(:title,params[:title]) if params[:title].present?
-    @tracks =  @tracks.where(isrc: params[:isrc]) if params[:isrc].present?
-    @tracks =  @tracks.where(:status ,params[:status]) if params[:status].present?
-    @tracks =  @tracks.joins("LEFT JOIN albums_tracks ON albums_tracks.track_id=tracks.id LEFT JOIN albums on albums_tracks.album_id=albums.id").where("albums.name=?",params[:album_name]) if params[:album_name].present?
-    @tracks =  @tracks.joins("LEFT JOIN artists_tracks ON artists_tracks.track_id=tracks.id LEFT JOIN artists on artists_tracks.track_id=artists.id").where("artists.name=?",params[:artist_name]) if params[:artist_name].present?
-    @tracks =  @tracks.page(page).per(size)
+    @tracks = Track.includes(:albums, :artists, :audits, :contract, :provider).recent
+    @tracks = @tracks.db_query(:title, params[:title]) if params[:title].present?
+    @tracks = @tracks.where(isrc: params[:isrc]) if params[:isrc].present?
+    @tracks = @tracks.where(status: params[:status]) if params[:status].present?
+    @tracks = @tracks.joins("LEFT JOIN albums_tracks ON albums_tracks.track_id=tracks.id LEFT JOIN albums on albums_tracks.album_id=albums.id").where("albums.name=?", params[:album_name]) if params[:album_name].present?
+    @tracks = @tracks.joins("LEFT JOIN artists_tracks ON artists_tracks.track_id=tracks.id LEFT JOIN artists on artists_tracks.track_id=artists.id").where("artists.name=?", params[:artist_name]) if params[:artist_name].present?
+    @tracks = @tracks.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
 
@@ -53,33 +53,34 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   #批量审核通过
-   def accept
-       @tracks = get_track_by_ids.limit(20)
-       comment = '审核通过'
-       @tracks.each do |track|
-         track.without_auditing do
-           track.accept!
-         end
-         if track.previous_changes.present?
-          changes = {status: track.previous_changes['status']}
-          track.create_auditables(current_user,'accept',comment,changes)
-         end
-       end
-       head :ok
-   end
+  def accept
+    @tracks = get_track_by_ids.limit(20)
+    comment = '审核通过'
+    @tracks.each do |track|
+      track.without_auditing do
+        track.accept!
+      end
+      if track.previous_changes.present?
+        changes = {status: track.previous_changes['status']}
+        track.create_auditables(current_user, 'accept', comment, changes)
+      end
+    end
+    head :ok
+  end
+
   #拒绝通过
-   def reject
-      comment =  params['not_through_reason'] || '审核未通过'
-       @track = get_track
-       @track.without_auditing do
-         @track.reject!(comment)
-       end
-       if @track.previous_changes.present?
-          changes = {status: @track.previous_changes['status']}
-          @track.create_auditables(current_user,'reject',comment,changes)
-        end
-        head :ok
-   end
+  def reject
+    comment = params['not_through_reason'] || '审核未通过'
+    @track = get_track
+    @track.without_auditing do
+      @track.reject!(comment)
+    end
+    if @track.previous_changes.present?
+      changes = {status: @track.previous_changes['status']}
+      @track.create_auditables(current_user, 'reject', comment, changes)
+    end
+    head :ok
+  end
 
   # POST /tracks/export
   def export
