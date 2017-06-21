@@ -48,7 +48,7 @@ class Artist < ApplicationRecord
 			include: [:albums,:tracks,
         multi_languages: {
           only: [:name],
-          include: [language: { only: [:name]}]
+          methods: [:language_name]
         }
       ],
       methods: [:country_name]
@@ -60,7 +60,7 @@ class Artist < ApplicationRecord
       include: [:albums,:tracks,:images,:songs,
         multi_languages: {
           only: [:name],
-          include: [language: { only: [:name]}]
+          methods: [:language_name]
         },
         audits: {
           only: [:id,:user_id,:username,:action,:version,
