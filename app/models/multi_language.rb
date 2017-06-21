@@ -7,4 +7,8 @@ class MultiLanguage < ApplicationRecord
 			only: [:name],
       include: [:language]
 	}
+
+  def language_name
+    language.name
+  end
 end
