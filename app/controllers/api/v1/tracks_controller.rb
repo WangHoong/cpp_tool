@@ -53,33 +53,34 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   #批量审核通过
-   def accept
-       @tracks = get_track_by_ids.limit(20)
-       comment = '审核通过'
-       @tracks.each do |track|
-         track.without_auditing do
-           track.accept!
-         end
-         if track.previous_changes.present?
-          changes = {status: track.previous_changes['status']}
-          track.create_auditables(current_user,'accept',comment,changes)
-         end
-       end
-       head :ok
-   end
+  def accept
+    @tracks = get_track_by_ids.limit(20)
+    comment = '审核通过'
+    @tracks.each do |track|
+      track.without_auditing do
+        track.accept!
+      end
+      if track.previous_changes.present?
+        changes = {status: track.previous_changes['status']}
+        track.create_auditables(current_user, 'accept', comment, changes)
+      end
+    end
+    head :ok
+  end
+
   #拒绝通过
-   def reject
-      comment =  params['not_through_reason'] || '审核未通过'
-       @track = get_track
-       @track.without_auditing do
-         @track.reject!(comment)
-       end
-       if @track.previous_changes.present?
-          changes = {status: @track.previous_changes['status']}
-          @track.create_auditables(current_user,'reject',comment,changes)
-        end
-        head :ok
-   end
+  def reject
+    comment = params['not_through_reason'] || '审核未通过'
+    @track = get_track
+    @track.without_auditing do
+      @track.reject!(comment)
+    end
+    if @track.previous_changes.present?
+      changes = {status: @track.previous_changes['status']}
+      @track.create_auditables(current_user, 'reject', comment, changes)
+    end
+    head :ok
+  end
 
   # POST /tracks/export
   def export

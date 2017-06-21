@@ -66,9 +66,10 @@ class Track < ApplicationRecord
         }
       ],
       methods: [:provider_name,:contract_name]
-	}
+  }
 
   class_attribute :as_relationship_list_json_options
+
 	self.as_relationship_list_json_options={
 			only: [:id, :title, :label,:label_code, :is_agent, :updated_at, :copyright_attribution, :position],
       include: [:primary_artists,
@@ -99,7 +100,7 @@ class Track < ApplicationRecord
       methods: [:provider_name,:contract_name,:genre_name]
   }
 
- #艺人的歌曲列表
+  #艺人的歌曲列表
   class_attribute :as_artlist_tracks_json_options
 	self.as_artlist_tracks_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
@@ -109,16 +110,16 @@ class Track < ApplicationRecord
           include: [language: { only: [:name]}]
         },
       ]
-	}
+  }
 
   private
 
-	def add_audit_comment
-		unless audited_changes.empty?
-			 self.audit_comment = '歌曲数据发生变更' if self.id
-			 self.audit_comment = '新建歌曲' if self.id.blank?
-		end
-	end
+  def add_audit_comment
+    unless audited_changes.empty?
+      self.audit_comment = '歌曲数据发生变更' if self.id
+      self.audit_comment = '新建歌曲' if self.id.blank?
+    end
+  end
 
   def inc_tracks_count
     self.primary_artists.each do |artist|
