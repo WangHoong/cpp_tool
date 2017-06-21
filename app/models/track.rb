@@ -3,8 +3,7 @@ class Track < ApplicationRecord
   audited
   has_and_belongs_to_many :albums
   accepts_nested_attributes_for :albums, :allow_destroy => true
-  #has_and_belongs_to_many :artists
-
+ 
   # primary artist track association
   has_many :primary_artist_types, -> { where artist_type: 'Primary' },
             class_name: 'ArtistTrack', :foreign_key => :track_id,
