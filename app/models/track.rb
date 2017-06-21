@@ -59,12 +59,7 @@ class Track < ApplicationRecord
   class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:primary_artists,
-        multi_languages: {
-          only: [:name],
-          include: [language: { only: [:name]}]
-        }
-      ],
+      include: [:albums,:primary_artists],
       methods: [:provider_name,:contract_name]
   }
 

@@ -3,7 +3,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 20
-    @tracks = Track.includes(:albums,:artists,:audits,:contract,:provider).recent
+    @tracks = Track.includes(:albums,:primary_artists,:audits,:contract,:provider).recent
     @tracks =  @tracks.db_query(:title,params[:title]) if params[:title].present?
     @tracks =  @tracks.where(isrc: params[:isrc]) if params[:isrc].present?
     @tracks =  @tracks.where(:status ,params[:status]) if params[:status].present?
