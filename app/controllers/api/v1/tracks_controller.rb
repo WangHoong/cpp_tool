@@ -8,7 +8,7 @@ class Api::V1::TracksController < Api::V1::BaseController
     @tracks =  @tracks.where(isrc: params[:isrc]) if params[:isrc].present?
     @tracks =  @tracks.where(:status ,params[:status]) if params[:status].present?
     @tracks =  @tracks.joins("LEFT JOIN albums_tracks ON albums_tracks.track_id=tracks.id LEFT JOIN albums on albums_tracks.album_id=albums.id").where("albums.name=?",params[:album_name]) if params[:album_name].present?
-    @tracks =  @tracks.joins("LEFT JOIN artists_tracks ON artists_tracks.track_id=tracks.id LEFT JOIN artists on artists_tracks.track_id=artists.id").where("artists.name=?",params[:artist_name]) if params[:artist_name].present?
+    @tracks =  @tracks.joins("LEFT JOIN artist_tracks ON artist_tracks.track_id=tracks.id LEFT JOIN artists on artist_tracks.track_id=artists.id").where("artists.name=?",params[:artist_name]) if params[:artist_name].present?
     @tracks =  @tracks.page(page).per(size)
     render json: {tracks: @tracks.as_json(Track.as_list_json_options), meta: page_info(@tracks)}
   end
