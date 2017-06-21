@@ -95,7 +95,7 @@ Rails.application.routes.draw do
         			post :accept
         		end
             member do
-              get :albums,:tracks
+              get :albums,:tracks,:multis
               post :reject
             end
           end #artists

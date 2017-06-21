@@ -1,6 +1,6 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
 
-  before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums]
+  before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums,:multis]
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
@@ -48,6 +48,11 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     else
       render json: @artist.errors, status: :unprocessable_entity
     end
+  end
+
+  def multis
+      @languages = @artist.multi_languages
+      render json: @languages.as_json({only: [:name],methods: :language_name})
   end
 
 #批量审核通过
