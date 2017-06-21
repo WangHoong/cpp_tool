@@ -116,6 +116,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         :pline,
         :cline,
         :copyright,
+        :release_version,
         :version,
         :copyright_attribution,
         :language_id,
