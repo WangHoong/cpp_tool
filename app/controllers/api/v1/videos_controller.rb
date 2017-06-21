@@ -61,6 +61,7 @@ class Api::V1::VideosController < Api::V1::BaseController
       tracks: @tracks.as_json(Track.as_relationship_list_json_options),
       meta: page_info(@tracks)
     }
+
   end
 
   # get /videos/:id/albums
@@ -71,7 +72,22 @@ class Api::V1::VideosController < Api::V1::BaseController
     @albums = @video.albums.recent.page(page).per(size)
     render json: @albums,
       each_serializer: Api::V1::Videos::AlbumSerializer,
-      meta: page_info(@tracks)
+      meta: page_info(@albums)
+  end
+
+  # get /videos/:id/materials
+  def materials
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 5
+    @video = get_video
+    @videos = @video.videos
+    @covers = @video.covers
+    render json: {
+      albums: {
+        videos: @videos,
+        covers: @covers
+      }
+    }
   end
 
   #批量审核通过
@@ -126,6 +142,7 @@ class Api::V1::VideosController < Api::V1::BaseController
             primary_artist_ids: [],
             featuring_artist_ids: [],
             track_ids: [],
+            album_ids: [],
             videos_attributes: [:id, :url, :native_name, :_destroy],
             covers_attributes: [:id, :url, :native_name, :position, :_destroy],
             multi_languages_attributes: [:id, :name, :language_id, :_destroy]

@@ -9,6 +9,7 @@ class Video < ApplicationRecord
   scope :recent, -> { order('id DESC') }
 
   has_and_belongs_to_many :tracks
+  has_and_belongs_to_many :albums
 
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
 
@@ -42,6 +43,7 @@ class Video < ApplicationRecord
   accepts_nested_attributes_for :videos, :allow_destroy => true
   accepts_nested_attributes_for :covers, :allow_destroy => true
 	accepts_nested_attributes_for :tracks, :allow_destroy => true
+  accepts_nested_attributes_for :albums, :allow_destroy => true
   before_save :add_audit_comment
 
   private

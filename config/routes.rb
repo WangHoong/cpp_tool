@@ -60,6 +60,7 @@ Rails.application.routes.draw do
           resources :authorized_ranges, only: [:index]
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
+          resources :tasks, only: [:create]
           resources :tracks, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept
@@ -85,7 +86,7 @@ Rails.application.routes.draw do
               post :accept
             end
             member do
-              get :tracks, :albums
+              get :tracks, :albums, :materials
               post :reject
             end
           end
