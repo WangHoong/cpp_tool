@@ -83,10 +83,8 @@ class Api::V1::VideosController < Api::V1::BaseController
     @videos = @video.videos
     @covers = @video.covers
     render json: {
-      albums: {
-        videos: @videos,
-        covers: @covers
-      }
+      videos: @videos,
+      covers: @covers
     }
   end
 
