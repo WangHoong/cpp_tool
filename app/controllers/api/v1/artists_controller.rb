@@ -52,7 +52,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   def multis
       @languages = @artist.multi_languages
-      render json: @languages.as_json({only: [:name],methods: :language_name})
+      render json: {multi_languages: @languages.as_json({only: [:name],methods: :language_name})}
   end
 
 #批量审核通过
