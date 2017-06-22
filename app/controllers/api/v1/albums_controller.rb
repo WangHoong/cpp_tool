@@ -71,10 +71,8 @@ class Api::V1::AlbumsController < Api::V1::BaseController
     @materials = @album.materials
     @covers = @album.covers
     render json: {
-      albums: {
-        materials: @materials,
-        covers: @covers
-      }
+      materials: @materials,
+      covers: @covers
     }
   end
 
