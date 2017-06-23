@@ -2,6 +2,7 @@ class Api::V1::Videos::TrackSerializer < ActiveModel::Serializer
   attributes :id,
              :title,
              :label,
+             :copyright,
              :multi_languages
   def multi_languages
     @multi_languages = object.multi_languages

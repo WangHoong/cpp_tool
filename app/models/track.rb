@@ -66,7 +66,7 @@ class Track < ApplicationRecord
   class_attribute :as_relationship_list_json_options
 
 	self.as_relationship_list_json_options={
-			only: [:id, :title, :label,:label_code, :is_agent, :updated_at, :copyright_attribution, :position],
+			only: [:id, :title, :label, :copyright, :label_code, :is_agent, :updated_at, :copyright_attribution, :position],
       include: [:primary_artists,
         multi_languages: {
           only: [:name],
