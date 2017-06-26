@@ -2,6 +2,9 @@ class Api::V1::Videos::AlbumSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :upc,
+             :label,
+             :updated_at,
+             :tracks_count,
              :multi_languages
   def multi_languages
     @multi_languages = object.multi_languages
