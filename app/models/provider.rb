@@ -3,11 +3,12 @@ class Provider < ApplicationRecord
 	audited
 	has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
   belongs_to :copyright
+	has_many :trades
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum status: [:pending,:accepted,:rejected]
 	enum property: [:personal,:company]
 
-  has_many :trades
+
   before_save :add_audit_comment
 	validates :name, presence: true
 
