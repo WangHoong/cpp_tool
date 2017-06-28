@@ -82,8 +82,8 @@ class Api::V1::ProvidersController < Api::V1::BaseController
 
   def provider_params
     params.require(:provider).permit(:name,:property,:data_type,:contact,:address,
-    :email,:tel,:status,:not_through_reason,:bank_name,
-    :account_no,:user_name,:cycle,:start_time,
-    copyright_attributes:[:id,:name,:_destroy])
+      :email,:tel,:status,:not_through_reason,:bank_name,:account_no,:user_name,:cycle,:start_time,
+      copyrights_attributes: [:id,:name,:_destroy]
+    )
   end
 end
