@@ -3,7 +3,7 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @providers = Provider.includes(:audits,:copyright).order(id: :desc)
+    @providers = Provider.includes(:audits,:copyrights).order(id: :desc)
     @providers =  @providers.db_query(:name,params[:name]) if params[:name].present?
     @providers = @providers.page(page).per(size)
     render json: {providers: @providers.as_json(Provider.as_list_json_options), meta: page_info(@providers)}
