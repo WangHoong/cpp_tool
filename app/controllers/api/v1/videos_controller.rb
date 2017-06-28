@@ -3,7 +3,7 @@ class Api::V1::VideosController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @videos = Video.includes(:audits).recent
+    @videos = Video.includes(:primary_artists,:audits,:multi_languages).recent
     @videos = @videos.db_query(:name,params[:name]) if params[:name].present?
     @videos = @videos.db_query(:label,params[:label]) if params[:label].present?
     @videos = @videos.where(status: params[:status]) if params[:status].present?

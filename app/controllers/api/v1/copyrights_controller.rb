@@ -7,6 +7,14 @@ class Api::V1::CopyrightsController < Api::V1::BaseController
     render json: {copyrights: @copyrights, meta: page_info(@copyrights)}
   end
 
+  def update
+     @copyright = Copyright.find(params[:id])
+     if @copyright.update(provider_params)
+       render json: {copyright: @copyright}
+     else
+       render json: @copyright.errors, status: :unprocessable_entity
+     end
+  end
 
   def create
     @copyright = Copyright.new(provider_params)
