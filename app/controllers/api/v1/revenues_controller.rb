@@ -3,13 +3,13 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @revenues = Revenue.includes(:dsp).order(id: :desc).page(page).per(size)
-    render json: {revenues: @revenues,meta: page_info(@revenues)}
+    @revenues = Revenue.includes(:dsp,:user).order(id: :desc).page(page).per(size)
+    render json: {revenues: @revenues.as_json(Revenue.as_list_json_options),meta: page_info(@revenues)}
   end
 
   def show
     @revenue = get_revenue
-    render json: @revenue.as_json(Revenue.as_list_json_options)
+    render json: @revenue.as_json(Revenue.as_show_json_options)
   end
 
   def create
@@ -25,7 +25,6 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def update
     @revenue = get_revenue
     @revenue.assign_attributes(revenue_params)
-
     if @revenue.save
       render json: @revenue
     else
