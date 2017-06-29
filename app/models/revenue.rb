@@ -1,3 +1,4 @@
+require 'workflow'
 class Revenue < ApplicationRecord
   include Workflow
   enum status: [:processing, :processed, :confirmed, :accounted, :finished]

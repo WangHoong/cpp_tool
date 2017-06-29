@@ -9,13 +9,5 @@ class Api::V1::CopyrightsController < Api::V1::BaseController
   end
 
 
-  def destroy
-    @copyright = Copyright.find(params[:id])
-    @copyright.destroy
-    head :ok
-  end
-
-
-
 
 end

@@ -3,9 +3,8 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-
     @revenues = Revenue.includes(:dsp).order(id: :desc).page(page).per(size)
-    render json: {revenues: @revenues}
+    render json: {revenues: @revenues,meta: page_info(@revenues)}
   end
 
   def show
@@ -14,7 +13,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   end
 
   def create
-    @revenue = Revenue.new(revenue_params)
+    @revenue = current_user.revenues.new(revenue_params)
     if @revenue.save
       #DonkeyJob.create(task: :parse_report, target: @revenue, status: :pending)
       render json: @revenue
