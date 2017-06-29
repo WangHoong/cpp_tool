@@ -48,7 +48,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
 
   #批量审核通过
    def accept
-       @contracts = get_contract_by_ids.limit(20)
+       @contracts = get_contract_list.limit(20)
        comment = '审核通过'
        @contracts.each do |contract|
          contract.without_auditing do
