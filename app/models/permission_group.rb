@@ -3,7 +3,7 @@ class PermissionGroup < ApplicationRecord
   acts_as_nested_set
 
   scope :recent, -> {order("sort ASC")}
-  scope :roots, -> {where(parent_id: nil)}
+  scope :rootes, -> {where(parent_id: nil)}
   has_many :subclass, class_name: 'PermissionGroup',foreign_key: :parent_id
 
 

@@ -4,6 +4,7 @@ class Revenue < ApplicationRecord
 
   belongs_to :currency
   belongs_to :dsp
+  belongs_to :user
   has_many :revenue_files, dependent: :destroy
 	accepts_nested_attributes_for :revenue_files, :allow_destroy => true
   validates :dsp_id, presence: true
@@ -66,13 +67,30 @@ class Revenue < ApplicationRecord
 
   end
 =end
+
+  def user_name
+    user.try(:name)
+  end
+
+  def dsp_name
+    dsp.try(:name)
+  end
+
   def self.as_list_json_options
      as_list_json = {
     			only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
+          methods: [:user_name,:dsp_name]
+        }
+  end
+
+  def self.as_show_json_options
+     as_list_json = {
+          only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
           include: [:revenue_files],
           methods: [:analyse_result]
         }
   end
+
 
 
   attr_writer :file_urls

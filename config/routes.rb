@@ -49,6 +49,7 @@ Rails.application.routes.draw do
             member do
               post :reject
             end
+            resources :copyrights, only: [:index]
           end#providers
           resources :roles do
             collection do
@@ -61,6 +62,7 @@ Rails.application.routes.draw do
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :banks, only: [:index, :create, :show, :update, :destroy]
           resources :tasks, only: [:create]
+
           resources :tracks, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept

@@ -3,8 +3,8 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @providers = Provider.includes(:audits).order(id: :desc)
-    @providers = @providers.where(name: params[:q]) if params[:q]
+    @providers = Provider.includes(:audits,:copyrights).order(id: :desc)
+    @providers =  @providers.db_query(:name,params[:name]) if params[:name].present?
     @providers = @providers.page(page).per(size)
     render json: {providers: @providers.as_json(Provider.as_list_json_options), meta: page_info(@providers)}
   end
@@ -17,7 +17,7 @@ class Api::V1::ProvidersController < Api::V1::BaseController
 
   def update
     @provider = get_provider
-    @provider.status = :pending  
+    @provider.status = :pending
     if @provider.update(provider_params)
       render json: {provider: @provider}
     else
@@ -81,6 +81,9 @@ class Api::V1::ProvidersController < Api::V1::BaseController
   end
 
   def provider_params
-    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,:email,:tel,:status,:not_through_reason,:bank_name,:account_no,:user_name,:cycle,:start_time)
+    params.require(:provider).permit(:name,:property,:data_type,:contact,:address,
+      :email,:tel,:status,:not_through_reason,:bank_name,:account_no,:user_name,:cycle,:start_time,
+      copyrights_attributes: [:id,:name,:_destroy]
+    )
   end
 end

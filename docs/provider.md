@@ -85,7 +85,8 @@
     "start_time": "2017-04-08",
     "bank_name": "开户行",
     "account_no": "结算账户",
-    "user_name": "账户名"
+    "user_name": "账户名",
+    "copyright_attributes":[{"name": "teeee"}]
   }
 }
 
@@ -150,7 +151,8 @@
     "start_time": "2017-04-08",
     "bank_name": "开户行",
     "account_no": "结算账户",
-    "user_name": "账户名"
+    "user_name": "账户名",
+    "copyright_attributes":[{"id": 1,"name": "teeee"}]
   }
 }
 

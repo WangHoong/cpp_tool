@@ -3,7 +3,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size] || 10
-    @albums = Album.includes(:tracks,:primary_artists,:audits).recent
+    @albums = Album.includes(:tracks,:primary_artists,:audits,:multi_languages).recent
     @albums = @albums.db_query(:name,params[:name]) if params[:name].present?
     @albums = @albums.db_query(:label,params[:label]) if params[:label].present?
     @albums = @albums.where(status: params[:status]) if params[:status].present?
