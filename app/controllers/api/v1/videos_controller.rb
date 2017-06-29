@@ -21,7 +21,7 @@ class Api::V1::VideosController < Api::V1::BaseController
     size = params[:size] || 10
     resource = Artist.find(params.fetch(:artist_id)) if params.fetch(:artist_id, 0) != 0
     resource = Album.find(params.fetch(:album_id)) if params.fetch(:album_id, 0) != 0
-    resource = Album.find(params.fetch(:track_id)) if params.fetch(:track_id, 0) != 0
+    resource = Track.find(params.fetch(:track_id)) if params.fetch(:track_id, 0) != 0
     @videos = resource.videos.page(page).per(size)
     puts @videos.to_json
     render json: @videos,
