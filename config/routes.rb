@@ -86,6 +86,7 @@ Rails.application.routes.draw do
           resources :videos, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept
+              get :query
             end
             member do
               get :tracks, :albums, :materials
