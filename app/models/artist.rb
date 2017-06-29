@@ -26,6 +26,12 @@ class Artist < ApplicationRecord
   has_many :artist_albums, class_name: 'ArtistAlbum'
   has_many :albums, :through => :artist_albums, class_name: 'Album', :source => :album
 
+  # videos association
+  has_many :vidoes_types, -> { where artist_type: ['primary','featuring'] },
+            class_name: 'ArtistVideo', :foreign_key => :artist_id,
+            dependent: :destroy
+  has_many :videos, :through => :vidoes_types, class_name: 'Video', :source => :video
+
   before_save :add_audit_comment
 
   accepts_nested_attributes_for :songs, :allow_destroy => true
