@@ -1,10 +1,10 @@
-class Cp::SettlementsController < Api::V1::BaseController
+class Api::V1::Cp::SettlementsController < Api::V1::BaseController
 
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
 
-    @settlements = Cp::Settlement.includes(:provider,:dsp,:currency).recent
+    @settlements = ::Cp::Settlement.includes(:provider,:dsp,:currency).recent
     @settlements = @settlements.where(dsp_id: params[:dsp_id]) if params[:dsp_id].present?
     @settlements = @settlements.where(id: params[:id]) if params[:id].present?
     @settlements = @settlements.where(provider_id: params[:provider_id]) if params[:provider_id].present?
@@ -14,7 +14,7 @@ class Cp::SettlementsController < Api::V1::BaseController
     @settlements = @settlements.where(settlement_date: params[:settlement_date]) if params[:settlement_date].present?
     @settlements = @settlements.page(page).per(size)
 
-    render json:{settlements: @settlements , meta: meta_attributes(@settlements) }
+    render json:{settlements: @settlements , meta: page_info(@settlements) }
   end
 
 end
