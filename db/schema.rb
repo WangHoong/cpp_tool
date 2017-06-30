@@ -37,14 +37,6 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "index"
   end
 
-  create_table "album_videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.integer  "video_id"
-    t.integer  "album_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["video_id", "album_id"], name: "index_album_videos_on_video_id_and_album_id", using: :btree
-  end
-
   create_table "albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "upc",                                                              comment: "商品统一编码，universal product code"
@@ -77,7 +69,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.string   "not_through_reason"
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
-    t.integer  "tracks_count"
+    t.integer  "tracks_count",                        default: 0
     t.index ["name"], name: "index_albums_on_name", using: :btree
     t.index ["status"], name: "index_albums_on_status", using: :btree
   end
@@ -87,6 +79,14 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer "album_id"
     t.index ["album_id"], name: "album_id", using: :btree
     t.index ["track_id"], name: "track_id", using: :btree
+  end
+
+  create_table "albums_videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "video_id"
+    t.integer  "album_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["video_id", "album_id"], name: "index_album_videos_on_video_id_and_album_id", using: :btree
   end
 
   create_table "artist_albums", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -115,6 +115,14 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.boolean  "deleted",       default: false
+  end
+
+  create_table "artist_tracks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "track_id"
+    t.integer  "artist_id"
+    t.string   "artist_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "artist_videos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -146,13 +154,6 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "albums_count",                         default: 0
     t.index ["deleted"], name: "index_artists_on_deleted", using: :btree
     t.index ["name"], name: "index_artists_on_name", using: :btree
-  end
-
-  create_table "artists_tracks", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "track_id"
-    t.integer "artist_id"
-    t.index ["artist_id"], name: "index_artists_tracks_on_artist_id", using: :btree
-    t.index ["track_id"], name: "index_artists_tracks_on_track_id", using: :btree
   end
 
   create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -223,6 +224,13 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.index ["target_id", "target_type"], name: "index_contract_resources_on_target_id_and_target_type", using: :btree
   end
 
+  create_table "copyrights", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name",                     comment: "版权最终归属"
+    t.integer  "provider_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "countries", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "continent_id",               comment: "对应七大陆continent表的id"
     t.string  "name",         limit: 256,   comment: "英文常用标准名称，主要用于显示"
@@ -269,7 +277,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.date     "settlement_cycle_start",                        comment: "结算周期开始时间"
     t.date     "settlement_cycle_end",                          comment: "结算周期结束时间"
     t.date     "settlement_date",                               comment: "结算日期"
-    t.integer  "settlement_status",                 default: 0, comment: "结算状态 0 待确认 1待支付2已支付"
+    t.integer  "status",                            default: 0, comment: "结算状态 0 待确认 1待支付2已支付"
     t.integer  "provider_id",                                   comment: "版权方"
     t.integer  "dsp_id",                                        comment: "渠道"
     t.integer  "currency_id",                                   comment: "货币"
@@ -404,7 +412,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "status",                                                  default: 0,                  comment: "0未审核1审核通过2未通过"
     t.boolean  "deleted",                                                 default: false,              comment: "0未删除1删除"
     t.decimal  "current_amount",                 precision: 10, scale: 2, default: "0.0",              comment: "余额"
-    t.string   "final_copyright",                                                                      comment: "最终版权"
+    t.integer  "copyright_id",                                                                         comment: "最终版权"
     t.string   "not_through_reason",                                                                   comment: "未通过原因"
     t.datetime "created_at",                                                              null: false
     t.datetime "updated_at",                                                              null: false
@@ -507,12 +515,13 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "provider_id",                                                   comment: "版权方ID"
     t.integer  "contract_id"
     t.integer  "authorize_id"
+    t.integer  "copyright_id",                                                  comment: "版权最终归属"
     t.boolean  "deleted",                          default: false
     t.text     "remark",             limit: 65535,                              comment: "备注"
     t.datetime "created_at",                                       null: false
     t.datetime "updated_at",                                       null: false
     t.string   "not_through_reason",                                            comment: "未通过原因"
-    t.string   "copyright",                                                     comment: "版权最终归属"
+    t.string   "release_version",                                               comment: "版本"
     t.index ["position"], name: "position", using: :btree
     t.index ["title"], name: "index_tracks_on_title", using: :btree
   end

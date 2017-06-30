@@ -17,4 +17,20 @@ class Api::V1::Cp::SettlementsController < Api::V1::BaseController
     render json:{settlements: @settlements , meta: page_info(@settlements) }
   end
 
+ #确定结算
+  def confirm
+    @settlement = ::Cp::Settlement.find(params[:id])
+    if @settlement.confirm!
+       head :ok
+    end
+  end
+
+ def payment
+   @settlement = ::Cp::Settlement.find(params[:id])
+   if @settlement.paymented!
+      head :ok
+   end
+ end
+
+
 end

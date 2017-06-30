@@ -15,7 +15,11 @@ Rails.application.routes.draw do
               end
               resources :authorizes,  except: [:create,:update]
             end #contracts
-            resources :settlements
+            resources :settlements, only: [:index] do
+              member do
+                put :confirm,:payment
+              end
+            end #settlements
           end
 
           resources :revenues do
