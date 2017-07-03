@@ -1,5 +1,5 @@
+include Workflow
 class Cp::Settlement < ApplicationRecord
-	include Workflow
 	self.table_name=:cp_settlements
 	belongs_to :provider
 	belongs_to :dsp
