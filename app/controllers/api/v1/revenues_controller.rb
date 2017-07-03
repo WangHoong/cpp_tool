@@ -34,7 +34,9 @@ class Api::V1::RevenuesController < Api::V1::BaseController
 
   def destroy
     @revenue = get_revenue
-    @revenue.destroy
+    if @revenue.destroy
+       head :ok
+    end
   end
 
 
