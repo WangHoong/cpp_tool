@@ -9,6 +9,6 @@ class MultiLanguage < ApplicationRecord
 	}
 
   def language_name
-    language.name
+    language && language.name
   end
 end
