@@ -24,12 +24,7 @@ Rails.application.routes.draw do
 
           resources :revenues do
             member do
-              get :analyses_file
-              put :processed
-              put :confirm
-              put :account
-              put :done
-              put :reprocess
+              get :analyses_file,:processed,:confirm,:account,:done,:reprocess
             end
           end
 

@@ -3,7 +3,10 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @revenues = Revenue.includes(:dsp,:user).order(id: :desc).page(page).per(size)
+
+    @revenues = Revenue.includes(:dsp,:user).order(id: :desc)
+    @revenues =  @revenues.where(status: params[:status]) if params[:status].present?
+    @revenues =  @revenues.page(page).per(size)
     render json: {revenues: @revenues.as_json(Revenue.as_list_json_options),meta: page_info(@revenues)}
   end
 
@@ -118,7 +121,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
         :is_std,
         :is_split,
         :currency_id,
-        revenue_files_attributes: [:id,:url,:file_name,:processed_at,:_destroy]
+        revenue_files_attributes: [:id,:url,:file_name,:_destroy]
     )
   end
 
