@@ -131,6 +131,16 @@ class Api::V1::VideosController < Api::V1::BaseController
         head :ok
    end
 
+  # POST /tracks/export
+  def export
+    ids = (params[:ids] || '').split(',')
+    return render text: '请选择要导出的id列表' if ids.empty?
+    return render text: '一次最多导出2000条数据' if ids.length > 2000
+
+    @videos = Video.includes(:primary_artists).where(id: ids)
+    render xlsx: 'videos/export.xlsx.axlsx', filename: '视频列表.xlsx', xlsx_author: 'topdmc.com'
+  end
+
   private
   def get_video
     Video.find(params[:id])
