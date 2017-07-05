@@ -30,14 +30,14 @@ class Cp::Settlement < ApplicationRecord
 
   def self.as_list_json_options
      as_list_json = {
-    			only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:created_at,:updated_at],
+    			only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:file_url,:created_at,:updated_at],
           methods: [:provider_name]
         }
   end
 
   def self.as_show_json_options
      as_list_json = {
-			   only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:created_at,:updated_at],
+			   only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:file_url,:created_at,:updated_at],
 			   methods: [:provider_name,:dsp_name]
         }
   end
