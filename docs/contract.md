@@ -66,7 +66,7 @@
          "contract_no":"32323",
          "start_time":"2016-11-17","end_time":"2017-12-17",
          "allow_overdue":false,"pay_type":"default",
-         "pay_amount":10,"desc":"dfdfdfsss",
+         "prepay_amount":10,"desc":"dfdfdfsss",
          "contract_resources_attributes": [{"url":"33333","file_name":"eeeeee"}],
          "authorizes_attributes":[{"currency_id":1,"account_id":1,
          "start_time":"2016-11-17","end_time":"2016-12-17",
@@ -103,7 +103,7 @@
      "contract_no":"32323",
      "start_time":"2016-11-17","end_time":"2017-12-17",
      "allow_overdue":false,"pay_type":"default",
-     "pay_amount":10,"desc":"dfdfdfsss",
+     "prepay_amount":10,"desc":"dfdfdfsss",
      "contract_resources_attributes":[{"id":1,"url":"33333","file_name":"eeeeee"}],
      "authorizes_attributes":[{"id":2,"currency_id":1,"account_id":1,
      "start_time":"2016-11-17","end_time":"2016-12-17",
@@ -139,7 +139,7 @@
           "project_no":"ssss","contract_no":"sssss",
           "signing_company":"32aa","start_time":"2016-11-17",
           "end_time":"2016-12-17","allow_overdue":false,
-          "pay_type":"default","pay_amount":10,"desc":"dfdfdfsss","reason":"dddd",
+          "pay_type":"default","prepay_amount":10,"desc":"dfdfdfsss","reason":"dddd",
           "contract_resources": [
               {
                 "id": 2,

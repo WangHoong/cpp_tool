@@ -30,6 +30,21 @@ class ApplicationController < ActionController::Base
     end
 
     def api_error(opts = {})
-        render head: true, status: opts[:status] 
+        render head: true, status: opts[:status]
     end
+
+    protected
+
+    def database_transaction
+      begin
+        ActiveRecord::Base.transaction do
+          yield
+        end
+        true
+      rescue => e
+        logger.error %[#{e.class.to_s} (#{e.message}):\n\n #{e.backtrace.join("\n")}\n\n]
+        false
+      end
+    end
+
 end

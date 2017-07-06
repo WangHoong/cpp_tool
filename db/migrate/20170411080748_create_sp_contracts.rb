@@ -9,7 +9,7 @@ class CreateSpContracts < ActiveRecord::Migration[5.0]
       t.datetime "start_time",             comment: "合约开始时间"
       t.datetime "end_time",               comment: "合约结算时间"
       t.integer  "pay_type",                        comment: "支付类型"
-      t.integer  "pay_amount",                      comment: "预付金额"
+      t.integer  "prepay_amount",                      comment: "预付金额"
       t.string   "desc",                            comment: "描述"
       t.timestamps
     end

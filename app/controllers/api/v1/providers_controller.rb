@@ -40,6 +40,14 @@ class Api::V1::ProvidersController < Api::V1::BaseController
     head :ok
   end
 
+  def trades
+    page = params.fetch(:page, 1).to_i
+    size = params[:size] || 10
+    @providers = Provider.includes(:transations).order(id: :desc)
+    @providers =  @providers.db_query(:name,params[:name]) if params[:name].present?
+    @providers = @providers.page(page).per(size)
+    render json: {providers: @providers.as_json(Provider.as_trades_list_json_options), meta: page_info(@providers)}
+  end
 
   #批量审核通过
    def accept

@@ -5,7 +5,8 @@ class Cp::Contract < ApplicationRecord
   audited
   belongs_to :provider
   belongs_to :department
-  has_one :trade, as: :target, :dependent => :destroy
+  has_many :transations,as: :target, :dependent => :destroy
+
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
   has_many :authorizes,class_name: 'Cp::Authorize', :dependent => :destroy
   has_many :authorize_valids, -> {where('cp_authorizes.end_time >=?',Time.now)},class_name: 'Cp::Authorize'
@@ -18,8 +19,7 @@ class Cp::Contract < ApplicationRecord
 
   enum pay_type: [:default,:divide,:undivide]
   enum status: [:pending,:accepted,:rejected]
-
-  after_create :set_pay_amount_total
+  after_create :set_prepay_amounts
   before_save :add_audit_comment
   #validates_presence_of :authorizes
 
@@ -91,7 +91,7 @@ class Cp::Contract < ApplicationRecord
 
    class_attribute :as_show_json_options
     self.as_show_json_options={
-      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:pay_amount,:not_through_reason,:desc,:created_at, :updated_at],
+      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:prepay_amount,:not_through_reason,:desc,:created_at, :updated_at],
       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name],
       include: [:contract_resources,authorizes: {include:[:contract_resources,authorized_businesses: {include:[:authorized_areas],methods: [:authorized_range_name]}]}],
 
@@ -107,11 +107,13 @@ class Cp::Contract < ApplicationRecord
      end
    end
 
-   def set_pay_amount_total
-     if pay_amount.to_i > 0
-        trade = self.build_trade(provider_id: provider_id,amount: pay_amount,status: :prepay)
-        if trade.save
-           provider.update(current_amount: provider.current_amount + trade.amount)
+   def set_prepay_amounts
+     if prepay_amount.to_i > 0
+        balance = provider.current_amount + prepay_amount
+        transation = transations.new(provider_id: provider_id,balance: balance,amount: prepay_amount,status: :paymented,subject: '合约预付款',pay_time: Time.now)
+        ActiveRecord::Base.transaction do
+          transation.save!
+          provider.update!(current_amount: balance)
         end
      end
    end

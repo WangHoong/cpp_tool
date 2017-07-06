@@ -12,7 +12,7 @@ class Api::V1::Cp::SettlementsController < Api::V1::BaseController
     render json: {settlements: @settlements.as_json(::Cp::Settlement.as_list_json_options), meta: page_info(@settlements) }
   end
 
- #确定结算
+ #待结算
   def confirm
     @settlement = ::Cp::Settlement.find(params[:id])
     if @settlement.confirm!

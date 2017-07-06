@@ -4,6 +4,7 @@ class Cp::Settlement < ApplicationRecord
 	belongs_to :provider
 	belongs_to :dsp
 	belongs_to :currency
+	has_many :transations,as: :target, :dependent => :destroy
 	enum status: [:pending, :confirmed, :paymented]
   scope :recent, -> { order('id DESC') }
 
@@ -41,5 +42,14 @@ class Cp::Settlement < ApplicationRecord
 			   methods: [:provider_name,:dsp_name]
         }
   end
+
+	def payment_transations
+		balance = self.provider.try(:current_amount) - self.settlement_amount
+		transation = self.transations.new(provider_id: self.provider_id,balance: balance,amount: self.settlement_amount,subject: '结算单金额')
+		ActiveRecord::Base.transaction do
+			transation.save!
+			provider.update!(current_amount: balance)
+		end
+	end
 
 end
