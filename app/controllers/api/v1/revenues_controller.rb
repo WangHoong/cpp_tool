@@ -43,7 +43,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   end
 
 
-  # PUT /revenues/:id/processed
+  # GET /revenues/:id/processed
   #解析完成
   def processed
     @revenue = get_revenue
@@ -54,7 +54,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/reprocess
+  # GET /revenues/:id/reprocess
  #summary '再次解析'
   def reprocess
     @revenue = get_revenue
@@ -65,7 +65,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/confirm
+  # GET /revenues/:id/confirm
  #summary '确认导入'
   def confirm
     @revenue = get_revenue
@@ -76,7 +76,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/account
+  # GET /revenues/:id/account
   #summary '确认结算'
   def account
     @revenue = get_revenue

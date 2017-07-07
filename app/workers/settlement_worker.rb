@@ -13,7 +13,7 @@ class SettlementWorker
   def perform(settlement_id)
       @settlement = ::Cp::Settlement.find(settlement_id)
       @settlement.payment_transations
-    
+
   end
 
 end
