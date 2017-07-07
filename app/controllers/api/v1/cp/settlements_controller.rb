@@ -22,7 +22,7 @@ class Api::V1::Cp::SettlementsController < Api::V1::BaseController
 
  def payment
    @settlement = ::Cp::Settlement.find(params[:id])
-   if @settlement.paymented!
+   if @settlement.update(status: :paymented,pay_time: Time.now)
       head :ok
    end
  end

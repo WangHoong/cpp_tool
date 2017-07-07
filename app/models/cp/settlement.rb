@@ -49,6 +49,7 @@ class Cp::Settlement < ApplicationRecord
 		ActiveRecord::Base.transaction do
 			transation.save!
 			provider.update!(current_amount: balance)
+			self.update!(status: :confirmed)
 		end
 	end
 
