@@ -55,8 +55,8 @@ class Api::V1::ExchangeRatesController < Api::V1::BaseController
             :currency_id,
             :settlement_currency_id,
             :exchange_ratio,
-            :status,
-            :operator
+            :rate_time,
+            :status
         )
   end
 end

@@ -12,7 +12,7 @@ class Transation < ApplicationRecord
 		return  0 if balance.to_f > amount.to_f
 		return  (balance - amount) * sort if balance.to_f < amount.to_f
 	end
- 
+
 	def self.as_list_json_options
 		 as_list_json = {
 					only: [:id,:provider_id,:amount,:balance,:subject,:status,:pay_time,:created_at,:updated_at],

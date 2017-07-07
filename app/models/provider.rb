@@ -5,6 +5,8 @@ class Provider < ApplicationRecord
   has_many :copyrights
 	accepts_nested_attributes_for :copyrights, :allow_destroy => true
 	has_many :transations
+  has_many :transations_prepay_amount ,-> { where(target_type: 'Cp::Contract')}, class_name: 'Transation'
+	has_many :transations_settlement_amount ,-> { where(target_type: 'Cp::Settlement')}, class_name: 'Transation'
 
 	acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 	enum status: [:pending,:accepted,:rejected]
@@ -19,11 +21,11 @@ class Provider < ApplicationRecord
 	end
 
  def prepay_amount_total
-	 transations.where(target_type: 'Cp::Contract').sum(:amount).to_f
+	 transations_prepay_amount.sum(:amount).to_f
  end
 
  def settlement_amount_total
-	 transations.where(target_type: 'Cp::Settlement').sum(:amount).to_f
+	 transations_settlement_amount.sum(:amount).to_f
  end
 
  def final_amount_total
