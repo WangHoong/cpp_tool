@@ -15,7 +15,7 @@ class ExchangeRate < ApplicationRecord
 
 	class_attribute :as_list_json_options
 	self.as_list_json_options={
-			only: [:id, :currency_id,:settlement_currency_id,:exchange_ratio,:status,:rate_time,:created_at],
+			only: [:id, :currency_id,:settlement_currency_id,:exchange_ratio,:status,:rate_time,:created_at,:updated_at],
       methods: [:currency_name,:settlement_currency_name]
 	}
 end

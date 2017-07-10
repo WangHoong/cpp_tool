@@ -10,7 +10,8 @@ class Api::V1::ExchangeRatesController < Api::V1::BaseController
 
   # Get /exchange_rates/:id
   def show
-    render json: get_exchange_rate
+    get_exchange_rate
+    render json: {rate: @rate.as_json(ExchangeRate.as_list_json_options)}
   end
 
   # Put /exchange_rates/:id
