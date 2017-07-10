@@ -4,8 +4,8 @@ class Api::V1::ExchangeRatesController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @rate = ExchangeRate.includes(:currency, :settlement_currency).recent.page(page).per(size)
-    render json: @rate, meta: page_info(@rate)
+    @rates = ExchangeRate.includes(:currency, :settlement_currency).recent.page(page).per(size)
+    render json: {rates: @rates.as_json(ExchangeRate.as_list_json_options)}, meta: page_info(@rates)
   end
 
   # Get /exchange_rates/:id
