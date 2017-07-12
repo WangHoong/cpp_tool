@@ -37,7 +37,7 @@ Rails.application.routes.draw do
           end
           resources :users, only: [:index, :create, :show, :update, :destroy]  do
             collection do
-              get :current
+              get :current,:timeline
             end
           end #users
           resources :dsps, only: [:index, :create, :show, :update, :destroy]

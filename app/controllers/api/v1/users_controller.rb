@@ -57,6 +57,15 @@ class Api::V1::UsersController < Api::V1::BaseController
       end
   end
 
+  def timeline
+      @tracks = Track.includes(:albums,:primary_artists,:audits,:contract,:provider).where(is_view: false)
+      pending_tracks = @tracks.where(status: :pending).count
+      accepted_tracks = @tracks.where(status: :accepted).count
+      rejected_tracks = @tracks.where(status: :rejected).count
+      tracks_info = {new_tracks: @tracks.count, pending_tracks: pending_tracks,accepted_tracks: accepted_tracks,rejected_tracks: rejected_tracks}
+      @tracks = @tracks.limit(10)
+      render json: {tracks: @tracks.as_json(Track.as_list_json_options),tracks_info: tracks_info }
+  end
 
   private
   def get_user
