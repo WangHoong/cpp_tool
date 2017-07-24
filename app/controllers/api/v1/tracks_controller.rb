@@ -20,11 +20,10 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def create
     @track = Track.new track_params
-
-    if @track.save!
+    if @track.save
       render json: {track: @track}
     else
-      render json: @track.errors
+      render json: @track.errors, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +33,7 @@ class Api::V1::TracksController < Api::V1::BaseController
     if @track.update_attributes(track_params)
       render json: {track: @track}
     else
-      render json: @track.errors
+      render json: @track.errors, status: :unprocessable_entity
     end
   end
 
