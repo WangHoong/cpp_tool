@@ -3,7 +3,7 @@ class Encrypt
         rsa = OpenSSL::PKey::RSA.new(1024)
         # public_key only can public_encrypt or public_decrypt no private_encrypt nor private_decrypt
         #rsa.public_key.to_pem the class of return value is String
-        [rsa.public_key.to_der, rsa.to_der]
+        [rsa.public_key.to_pem, rsa.to_pem]
     end
 
     def rsa_private_encrypt(value , rsakey)

@@ -7,7 +7,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     @users = User.recent
     @users = @users.db_query(:name, params[:q]) if params[:q]
     @users = @users.where(status: params[:status]) if params[:status]
-    @users = @users.page(page).per(size)
+    @users = @users.includes(:roles).page(page).per(size)
     render json: {users: @users.as_json(User.as_list_json_options), meta: page_info(@users)}
   end
 
@@ -66,7 +66,7 @@ class Api::V1::UsersController < Api::V1::BaseController
       @tracks = @tracks.limit(10)
       render json: {tracks: @tracks.as_json(Track.as_list_json_options),tracks_info: tracks_info }
   end
-
+  #最新同步专辑
   def albums
     @albums = Album.joins("LEFT JOIN tasks ON tasks.album_id=albums.id").where("tasks.updated_at >=?",Time.now-2.day)
     accepted_albums = @albums.where("tasks.status =?",1).count
