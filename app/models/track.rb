@@ -38,6 +38,7 @@ class Track < ApplicationRecord
   validates :title,:isrc,:language_id,:pline,:cline, presence: true
 
   before_save :add_audit_comment
+  after_save :add_authorizes_track_count
   before_destroy :dec_tracks_count
   after_create :inc_tracks_count
 
@@ -129,6 +130,13 @@ class Track < ApplicationRecord
   def dec_tracks_count
     self.primary_artists.each do |artist|
       Artist.decrement_counter('tracks_count', artist.id)
+    end
+  end
+
+  def add_authorizes_track_count
+    if self.authorize
+      tracks_count = Track.where(authorize_id: self.authorize).count
+      authorize.update(tracks_count: tracks_count)
     end
   end
 
