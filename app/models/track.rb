@@ -21,6 +21,7 @@ class Track < ApplicationRecord
   belongs_to :language
   belongs_to :provider
   belongs_to :genre
+  belongs_to :copyright
   belongs_to :contract, class_name: 'Cp::Contract',foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize',foreign_key: :authorize_id
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name
@@ -34,8 +35,7 @@ class Track < ApplicationRecord
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   enum status: [:pending,:accepted,:rejected]
 
-  validates :title, presence: true , uniqueness: true
-  validates :isrc, presence: true, uniqueness: true
+  validates :title,:isrc,:language_id,:pline,:cline, presence: true
 
   before_save :add_audit_comment
   before_destroy :dec_tracks_count
@@ -56,6 +56,10 @@ class Track < ApplicationRecord
     genre.try(:name)
   end
 
+  def copyright_name
+    copyright.try(:name)
+  end
+
   class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
@@ -66,7 +70,7 @@ class Track < ApplicationRecord
   class_attribute :as_relationship_list_json_options
 
 	self.as_relationship_list_json_options={
-			only: [:id, :title, :label, :copyright, :label_code, :is_agent, :updated_at, :copyright_attribution, :position],
+			only: [:id, :title, :label, :copyright_id, :label_code, :is_agent, :updated_at, :copyright_attribution, :position],
       include: [:primary_artists,
         multi_languages: {
           only: [:name],
@@ -79,7 +83,7 @@ class Track < ApplicationRecord
   class_attribute :as_show_json_options
   self.as_show_json_options={
      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,:label_code,:release_version,
-           :copyright,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
+           :copyright_id,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:primary_artists,:featuring_artists,:track_resources,:track_composers,
         multi_languages: {
           only: [:name],
@@ -92,7 +96,7 @@ class Track < ApplicationRecord
           ]
         }
       ],
-      methods: [:provider_name,:contract_name,:genre_name]
+      methods: [:provider_name,:contract_name,:genre_name,:copyright_name]
   }
 
   #艺人的歌曲列表

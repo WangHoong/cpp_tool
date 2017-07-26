@@ -5,6 +5,7 @@ class Api::V1::Cp::ContractsController < Api::V1::BaseController
     size = params[:size]
     provider = params[:provider_name]
     @contracts = ::Cp::Contract.recent#accessible_by(current_ability).recent
+    @contracts = @contracts.where(provider_id: params[:provider_id]) if params[:provider_id].present?
     @contracts = @contracts.joins("LEFT JOIN providers ON providers.id = cp_contracts.provider_id").where("providers.name like?","%#{provider}%") if provider.present?
     @contracts = @contracts.db_query(:contract_no, params[:contract_no]) if params[:contract_no].present?
     @contracts = @contracts.db_query(:project_no, params[:project_no]) if params[:project_no].present?
