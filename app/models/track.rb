@@ -73,7 +73,7 @@ class Track < ApplicationRecord
 			only: [:id, :title, :label, :copyright_id, :label_code, :is_agent, :updated_at, :copyright_attribution, :position],
       include: [:primary_artists,
         multi_languages: {
-          only: [:name],
+          only: [:id,:language_id,:name],
           methods: [:language_name]
         }
       ],
@@ -86,7 +86,7 @@ class Track < ApplicationRecord
            :copyright_id,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:primary_artists,:featuring_artists,:track_resources,:track_composers,
         multi_languages: {
-          only: [:name],
+          only: [:id,:language_id,:name],
           methods: [:language_name]
         },
         audits: {
@@ -105,7 +105,7 @@ class Track < ApplicationRecord
 			only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
       include: [:albums,:primary_artists,
         multi_languages: {
-          only: [:name],
+          only: [:id,:language_id,:name],
           include: [language: { only: [:name]}]
         },
       ]

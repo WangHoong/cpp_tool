@@ -65,7 +65,7 @@ class Artist < ApplicationRecord
       only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_id,:not_through_reason,:website,:created_at,:updated_at,:tracks_count,:albums_count],
       include: [:albums,:audits,:tracks,:images,:songs,
         multi_languages: {
-          only: [:name],
+          only: [:id,:language_id,:name],
           methods: [:language_name]
         },
         audits: {
