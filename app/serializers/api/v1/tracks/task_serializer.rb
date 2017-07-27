@@ -1,0 +1,20 @@
+class Api::V1::Tracks::TaskSerializer < ActiveModel::Serializer
+  attributes :id,
+    :title,
+    :isrc,
+    :language,
+    :genre,
+    :uploaded_at,
+    :position,
+    :ost,
+    :lyric,
+    :label,
+    :label_code,
+    :pline,
+    :cline,
+    :is_agent,
+    :provider,
+    :contract,
+    :copyright,
+    :remark
+end
