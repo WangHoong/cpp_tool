@@ -10,8 +10,6 @@ class Cp::Authorize < ApplicationRecord
   accepts_nested_attributes_for :authorized_businesses,  :allow_destroy => true
 
 
-  scope :recent, -> { order('authorizes.id DESC') }
-
 
   #还剩多少天结束
   def end_day
@@ -28,7 +26,8 @@ class Cp::Authorize < ApplicationRecord
   class_attribute :as_show_json_options
   self.as_show_json_options={
       only: [:id,:number, :contract_id, :currency_id, :account_id, :start_time,:end_time,:tracks_count,:created_at, :updated_at],
-      include: [:authorized_businesses,:contract_resources]
+      include: [:authorized_businesses,:contract_resources],
+      methods: [:end_day]
   }
 
 
