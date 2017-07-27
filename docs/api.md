@@ -468,7 +468,7 @@ roles:[
   }
 
 ```
- 
+
 ## 8.2. 删除货币接口
 
 ### HTTP请求
@@ -502,7 +502,6 @@ roles:[
     },
     "exchange_ratio": "1:12",
     "status": "enabled",
-    "operator": "aasd"
   }
 }
 ```
@@ -522,7 +521,6 @@ roles:[
 | settlement_currency_id                       | 否    | 结算货币                    |
 | exchange_ratio                     | 否   |      汇率                |
 | status                      | 否   | 状态 [:enabled, :disabled] |
-| operator                      | 否   | 操作人                       |
 
 #### 请求示例
 `post /api/v1/exchange_rates/2`
@@ -532,8 +530,7 @@ roles:[
 		"currency_id":2,
 		"settlement_currency":1,
 		"exchange_ratio":"1:12",
-		"status":"enabled",
-		"operator":"aasd"
+		"status":"enabled" 
 	}
 
 }
@@ -556,8 +553,7 @@ roles:[
       "name": "人民币"
     },
     "exchange_ratio": "1:12",
-    "status": "enabled",
-    "operator": "aasd"
+    "status": "enabled"
   }
 }
 ```
@@ -591,8 +587,7 @@ roles:[
         "name": "人民币"
       },
       "exchange_ratio": "1:12",
-      "status": "enabled",
-      "operator": "aasd"
+      "status": "enabled"
     },
     {
       "id": 6,
@@ -605,8 +600,7 @@ roles:[
         "name": "人民币"
       },
       "exchange_ratio": "1:12",
-      "status": "enabled",
-      "operator": "aasd"
+      "status": "enabled"
     },
     {
       "id": 5,
@@ -619,8 +613,7 @@ roles:[
         "name": "人民币"
       },
       "exchange_ratio": "1:12",
-      "status": "enabled",
-      "operator": "aasd"
+      "status": "enabled"
     }
   ],
   "meta": {
@@ -660,8 +653,7 @@ roles:[
       "name": "人民币"
     },
     "exchange_ratio": "1:12",
-    "status": "enabled",
-    "operator": "aasd"
+    "status": "enabled"
   }
 }
 ```

@@ -80,6 +80,8 @@ bower.json
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
+dump.rdb
+
 # JIRA plugin
 atlassian-ide-plugin.xml
 

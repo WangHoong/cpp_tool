@@ -3,7 +3,10 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @revenues = Revenue.includes(:dsp,:user).order(id: :desc).page(page).per(size)
+
+    @revenues = Revenue.includes(:dsp,:user).order(id: :desc)
+    @revenues =  @revenues.where(status: params[:status]) if params[:status].present?
+    @revenues =  @revenues.page(page).per(size)
     render json: {revenues: @revenues.as_json(Revenue.as_list_json_options),meta: page_info(@revenues)}
   end
 
@@ -16,7 +19,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     @revenue = current_user.revenues.new(revenue_params)
     if @revenue.save
       #DonkeyJob.create(task: :parse_report, target: @revenue, status: :pending)
-      render json: @revenue
+      render json: @revenue.as_json(Revenue.as_show_json_options)
     else
       render json: @revenue.errors, status: :unprocessable_entity
     end
@@ -40,7 +43,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   end
 
 
-  # PUT /revenues/:id/processed
+  # GET /revenues/:id/processed
   #解析完成
   def processed
     @revenue = get_revenue
@@ -51,7 +54,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/reprocess
+  # GET /revenues/:id/reprocess
  #summary '再次解析'
   def reprocess
     @revenue = get_revenue
@@ -62,7 +65,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/confirm
+  # GET /revenues/:id/confirm
  #summary '确认导入'
   def confirm
     @revenue = get_revenue
@@ -73,7 +76,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
     end
   end
 
-  # PUT /revenues/:id/account
+  # GET /revenues/:id/account
   #summary '确认结算'
   def account
     @revenue = get_revenue
@@ -118,7 +121,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
         :is_std,
         :is_split,
         :currency_id,
-        revenue_files_attributes: [:id,:url,:file_name,:processed_at,:_destroy]
+        revenue_files_attributes: [:id,:url,:file_name,:_destroy]
     )
   end
 

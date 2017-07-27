@@ -17,19 +17,14 @@ Rails.application.routes.draw do
             end #contracts
             resources :settlements, only: [:index] do
               member do
-                put :confirm,:payment
+                get :payment
               end
             end #settlements
           end
 
           resources :revenues do
             member do
-              get :analyses_file
-              put :processed
-              put :confirm
-              put :account
-              put :done
-              put :reprocess
+              get :analyses_file,:processed,:confirm,:account,:done,:reprocess
             end
           end
 
@@ -42,17 +37,19 @@ Rails.application.routes.draw do
           end
           resources :users, only: [:index, :create, :show, :update, :destroy]  do
             collection do
-              get :current
+              get :current,:timeline,:albums,:revenues,:settlements
             end
           end #users
           resources :dsps, only: [:index, :create, :show, :update, :destroy]
           resources :providers, only: [:index, :create, :show, :update, :destroy] do
             collection do
+              get :trades
               post :accept
             end
             member do
               post :reject
             end
+            resources :transations , only: [:index]
             resources :copyrights, only: [:index]
           end#providers
           resources :roles do
@@ -90,7 +87,7 @@ Rails.application.routes.draw do
           resources :videos, only: [:index, :create, :show, :update, :destroy] do
             collection do
               post :accept
-              get :query
+              get :query, :export
             end
             member do
               get :tracks, :albums, :materials
@@ -107,6 +104,8 @@ Rails.application.routes.draw do
               post :reject
             end
           end #artists
+
+
           resources :countries, only: [:index]
           resources :currencies, only: [:index]
           resources :exchange_rates, only: [:index, :create, :show, :update, :destroy]#exchange_rates

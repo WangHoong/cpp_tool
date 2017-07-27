@@ -1,5 +1,6 @@
+include Workflow
 class Revenue < ApplicationRecord
-  include Workflow
+
   enum status: [:processing, :processed, :confirmed, :accounted, :finished]
 
   belongs_to :currency
@@ -87,7 +88,7 @@ class Revenue < ApplicationRecord
      as_list_json = {
           only: [:id, :dsp_id,:currency_id,:start_time,:end_time,:income,:status,:process_status,:is_std,:is_split,:created_at,:updated_at],
           include: [:revenue_files],
-          methods: [:analyse_result]
+          methods: [:analyse_result,:dsp_name]
         }
   end
 
@@ -136,7 +137,7 @@ class Revenue < ApplicationRecord
   end
 
   def analyse_result
-    if self.processing?
+    if self.status == :processing
       "解析中"
     else
       success_count = es_request(:succeed)['hits']['total']

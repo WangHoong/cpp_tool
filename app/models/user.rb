@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :roles
   has_many :revenues
+  has_many :audits, -> { order(version: :desc) }, as: :user, class_name: Audited::Audit.name
+
   validates :name, presence: true
   validates :email, presence: true
 
@@ -22,7 +24,8 @@ class User < ApplicationRecord
 
   class_attribute :as_list_json_options
   self.as_list_json_options={
-      only: [:id, :name, :email, :phone, :avatar_url,:status, :created_at, :updated_at]
+      only: [:id, :name, :email, :phone, :avatar_url,:status, :created_at, :updated_at],
+      include: [:roles]
   }
 
   class_attribute :as_show_json_options

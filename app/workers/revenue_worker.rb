@@ -14,7 +14,7 @@ class RevenueWorker
     response.each do |ele|
       next if ele['note']['provider_id'].nil?
       provider_id = ele['note']['provider_id']
-    
+
       if bucket[provider_id].blank?
         bucket[provider_id] = []
       end

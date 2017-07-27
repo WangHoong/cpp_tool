@@ -9,7 +9,7 @@ class CreateCpContracts < ActiveRecord::Migration[5.0]
       t.datetime "end_time",                                                                   comment: "合约结束时间"
       t.boolean  "allow_overdue",                                              default: false, comment: "是否永久有效"
       t.integer  "pay_type",                                                   default: 0,     comment: "预付方式"
-      t.decimal  "pay_amount",                        precision: 10, scale: 2, default: "0.0", comment: "预付金额"
+      t.decimal  "prepay_amount",                        precision: 10, scale: 2, default: "0.0", comment: "预付金额"
       t.integer  "tracks_count",                                               default: 0,     comment: "全部授权歌曲数量"
       t.integer  "status",                                                     default: 0,     comment: "0:未审核1:通过2:未通过"
       t.integer  "deleted",                                                     default: 0,     comment: "1:删除0:未删除"

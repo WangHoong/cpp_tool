@@ -6,7 +6,6 @@ class CreateExchangeRate < ActiveRecord::Migration[5.0]
       t.string  "exchange_ratio",                                                                          comment: "兑换比例"
       t.integer  "status"           ,default: 0,                                                           comment: "0enabled ,1disabled"
       t.boolean  "deleted",         default: false,                                                        comment: "true删除,false未删除"
-      t.string   "operator",                                                                               comment: "操作员"
       t.timestamps
     end
   end

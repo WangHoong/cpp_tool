@@ -262,7 +262,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "end_time",                                                                               comment: "合约结束时间"
     t.boolean  "allow_overdue",                                             default: false,              comment: "是否永久有效"
     t.integer  "pay_type",                                                  default: 0,                  comment: "预付方式"
-    t.decimal  "pay_amount",                       precision: 10, scale: 2, default: "0.0",              comment: "预付金额"
+    t.decimal  "prepay_amount",                    precision: 10, scale: 2, default: "0.0",              comment: "预付金额"
     t.integer  "tracks_count",                                              default: 0,                  comment: "全部授权歌曲数量"
     t.integer  "status",                                                    default: 0,                  comment: "0:未审核1:通过2:未通过"
     t.boolean  "deleted",                                                   default: false,              comment: "0:未删除1:删除"
@@ -533,16 +533,20 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "trades", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "transations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "provider_id"
-    t.decimal  "amount",      precision: 11, scale: 2, default: "0.0"
-    t.integer  "status",                               default: 0
+    t.decimal  "amount",      precision: 11, scale: 2, default: "0.0",              comment: "结算金额"
+    t.decimal  "balance",     precision: 11, scale: 2, default: "0.0",              comment: "当前余额"
+    t.integer  "status",                               default: 0,                  comment: "待支付：0 已支付1"
+    t.string   "subject",                                                           comment: "摘要"
     t.integer  "target_id"
     t.string   "target_type"
-    t.datetime "created_at",                                           null: false
+    t.integer  "sort",                                 default: 1
+    t.datetime "pay_time"
     t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                           null: false
     t.index ["provider_id"], name: "provider_id", using: :btree
-    t.index ["target_id", "target_type"], name: "add_target_id_and_target_type", using: :btree
+    t.index ["target_id", "target_type"], name: "traget_index", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
