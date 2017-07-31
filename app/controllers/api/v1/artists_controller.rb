@@ -5,7 +5,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:tracks, :country, :audits,:albums,:multi_languages).recent
+    @artists = Artist.includes(:tracks, :country, :audits,:albums).recent
     @artists = @artists.db_query(:name,params[:name]) if params[:name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)

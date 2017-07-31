@@ -51,12 +51,7 @@ class Artist < ApplicationRecord
 	class_attribute :as_list_json_options
 	self.as_list_json_options={
 			only: [:id, :name,:label_id,:label_name,:gender_type,:description,:status,:country_id,:not_through_reason,:website,:created_at,:updated_at,:tracks_count,:albums_count],
-			include: [:albums,:tracks,
-        multi_languages: {
-          only: [:name],
-          methods: [:language_name]
-        }
-      ],
+			include: [:albums,:tracks],
       methods: [:country_name]
 	}
 

@@ -5,7 +5,7 @@ class Api::V1::Videos::IndexSerializer < Api::V1::VideoSerializer
     @artist = object.primary_artists.first
 
     {
-      name: @artist && @artist['name'] || ''
+      name: @artist.try(:name)  
     }
   end
 end
