@@ -11,17 +11,15 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def authenticate
-    token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
+    #token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
     #@current_user ||= User.first
-    p token
-    @current_user ||= user_in_payload Auth.payload(token)
+    @current_user ||= user_in_payload Auth.payload(access_token)
   end
 
-
-  #def access_token
-  #  request.headers["Authorization"] || params[:access_token] || cookies["accessToken"]
-  #end
-
+  def access_token
+    request.headers["Authorization"] #|| params[:token] || cookies["accessToken"]
+  end
+ 
   # transcode access token payload format
   def user_in_payload payload
     User.find(payload["uid"]) rescue nil
