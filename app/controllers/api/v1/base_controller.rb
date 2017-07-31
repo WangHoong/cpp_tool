@@ -12,8 +12,9 @@ class Api::V1::BaseController < ApplicationController
 
   def authenticate
     token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
-    @current_user ||= User.first
-    #@current_user ||= user_in_payload Auth.payload(token)
+    #@current_user ||= User.first
+    p token
+    @current_user ||= user_in_payload Auth.payload(token)
   end
 
 
@@ -31,7 +32,8 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def unauthenticated!
-    api_error(status: 401)
+    #api_error(status: 401)
+    render json: {error: '用户未验证', status: 401}, status: 401
   end
 
 
