@@ -1,7 +1,7 @@
 class Api::V1::AlbumSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
-    :genre,
+    :genre_id,
     :format,
     :label,
     :status,
@@ -10,6 +10,7 @@ class Api::V1::AlbumSerializer < ActiveModel::Serializer
     :upc,
     :audits,
     :multi_languages
+ 
     def multi_languages
       @multi_languages = object.multi_languages
       @multi_languages.map { |album| {

@@ -2,15 +2,15 @@ class Album < ApplicationRecord
 	include ApproveWorkflow
   audited
 	enum status: [:pending,:accepted,:rejected]
-  validates :name, :language_id, :genre, :format, presence: true
+  validates :name, :language_id, :genre_id, :format, presence: true
   validates :label, :original_label_number, presence: true
-  validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
+  #validates_inclusion_of :genre, in: CONSTANTS['genres'].keys, allow_nil: true
   validates_inclusion_of :format, in: CONSTANTS['album_types'].keys, allow_nil: true
 
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
 
   scope :recent, -> { order('id DESC') }
-
+  belongs_to :genre
   belongs_to :language
   has_many :multi_languages, as: :multilanguage
   has_and_belongs_to_many :tracks

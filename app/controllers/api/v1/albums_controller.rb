@@ -143,7 +143,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
         .permit(
             :name,
             :language_id,
-            :genre,
+            :genre_id,
             :format,
             :label,
             :upc,
