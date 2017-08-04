@@ -24,7 +24,7 @@ development:
   #username: root
   #password: root
   #host: 127.0.0.1
-  database: cpp_tool_dev
+  database: cpp_tool_staging
 
 
 

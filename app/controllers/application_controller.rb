@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     end
 
     def api_error(opts = {})
-        render head: true, status: opts[:status]
+        render  json: {status: opts[:status]}, status: opts[:status]
     end
 
     protected
