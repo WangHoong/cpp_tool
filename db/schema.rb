@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.string   "format",                                                           comment: "专辑类型，0: album, 1: EP, 2: Single, 3:Box_Set"
     t.integer  "catalog_tier",                                                     comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
     t.integer  "language_id",                                                      comment: "语言"
-    t.string   "genre",                                                            comment: "曲风"
+    t.integer  "genre_id",                            default: 1,                  comment: "曲风"
     t.string   "label",                                                            comment: "唱片公司"
     t.datetime "original_release_date",                                            comment: "最初发行日期"
     t.datetime "release_date",                                                     comment: "发行日期"
@@ -243,14 +243,15 @@ ActiveRecord::Schema.define(version: 20170620101323) do
   end
 
   create_table "cp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "contract_id",                           comment: "合约"
-    t.integer  "currency_id",                           comment: "货币"
-    t.integer  "account_id",                            comment: "账号ID"
-    t.datetime "start_time",                            comment: "开始时间"
-    t.datetime "end_time",                              comment: "结算时间"
-    t.integer  "tracks_count", default: 0,              comment: "授权歌曲数量"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "number",       default: "A"
+    t.integer  "contract_id",                             comment: "合约"
+    t.integer  "currency_id",                             comment: "货币"
+    t.integer  "account_id",                              comment: "账号ID"
+    t.datetime "start_time",                              comment: "开始时间"
+    t.datetime "end_time",                                comment: "结算时间"
+    t.integer  "tracks_count", default: 0,                comment: "授权歌曲数量"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "cp_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -338,8 +339,8 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "settlement_currency_id",                              comment: "结算货币"
     t.string   "exchange_ratio",                                      comment: "兑换比例"
     t.integer  "status",                 default: 0,                  comment: "0enabled ,1disabled"
+    t.datetime "rate_time"
     t.boolean  "deleted",                default: false,              comment: "true删除,false未删除"
-    t.string   "operator",                                            comment: "操作员"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -351,6 +352,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
 
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT" do |t|
     t.string "name", collation: "utf8_general_ci"
+    t.string "code"
   end
 
   create_table "multi_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -490,7 +492,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
   create_table "track_resources", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "track_id"
     t.string   "file_name"
-    t.integer  "file_type",  default: 0
+    t.integer  "file_type",  default: 0,              comment: "1:音频2:歌词3:物料0:图片"
     t.string   "url"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -502,7 +504,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.string   "isrc",                                                          comment: "标准录音制品编码"
     t.integer  "status",                           default: 0
     t.integer  "language_id",                                                   comment: "语种"
-    t.integer  "genre_id"
+    t.integer  "genre_id",                                                      comment: "曲风"
     t.datetime "uploaded_at"
     t.integer  "position",                                                      comment: "歌曲在专辑中的顺序"
     t.string   "ost"
@@ -513,8 +515,8 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.string   "cline",                            default: "",    null: false
     t.boolean  "is_agent",                         default: false,              comment: "是否代理"
     t.integer  "provider_id",                                                   comment: "版权方ID"
-    t.integer  "contract_id"
-    t.integer  "authorize_id"
+    t.integer  "contract_id",                                                   comment: "合约ID"
+    t.integer  "authorize_id",                                                  comment: "授权书ID"
     t.integer  "copyright_id",                                                  comment: "版权最终归属"
     t.boolean  "deleted",                          default: false
     t.text     "remark",             limit: 65535,                              comment: "备注"
@@ -522,6 +524,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "updated_at",                                       null: false
     t.string   "not_through_reason",                                            comment: "未通过原因"
     t.string   "release_version",                                               comment: "版本"
+    t.index ["authorize_id", "deleted"], name: "authorize_id_2", using: :btree
     t.index ["position"], name: "position", using: :btree
     t.index ["title"], name: "index_tracks_on_title", using: :btree
   end
