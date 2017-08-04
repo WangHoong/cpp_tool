@@ -85,17 +85,11 @@ class Track < ApplicationRecord
   self.as_show_json_options={
      only: [:id, :title,:isrc,:status,:language_id,:genre_id,:ost,:lyric,:pline,:cline,:label_code,:release_version,
            :copyright_id,:label,:is_agent,:provider_id,:contract_id,:authorize_id,:remark,:created_at],
-      include: [:albums,:primary_artists,:featuring_artists,:track_resources,:track_composers,
+      include: [:albums,:audits,:primary_artists,:featuring_artists,:track_resources,:track_composers,
         multi_languages: {
           only: [:id,:language_id,:name],
           methods: [:language_name]
-        },
-        audits: {
-          only: [
-            :id,:user_id,:username,:action,:version,
-            :remote_address,:comment,:created_at
-          ]
-        }
+        } 
       ],
       methods: [:provider_name,:contract_name,:genre_name,:copyright_name]
   }
