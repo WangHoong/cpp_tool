@@ -19,7 +19,7 @@ class Api::V1::BaseController < ApplicationController
   def access_token
     request.headers["Authorization"] #|| params[:token] || cookies["accessToken"]
   end
- 
+
   # transcode access token payload format
   def user_in_payload payload
     User.find(payload["uid"]) rescue nil

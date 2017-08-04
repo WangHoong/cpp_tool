@@ -14,7 +14,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     @user = User.find(params[:id])
-    render json: {user: @user.as_json(User.as_list_json_options)}
+    render json: {user: @user.as_json(User.as_show_json_options)}
   end
 
   def update

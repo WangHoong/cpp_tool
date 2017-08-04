@@ -31,7 +31,7 @@ class User < ApplicationRecord
   class_attribute :as_show_json_options
   self.as_show_json_options={
       only: [:id, :name, :email, :phone, :avatar_url,:status, :created_at, :updated_at],
-      methods: [:roles_permissions]
+      methods: [:roles_permissions,:role_ids]
   }
 
 
