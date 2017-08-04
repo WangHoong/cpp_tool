@@ -12,7 +12,7 @@ default: &default
 
 development:
   <<: *default
-  elasticsearch_server: '172.31.6.60:9200'
+  elasticsearch_server: '54.222.151.166:9200'
   remote_servers: ['127.0.0.1','54.223.86.5','54.223.222.214']
 
 production:
