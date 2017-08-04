@@ -17,7 +17,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def access_token
-    request.headers["Authorization"] #|| params[:token] || cookies["accessToken"]
+    request.headers["Authorization"] || params[:token] || cookies["accessToken"]
   end
 
   # transcode access token payload format
