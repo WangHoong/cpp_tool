@@ -8,13 +8,16 @@ class RevenueFile < ApplicationRecord
   private
   def delete_analyses
     client = Elasticsearch::Client.new url: SETTINGS['elasticsearch_server']#,log:true
-    revenue = client.delete_by_query(
-      index: SETTINGS['donkey_index'],
-      body: {
-        query: {
-          match: { 'note.revenue_file_id': self.id }
+    ["analysis_error","analysis_result","analysis_info"].each do |type_name|
+      revenue = client.delete_by_query(
+        index: SETTINGS['donkey_index'],
+        type: type_name,
+        body: {
+          query: {
+            match: { 'note.revenue_file_id': self.id }
+          }
         }
-      }
-    )
+      )
+    end
   end
 end
