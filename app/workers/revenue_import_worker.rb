@@ -6,8 +6,7 @@ class RevenueImportWorker
    HEADER = ["日期", "代理商", "分发渠道", "歌曲id", "ISRC", "UPC ", "歌曲名", "专辑名", "艺人", "业务模式", "单价", "数量", "国家", "报表货币", "结算货币", "汇率"]
 
    def perform(id)
-     revenue = Revenue.where(id: id).first
-     return false  unless revenue
+     revenue = Revenue.find(id)
      revenue_file = RevenueFile.find_by(revenue_id: id)
      url = revenue_file.try(:url)
      if url.present?
@@ -21,6 +20,7 @@ class RevenueImportWorker
         else
           (2..spreadsheet.last_row).each  do |i|
               row = spreadsheet.row(i)
+              puts row
               income = row[10] * row[11].to_i
               date = Date.strptime(row[0], "%Y%m").to_date
               hs_note = {sheet_name: spreadsheet.sheets.first,line_num: i,revenue_file_id: revenue_file.id,revenue_id: revenue.id,
