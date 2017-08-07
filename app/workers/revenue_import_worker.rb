@@ -22,8 +22,7 @@ class RevenueImportWorker
         else
           (2..spreadsheet.last_row).each  do |i|
               row = spreadsheet.row(i)
-              return false if row.blank?
-              income = row[10] * row[11].to_i
+              income = row[10].to_i * row[11].to_i
               date = Date.strptime(row[0], "%Y%m").to_date
               hs_note = {sheet_name: spreadsheet.sheets.first,line_num: i,revenue_file_id: revenue_file.id,revenue_id: revenue.id,
                 dsp_id: revenue.dsp_id,dsp_name: revenue.dsp.try(:name),start_date: revenue.start_time,end_date: revenue.end_time,income: income}
