@@ -1,6 +1,6 @@
 class RevenueWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue, retry: false
+  sidekiq_options queue: :revenue, retry: 3
 
 
   def perform(revenue_id)
@@ -8,6 +8,7 @@ class RevenueWorker
     response = revenue.analyses_data(:succeed)
     time = revenue.analyses_date(:succeed)
     bucket = {}
+
     start_date = Time.at(time['min_date']['value'] / 1000)
     end_date = Time.at(time['max_date']['value'] / 1000)
 

@@ -1,12 +1,12 @@
 require 'roo'
 class RevenueImportWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue_import, retry: false
+  sidekiq_options queue: :revenue_import, retry: 3
 
    HEADER = ["日期", "代理商", "分发渠道", "歌曲id", "ISRC", "UPC ", "歌曲名", "专辑名", "艺人", "业务模式", "单价", "数量", "国家", "报表货币", "结算货币", "汇率"]
 
    def perform(id)
-     revenue = Revenue.where(id: id).first
+     revenue = Revenue.find(id)
      revenue_file = RevenueFile.find_by(revenue_id: id)
      url = revenue_file.try(:url)
      if url && revenue

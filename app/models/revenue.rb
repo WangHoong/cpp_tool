@@ -34,11 +34,11 @@ class Revenue < ApplicationRecord
 
      state :finished
 
-     on_transition do |from, to, triggering_event, *event_args|
-       if to.to_s == 'accounted'
-         RevenueWorker.perform_async(self.id)
-       end
-     end
+     #on_transition do |from, to, triggering_event, *event_args|
+      # if to.to_s == 'accounted'
+         #RevenueWorker.perform_async(self.id)
+      # end
+    # end
 
    end
 
@@ -187,10 +187,12 @@ class Revenue < ApplicationRecord
       #search_type: 'scan',
       scroll: '1m'
     })
-
+    p response['_scroll_id']
+    p '==============='
     res = response['hits']['hits'].map { |r| r['_source']}
     begin
      response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
+     p response
      res += response['hits']['hits'].map { |r| r['_source']}
     end while response['hits']['hits'].present?
     res
