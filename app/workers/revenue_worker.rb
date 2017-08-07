@@ -1,6 +1,6 @@
 class RevenueWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue, retry: true
+  sidekiq_options queue: :revenue, retry: false
 
 
   def perform(revenue_id)
@@ -152,7 +152,7 @@ class RevenueWorker
     dataset['Total'] = value['income'].to_f
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = value['exchange_rate'] #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
-    dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
+    dataset['AmountDue'] = dataset['Total'].to_f * dataset['ExchangeRate']
 
     dataset
   end
