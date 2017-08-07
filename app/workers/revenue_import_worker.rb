@@ -7,6 +7,7 @@ class RevenueImportWorker
 
    def perform(id)
      revenue = Revenue.find(id)
+     puts "revenue id is #{revenue.id}"
      revenue_file = RevenueFile.find_by(revenue_id: id)
      url = revenue_file.try(:url)
      if url.present?
@@ -17,10 +18,11 @@ class RevenueImportWorker
           msg = '文件格式不正确'
           result = {data: nil, note: nil, err_message: msg,category: 0,created_at: Time.now}
           analysis_revenue_save(result)
+          revenue.update(status: -1)
         else
           (2..spreadsheet.last_row).each  do |i|
               row = spreadsheet.row(i)
-              puts row
+              return false if row.blank?
               income = row[10] * row[11].to_i
               date = Date.strptime(row[0], "%Y%m").to_date
               hs_note = {sheet_name: spreadsheet.sheets.first,line_num: i,revenue_file_id: revenue_file.id,revenue_id: revenue.id,
