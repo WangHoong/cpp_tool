@@ -21,6 +21,15 @@ class Offline
     JSON.parse(re)
   end
 
+  def album_detail(options)
+    result = get_result(options)
+    uri =  "#{Rails.application.secrets.th_url}/offline/album/detail.json?q_source=#{Rails.application.secrets.q_source}&p_json_dig=#{result}"
+    re = RestClient.get(uri)
+    JSON.parse(re)
+  end
+
+
+
   def get_result(options)
     encrypt = Encrypt.new
     q_time = Time.now.to_i * 1000

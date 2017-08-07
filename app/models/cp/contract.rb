@@ -4,7 +4,6 @@ class Cp::Contract < ApplicationRecord
   acts_as_paranoid :column => 'deleted', :column_type => 'boolean', :allow_nulls => false
   audited
   belongs_to :provider
-  belongs_to :department
   has_many :transations,as: :target, :dependent => :destroy
 
   has_many :audits, -> { order(version: :desc) }, as: :auditable, class_name: Audited::Audit.name # override default audits order
@@ -59,10 +58,6 @@ class Cp::Contract < ApplicationRecord
       provider.try(:name)
    end
 
-   def department_name
-     department.try(:name)
-   end
-
    def audit_name
      audits.first.try(:username)
    end
@@ -86,13 +81,13 @@ class Cp::Contract < ApplicationRecord
    class_attribute :as_list_json_options
    self.as_list_json_options={
        only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:not_through_reason,:desc,:created_at, :updated_at],
-       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name]
+       methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name]
    }
 
    class_attribute :as_show_json_options
     self.as_show_json_options={
-      only: [:id, :contract_no,:department_id, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:prepay_amount,:not_through_reason,:desc,:created_at, :updated_at],
-      methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name,:department_name],
+      only: [:id, :contract_no, :project_no, :provider_id, :start_time,:end_time,:status,:allow_overdue,:pay_type,:prepay_amount,:not_through_reason,:desc,:created_at, :updated_at],
+      methods: [:contract_status,:provider_name,:authorize_valid_cnt,:authorize_due_cnt,:audit_name],
       include: [:contract_resources,authorizes: {include:[:contract_resources,authorized_businesses: {include:[:authorized_areas],methods: [:authorized_range_name]}]}],
 
     }
