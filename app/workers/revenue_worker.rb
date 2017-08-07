@@ -8,7 +8,10 @@ class RevenueWorker
     response = revenue.analyses_data(:succeed)
     time = revenue.analyses_date(:succeed)
     bucket = {}
-
+    if response.blank?
+       puts "not succeed data...."
+       return false
+    end
     start_date = Time.at(time['min_date']['value'] / 1000)
     end_date = Time.at(time['max_date']['value'] / 1000)
 
