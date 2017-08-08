@@ -144,6 +144,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :original_label_number,
             :release_date,
             :release_version,
+            :p_line_copyright,
             primary_artist_ids: [],
             featuring_artist_ids: [],
             materials_attributes: [:id, :url, :native_name, :_destroy],
