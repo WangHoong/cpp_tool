@@ -1,4 +1,4 @@
-class Offline
+class Synchro
 #tracks(ids: "123,445")
   def tracks(options)
     result = get_result(options)
