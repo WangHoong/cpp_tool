@@ -24,8 +24,8 @@ development:
   #username: root
   #password: root
   #host: 127.0.0.1
-  #database: cpp_tool_staging
-  database: cpp_tool_dev
+  database: cpp_tool_staging
+  #database: cpp_tool_dev
 
 
 # Warning: The database defined as "test" will be erased and
