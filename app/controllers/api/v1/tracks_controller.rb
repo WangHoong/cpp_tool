@@ -127,7 +127,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         material_resources: [:id, :url, :file_name, :_destroy],
         image_resources: [:id, :url, :file_name, :_destroy],
         #track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
-        multi_languages_attributes: [:id, :name, :language_id, :_destroy],
+        multi_languages_attributes: [:id, :name, :language_id, :_destroy]
         #track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )
   end

@@ -1,6 +1,6 @@
 class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
-  attributes :tracks_length,
-    :release_date,
+  attributes  :release_date,
+    :tracks_count,
     :language,
     :has_explict,
     :p_line_copyright,
@@ -9,9 +9,7 @@ class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
     :cd_volume,
     :genre_name,
     :updated_at
-  def tracks_length
-    object.tracks.size
-  end
+
   def genre_name
     object.genre.try(:name)
   end

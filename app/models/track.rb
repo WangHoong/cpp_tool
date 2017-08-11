@@ -157,11 +157,17 @@ class Track < ApplicationRecord
     self.primary_artists.each do |artist|
       Artist.increment_counter('tracks_count', artist.id)
     end
+    self.albums.each do |album|
+      Album.increment_counter('tracks_count', album.id)
+    end
   end
 
   def dec_tracks_count
     self.primary_artists.each do |artist|
       Artist.decrement_counter('tracks_count', artist.id)
+    end
+    self.albums.each do |album|
+      Album.decrement_counter('tracks_count', album.id)
     end
   end
 
