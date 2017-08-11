@@ -3,7 +3,7 @@ class RevenueWorker
   sidekiq_options queue: :revenue, retry: 3
 
 
-  def perform(revenue_id)
+  def perform(revenue_id,user_id)
     revenue = Revenue.find(revenue_id)
     response = revenue.analyses_data(:succeed)
     time = revenue.analyses_date(:succeed)
@@ -54,6 +54,7 @@ class RevenueWorker
 
       @settlement = Cp::Settlement.new(info)
       @settlement.settlement_date = Date.today
+      @settlement.user_id = user_id
       @settlement.save
 
     end

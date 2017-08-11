@@ -3,6 +3,7 @@ class Cp::Settlement < ApplicationRecord
 	self.table_name=:cp_settlements
 	belongs_to :provider
 	belongs_to :dsp
+	belongs_to :user
 	belongs_to :currency
 	has_many :transations,as: :target, :dependent => :destroy
 	enum status: [:pending, :confirmed, :paymented]
@@ -28,18 +29,22 @@ class Cp::Settlement < ApplicationRecord
 	def dsp_name
 		dsp.try(:name)
 	end
+	
+	def user_name
+		user.try(:name)
+	end
 
   def self.as_list_json_options
      as_list_json = {
     			only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:file_url,:created_at,:updated_at],
-          methods: [:provider_name]
+          methods: [:provider_name,:user_name]
         }
   end
 
   def self.as_show_json_options
      as_list_json = {
 			   only: [:id, :settlement_amount,:settlement_cycle_start,:settlement_cycle_end,:settlement_date,:status,:file_url,:created_at,:updated_at],
-			   methods: [:provider_name,:dsp_name]
+			   methods: [:provider_name,:dsp_name,:user_name]
         }
   end
 

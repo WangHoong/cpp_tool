@@ -42,32 +42,6 @@ class Revenue < ApplicationRecord
 
    end
 
-=begin
-  # state machines
-  state_machine :status, initial: :processing do
-    after_transition on: :accounted!, do: :split_revenue
-    event :processed! do
-      transition :processing => :processed
-    end
-
-    event :reprocess! do
-      transition :processed => :processing
-    end
-
-    event :confirmed! do
-      transition :processed => :confirmed
-    end
-
-    event :accounted! do
-      transition :confirmed => :accounted
-    end
-
-    event :done! do
-      transition :accounted => :done
-    end
-
-  end
-=end
 
   def user_name
     user.try(:name)
@@ -187,12 +161,9 @@ class Revenue < ApplicationRecord
       #search_type: 'scan',
       scroll: '1m'
     })
-    p response['_scroll_id']
-    p '==============='
     res = response['hits']['hits'].map { |r| r['_source']}
     begin
      response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
-     p response
      res += response['hits']['hits'].map { |r| r['_source']}
     end while response['hits']['hits'].present?
     res
@@ -256,8 +227,6 @@ class Revenue < ApplicationRecord
     RevenueImportWorker.perform_async(self.id)
   end
 
-  def split_revenue
-    RevenueWorker.perform_async(self.id)
-  end
+ 
 
 end
