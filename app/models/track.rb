@@ -177,8 +177,10 @@ class Track < ApplicationRecord
 
   def add_authorizes_track_count
     if self.authorize
-      tracks_count = Track.where(authorize_id: self.authorize).count
-      authorize.update(tracks_count: tracks_count)
+      authorize_tracks_count = Track.where(authorize_id: self.authorize).count
+      contract_tracks_count = Track.where(contract_id: self.contract).count
+      authorize.update(tracks_count: authorize_tracks_count)
+      contract.update(tracks_count: contract_tracks_count)
     end
   end
 
