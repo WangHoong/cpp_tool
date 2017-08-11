@@ -5,6 +5,7 @@ class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
     :has_explict,
     :p_line_copyright,
     :remark,
+    :audits,
     :original_label_number,
     :cd_volume,
     :genre_name,

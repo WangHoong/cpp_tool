@@ -89,11 +89,15 @@ class Track < ApplicationRecord
     self.image_resources_attributes=attr
   end
 
+  def auditer
+      audits.first.try(:username)
+  end
+
   class_attribute :as_list_json_options
   self.as_list_json_options={
-    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :ost, :lyric, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark, :created_at],
-    include: [:albums, :primary_artists],
-    methods: [:provider_name, :contract_name]
+    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :ost, :lyric, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark,:updated_at, :created_at],
+    include: [:albums, :primary_artists ],
+    methods: [:provider_name, :contract_name,:auditer]
   }
 
   class_attribute :as_relationship_list_json_options
@@ -106,7 +110,7 @@ class Track < ApplicationRecord
                 methods: [:language_name]
               }
     ],
-    methods: [:provider_name]
+    methods: [:provider_name,:auditer]
   }
 
   class_attribute :as_show_json_options
@@ -129,7 +133,7 @@ class Track < ApplicationRecord
       {:material_resources => {:only => %w(id file_name url)}},
       {:image_resources => {:only => %w(id file_name url)}},
     ],
-    methods: [:provider_name, :contract_name, :genre_name, :copyright_name]
+    methods: [:provider_name, :contract_name, :genre_name, :copyright_name,:auditer]
   }
 
   #艺人的歌曲列表

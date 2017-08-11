@@ -1,6 +1,7 @@
 class Api::V1::Albums::TaskSerializer < Api::V1::AlbumSerializer
   attributes :release_date,
     :language,
+    :audits,
     :has_explict,
     :p_line_copyright,
     :c_line_copyright,

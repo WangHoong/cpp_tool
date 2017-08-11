@@ -8,6 +8,10 @@ class MultiLanguage < ApplicationRecord
       include: [:language]
 	}
 
+  def language_name=(attr)
+    self.multilanguage=attr
+  end
+
   def language_name
     language && language.name
   end
