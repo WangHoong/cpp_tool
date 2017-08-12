@@ -9,7 +9,13 @@ class Cp::Authorize < ApplicationRecord
   accepts_nested_attributes_for :contract_resources, :allow_destroy => true
   accepts_nested_attributes_for :authorized_businesses,  :allow_destroy => true
 
+  def contract_resources=(attr)
+    self.contract_resources_attributes = attr
+  end
 
+  def authorized_businesses=(attr)
+    self.authorized_businesses_attributes=attr
+  end
 
   #还剩多少天结束
   def end_day
