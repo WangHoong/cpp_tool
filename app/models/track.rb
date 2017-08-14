@@ -21,6 +21,7 @@ class Track < ApplicationRecord
   belongs_to :language
   belongs_to :provider
   belongs_to :genre
+  belongs_to :sub_genre, class_name: 'Genre'
   belongs_to :copyright
   belongs_to :contract, class_name: 'Cp::Contract', foreign_key: :contract_id
   belongs_to :authorize, class_name: 'Cp::Authorize', foreign_key: :authorize_id
@@ -56,6 +57,10 @@ class Track < ApplicationRecord
 
   def genre_name
     genre.try(:name)
+  end
+
+  def sub_genre_name
+    sub_genre.try(:name)
   end
 
   def copyright_name
@@ -115,7 +120,7 @@ class Track < ApplicationRecord
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :ost, :lyric, :pline, :cline, :label_code, :release_version,
+    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :sub_genre_id,:ost, :lyric, :pline, :cline, :label_code, :release_version,
            :copyright_id, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark, :created_at],
     include: [
       {:albums => {:only => %w(id name)}},
@@ -133,7 +138,7 @@ class Track < ApplicationRecord
       {:material_resources => {:only => %w(id file_name url)}},
       {:image_resources => {:only => %w(id file_name url)}},
     ],
-    methods: [:provider_name, :contract_name, :genre_name, :copyright_name,:auditer]
+    methods: [:provider_name, :contract_name, :genre_name,:sub_genre_name, :copyright_name,:auditer]
   }
 
   #艺人的歌曲列表

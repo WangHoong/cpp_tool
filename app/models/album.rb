@@ -11,6 +11,7 @@ class Album < ApplicationRecord
 
   scope :recent, -> { order('id DESC') }
   belongs_to :genre
+	belongs_to :sub_genre, class_name: 'Genre'
   belongs_to :language
   has_many :multi_languages, as: :multilanguage
   has_and_belongs_to_many :tracks

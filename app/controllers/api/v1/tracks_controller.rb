@@ -105,6 +105,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         :title,
         :isrc,
         :genre_id,
+        :sub_genre_id,
         :is_agent,
         :ost,
         :label,

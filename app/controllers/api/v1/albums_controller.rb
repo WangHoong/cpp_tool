@@ -75,7 +75,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
       covers: @covers
     }
   end
- 
+
   # get /albums/:id/tracks
   def tracks
     page = params.fetch(:page, 1).to_i
@@ -133,6 +133,7 @@ class Api::V1::AlbumsController < Api::V1::BaseController
             :name,
             :language_id,
             :genre_id,
+            :sub_genre_id,
             :format,
             :label,
             :upc,
