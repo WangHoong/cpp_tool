@@ -51,6 +51,7 @@ class Album < ApplicationRecord
 	before_destroy :dec_albums_count
   after_create :inc_albums_count
 
+
   private
 
   def add_audit_comment

@@ -19,11 +19,13 @@ class Artist < ApplicationRecord
   has_many :images, :through => :image_resources, class_name: 'Resource', :source => :resource
 
 
-  has_many :artist_tracks, class_name: 'ArtistTrack'
+  has_many :artist_tracks, -> { where artist_type: 'Primary' },
+            class_name: 'ArtistTrack', :foreign_key => :artist_id
   has_many :tracks, :through => :artist_tracks, class_name: 'Track', :source => :track
 
   # artist album association
-  has_many :artist_albums, class_name: 'ArtistAlbum'
+  has_many :artist_albums, -> { where album_type: 'AlbumOfPrimaryArtist' },
+            class_name: 'ArtistAlbum', :foreign_key => :artist_id
   has_many :albums, :through => :artist_albums, class_name: 'Album', :source => :album
 
   # videos association
@@ -39,7 +41,6 @@ class Artist < ApplicationRecord
   accepts_nested_attributes_for :multi_languages, :allow_destroy => true
 
   scope :recent, -> {order('id DESC')}
-
 
 
   def country_name
