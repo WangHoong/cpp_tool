@@ -18,7 +18,7 @@ class RevenueImportWorker
             msg = '文件格式不正确'
             result = {data: nil, note: nil, err_message: msg,category: 0,created_at: Time.now}
             analysis_revenue_save(result)
-            revenue.update(status: -1)
+            revenue.update(status: :error)
           else
             (2..spreadsheet.last_row).each  do |i|
                 row = spreadsheet.row(i)
@@ -61,7 +61,7 @@ class RevenueImportWorker
                   analysis_revenue_save(result)
                   next
                 end
-
+                puts "start...."
                hs_note = hs_note.merge(track_id: track.id,provider_id: track.provider_id,provider_name: track.provider.try(:name))
                data = {date: row[0],title: row[6],album: row[7],artist: row[8],dsp: row[2],isrc: row[4],upc: row[5],sales_type: row[9],unit_price: row[10],sales_unit: row[11], currancy: row[14],exchange_rate: row[15].to_f}
                result = {data: data,note: hs_note, err_message: '匹配成功',category: 1,created_at: Time.now}
