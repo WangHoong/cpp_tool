@@ -32,7 +32,7 @@ class RevenueImportWorker
                   next
                 end
                 dsp = Dsp.find_by(name: row[2])
-                if dsp.nil?
+                if dsp.nil? or dsp.id != revenue.dsp_id
                    result = {data: nil,note: hs_note, err_message: '渠道方无法匹配',category: 3,created_at: Time.now}
                    analysis_revenue_save(result)
                    next
@@ -66,6 +66,7 @@ class RevenueImportWorker
                data = {date: row[0],title: row[6],album: row[7],artist: row[8],dsp: row[2],isrc: row[4],upc: row[5],sales_type: row[9],unit_price: row[10],sales_unit: row[11], currancy: row[14],exchange_rate: row[15].to_f}
                result = {data: data,note: hs_note, err_message: '匹配成功',category: 1,created_at: Time.now}
                analysis_revenue_save(result,SETTINGS['analysis_success_type'])
+                puts '.......end'
             end
               revenue.processed!
           end
