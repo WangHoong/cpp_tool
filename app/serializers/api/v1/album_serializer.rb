@@ -9,6 +9,8 @@ class Api::V1::AlbumSerializer < ActiveModel::Serializer
     :release_version,
     :remark,
     :upc,
+    :sync_status,
+    :sync_time,
     :multi_languages
 
     def multi_languages
