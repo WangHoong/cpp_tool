@@ -108,6 +108,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     @albums = @artist.albums.recent.page(page).per(size)
     render json: {albums: @albums, meta: page_info(@albums)}
   end
+ 
 
   private
 

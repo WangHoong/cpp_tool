@@ -1,7 +1,7 @@
 require 'roo'
 class RevenueImportWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue_import, retry: true
+  sidekiq_options queue: :revenue_import, retry: 3
 
    HEADER = ["日期", "代理商", "分发渠道", "歌曲id", "ISRC", "UPC ", "歌曲名", "专辑名", "艺人", "业务模式", "单价", "数量", "国家", "报表货币", "结算货币", "汇率"]
 
@@ -9,7 +9,7 @@ class RevenueImportWorker
      revenue = Revenue.find(id)
      revenue_file = RevenueFile.find_by(revenue_id: id)
      url = revenue_file.try(:url)
-     if url.present?
+     if url && revenue
        spreadsheet = Roo::Spreadsheet.open(url)
        header = spreadsheet.row(1)
 
@@ -17,10 +17,11 @@ class RevenueImportWorker
           msg = '文件格式不正确'
           result = {data: nil, note: nil, err_message: msg,category: 0,created_at: Time.now}
           analysis_revenue_save(result)
+          revenue.update(status: -1)
         else
           (2..spreadsheet.last_row).each  do |i|
               row = spreadsheet.row(i)
-              income = row[10] * row[11].to_i
+              income = row[10].to_i * row[11].to_i
               date = Date.strptime(row[0], "%Y%m").to_date
               hs_note = {sheet_name: spreadsheet.sheets.first,line_num: i,revenue_file_id: revenue_file.id,revenue_id: revenue.id,
                 dsp_id: revenue.dsp_id,dsp_name: revenue.dsp.try(:name),start_date: revenue.start_time,end_date: revenue.end_time,income: income}

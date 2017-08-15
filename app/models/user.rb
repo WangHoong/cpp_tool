@@ -22,6 +22,10 @@ class User < ApplicationRecord
     return  @permissions.to_h
   end
 
+  def roles_name
+    roles.map(&:name)
+  end
+
   class_attribute :as_list_json_options
   self.as_list_json_options={
       only: [:id, :name, :email, :phone, :avatar_url,:status, :created_at, :updated_at],
@@ -30,8 +34,8 @@ class User < ApplicationRecord
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-      only: [:id, :name, :email, :phone, :avatar_url,:status, :created_at, :updated_at],
-      methods: [:roles_permissions,:role_ids]
+      only: [:id, :name, :email, :phone, :avatar_url,:status,:address, :created_at, :updated_at],
+      methods: [:roles_permissions,:role_ids,:roles_name]
   }
 
 

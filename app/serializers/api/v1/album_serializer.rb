@@ -2,6 +2,7 @@ class Api::V1::AlbumSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
     :genre_id,
+    :sub_genre_id,
     :format,
     :label,
     :status,

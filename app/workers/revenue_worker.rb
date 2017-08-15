@@ -1,13 +1,17 @@
 class RevenueWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue, retry: true
+  sidekiq_options queue: :revenue, retry: 3
 
 
-  def perform(revenue_id)
+  def perform(revenue_id,user_id)
     revenue = Revenue.find(revenue_id)
     response = revenue.analyses_data(:succeed)
     time = revenue.analyses_date(:succeed)
     bucket = {}
+    if response.blank?
+       puts "not succeed data...."
+       return false
+    end
     start_date = Time.at(time['min_date']['value'] / 1000)
     end_date = Time.at(time['max_date']['value'] / 1000)
 
@@ -50,6 +54,7 @@ class RevenueWorker
 
       @settlement = Cp::Settlement.new(info)
       @settlement.settlement_date = Date.today
+      @settlement.user_id = user_id
       @settlement.save
 
     end
@@ -152,7 +157,7 @@ class RevenueWorker
     dataset['Total'] = value['income'].to_f
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = value['exchange_rate'] #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
-    dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
+    dataset['AmountDue'] = dataset['Total'].to_f * dataset['ExchangeRate']
 
     dataset
   end

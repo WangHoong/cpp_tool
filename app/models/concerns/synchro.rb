@@ -1,4 +1,4 @@
-class Offline
+class Synchro
 #tracks(ids: "123,445")
   def tracks(options)
     result = get_result(options)
@@ -28,10 +28,16 @@ class Offline
     re = RestClient.get(uri)
     JSON.parse(re)
   end
+  #曲风列表
+  def genre_detail(options={})
+    result = get_result(options={})
+    uri =  "#{Rails.application.secrets.th_url}/offline/genre/detail.json?q_source=#{Rails.application.secrets.q_source}&p_json_dig=#{result}"
+    re = RestClient.get(uri)
+    JSON.parse(re)
+  end
 
 
-
-  def get_result(options)
+  def get_result(options={})
     encrypt = Encrypt.new
     q_time = (Time.now.to_f * 1000).to_i
     json = {q_time: q_time}.merge(options).to_json

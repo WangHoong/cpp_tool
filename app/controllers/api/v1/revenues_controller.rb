@@ -81,6 +81,7 @@ class Api::V1::RevenuesController < Api::V1::BaseController
   def account
     @revenue = get_revenue
     if @revenue.accounted!
+      RevenueWorker.perform_async(@revenue.id,current_user.id)
       render json: @revenue
     else
       render json: @revenue.errors, status: :unprocessable_entity

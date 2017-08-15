@@ -1,6 +1,6 @@
 class SettlementWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :settlement, retry: true
+  sidekiq_options queue: :settlement, retry: 3
   include Sidetiq::Schedulable
 
   recurrence { monthly(1) }

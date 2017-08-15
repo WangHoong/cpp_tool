@@ -105,6 +105,7 @@ class Api::V1::TracksController < Api::V1::BaseController
         :title,
         :isrc,
         :genre_id,
+        :sub_genre_id,
         :is_agent,
         :ost,
         :label,
@@ -122,9 +123,13 @@ class Api::V1::TracksController < Api::V1::BaseController
         album_ids: [],
         primary_artist_ids: [],
         featuring_artist_ids: [],
-        track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
-        multi_languages_attributes: [:id, :name, :language_id, :_destroy],
-        track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
+        audio_resources: [:id, :url, :file_name, :_destroy],
+        composers_resources: [:id, :url, :file_name, :_destroy],
+        material_resources: [:id, :url, :file_name, :_destroy],
+        image_resources: [:id, :url, :file_name, :_destroy],
+        #track_composers_attributes: [:id, :name, :op_type, :point, :_destroy],
+        multi_languages_attributes: [:id, :name, :language_id, :_destroy]
+        #track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )
   end
 

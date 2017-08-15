@@ -3,10 +3,11 @@ module Api
     class ConstantsController < BaseController
 
       def genres
-        @genres = Genre.all
+        parent_id = params[:parent_id] || 0
+        @genres = Genre.where(parent_id: parent_id)
         render json: {genres: @genres}
       end
-
+ 
       def album_types
         render json: CONSTANTS['album_types']
       end
