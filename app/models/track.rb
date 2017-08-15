@@ -67,6 +67,10 @@ class Track < ApplicationRecord
     copyright.try(:name)
   end
 
+  def authorize_name
+    "授权书#{authorize.try(:id)}"
+  end
+
   # resources define
   has_many :audio_resources, -> {where(file_type: 1)}, class_name: 'TrackResource'
   has_many :composers_resources, -> {where(file_type: 2)}, class_name: 'TrackResource'
@@ -94,15 +98,20 @@ class Track < ApplicationRecord
     self.image_resources_attributes=attr
   end
 
-  def auditer
-      audits.first.try(:username)
+  def track_composers=(attr)
+    self.track_composers_attributes =attr
   end
+
+  def auditer
+    audits.first.try(:username)
+  end
+
 
   class_attribute :as_list_json_options
   self.as_list_json_options={
-    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :ost, :lyric, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark,:updated_at, :created_at],
-    include: [:albums, :primary_artists ],
-    methods: [:provider_name, :contract_name,:auditer]
+    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :ost, :lyric, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark, :updated_at, :created_at],
+    include: [:albums, :primary_artists],
+    methods: [:provider_name, :contract_name, :auditer]
   }
 
   class_attribute :as_relationship_list_json_options
@@ -115,12 +124,12 @@ class Track < ApplicationRecord
                 methods: [:language_name]
               }
     ],
-    methods: [:provider_name,:auditer]
+    methods: [:provider_name, :auditer]
   }
 
   class_attribute :as_show_json_options
   self.as_show_json_options={
-    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :sub_genre_id,:ost, :lyric, :pline, :cline, :label_code, :release_version,
+    only: [:id, :title, :isrc, :status, :language_id, :genre_id, :sub_genre_id, :ost, :lyric, :pline, :cline, :label_code, :release_version,
            :copyright_id, :label, :is_agent, :provider_id, :contract_id, :authorize_id, :remark, :created_at],
     include: [
       {:albums => {:only => %w(id name)}},
@@ -137,8 +146,9 @@ class Track < ApplicationRecord
       {:composers_resources => {:only => %w(id file_name url)}},
       {:material_resources => {:only => %w(id file_name url)}},
       {:image_resources => {:only => %w(id file_name url)}},
+      {:track_composers => {:only => %w(id name op_type point)}}
     ],
-    methods: [:provider_name, :contract_name, :genre_name,:sub_genre_name, :copyright_name,:auditer]
+    methods: [:provider_name, :contract_name, :genre_name, :sub_genre_name, :copyright_name, :auditer, :authorize_name]
   }
 
   #艺人的歌曲列表
