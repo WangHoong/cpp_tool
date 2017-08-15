@@ -8,6 +8,7 @@ class Api::V1::Albums::ShowSerializer < Api::V1::AlbumSerializer
     :original_label_number,
     :cd_volume,
     :genre_name,
+    :audits,
     :updated_at
   def tracks_length
     object.tracks.size

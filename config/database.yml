@@ -18,7 +18,6 @@ default: &default
   host: dev-db.cvs1lg0domzv.rds.cn-north-1.amazonaws.com.cn
 
 
-
 development:
   <<: *default
   #username: root

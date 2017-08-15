@@ -12,7 +12,9 @@ class Api::V1::Albums::TaskSerializer < Api::V1::AlbumSerializer
     :primary_artists,
     :featuring_artists,
     :tracks,
-    :multi_languages
+    :genre,
+    :multi_languages,
+    :covers
   def multi_languages
     object.multi_languages.map { |m| {
       name: m.name,
