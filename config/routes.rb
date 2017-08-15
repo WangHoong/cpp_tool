@@ -3,8 +3,7 @@ Rails.application.routes.draw do
   root :to => 'api/v1/home#index'
   namespace :api do
     namespace :internal do
-      resources :tasks, only: [:index]
-      resources :tracks, only: [:index]
+      resources :tasks, only: [:index, :update]
     end
     namespace :v1 do
           namespace :cp do
