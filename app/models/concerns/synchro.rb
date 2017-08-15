@@ -36,7 +36,8 @@ class Synchro
     JSON.parse(re)
   end
 
-
+  private
+  
   def get_result(options={})
     encrypt = Encrypt.new
     q_time = (Time.now.to_f * 1000).to_i
