@@ -116,7 +116,6 @@ class Revenue < ApplicationRecord
     else
       success_count = es_request(:succeed)['hits']['total']
       mismatched_count = es_request(:mismatched)['hits']['total']
-
       data = {
         errors: file_errors,
         success: { 'total': success_count, 'revenue': analyses_revenue(:success) },
