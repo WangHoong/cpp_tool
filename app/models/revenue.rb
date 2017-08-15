@@ -1,7 +1,7 @@
 include Workflow
 class Revenue < ApplicationRecord
 
-  enum status: [:processing, :processed, :confirmed, :accounted, :finished]
+  enum status: [:processing, :processed, :confirmed, :accounted, :finished,:error]
 
   belongs_to :currency
   belongs_to :dsp
@@ -227,6 +227,6 @@ class Revenue < ApplicationRecord
     RevenueImportWorker.perform_async(self.id)
   end
 
- 
+
 
 end
