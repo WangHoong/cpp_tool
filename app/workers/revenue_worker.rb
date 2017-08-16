@@ -147,7 +147,7 @@ class RevenueWorker
     dataset['Total'] =   row['note']['income']
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = row['data']['exchange_rate'].to_f
-    dataset['ProviderRate'] =  divided_point.to_f   * row['note']['income']
+    dataset['ProviderRate'] =  divided_point.to_f || 1
     dataset['AmountDue'] = dataset['Total'].to_f * dataset['ProviderRate'] * dataset['ExchangeRate']
 
     dataset
