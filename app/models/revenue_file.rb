@@ -7,9 +7,8 @@ class RevenueFile < ApplicationRecord
 
   private
   def delete_analyses
-    ["analysis_error","analysis_result","analysis_info"].each do |key|
-         RestClient::Request.execute(method: :delete, url: "http://#{SETTINGS['elasticsearch_server']}/donkey_dev/#{key}/_query",
-                            payload: {"query":{"term":{'note.revenue_file_id': self.id }}}.to_json)
-    end
+    client = Elasticsearch::Client.new url: SETTINGS['elasticsearch_server']#,log:true
+    revenue = client.delete_by_query(index: SETTINGS['donkey_index'],
+    body: { query: { match: { 'note.revenue_file_id': self.id}}})
   end
 end
