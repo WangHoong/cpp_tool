@@ -156,15 +156,17 @@ class Revenue < ApplicationRecord
 
   def fetch_all_analyses(type)
     res = []
-    response = es_request(type, nil, nil, {
-      #search_type: 'scan',
-      scroll: '1m'
-    })
+    response = es_request(type, nil, nil, {scroll: '1m'})
     res = response['hits']['hits'].map { |r| r['_source']}
-    begin
-     response = EsClient.instance.scroll(scroll_id: response['_scroll_id'], scroll: '1m')
-     res += response['hits']['hits'].map { |r| r['_source']}
-    end while response['hits']['hits'].present?
+      #@client ||= Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'],log: true
+
+     #p @client.scroll(scroll_id: response['_scroll_id'],scroll: '1m')
+    # begin
+    #  response = EsClient.instance.scroll(scroll_id: response['_scroll_id'])
+    #  p response
+    #  res += response['hits']['hits'].map { |r| r['_source']}
+    # end while response['hits']['hits'].present?
+    # p res
     res
   end
 

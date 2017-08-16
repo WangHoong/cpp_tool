@@ -1,6 +1,6 @@
 class RevenueWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue, retry: 3
+  sidekiq_options queue: :revenue, retry: false
 
 
   def perform(revenue_id,user_id)

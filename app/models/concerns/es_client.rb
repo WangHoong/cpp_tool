@@ -9,7 +9,7 @@ class EsClient
   end
 
   def client
-    @client ||= Elasticsearch::Client.new url: SETTINGS['elasticsearch_server']#,log: true
+    @client ||= Elasticsearch::Client.new url: SETTINGS['elasticsearch_server'],log: true
   end
 
   # delegate to client
