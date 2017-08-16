@@ -76,10 +76,11 @@ class RevenueImportWorker
       end
       uri =  "http://dev.topdmc.com.cn:50000/publish?clientId=topdmc&publishKey=785429db07ee22ea6bbcad7dbf534ba849083bd07c06e4f7e89f18164846d5e8"
       RestClient.post(uri,{
-        "event": "/dsp/data/list",
+        "event": "/dsp/data/status_changed",
         "to": "*",
         "payload":{
           "revenue_id": revenue.id,
+          "status": revenue.status,
           "message": "系统消息",
           "description": "数据解析完成"
         }
