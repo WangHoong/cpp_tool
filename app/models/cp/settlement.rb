@@ -29,7 +29,7 @@ class Cp::Settlement < ApplicationRecord
 	def dsp_name
 		dsp.try(:name)
 	end
-	
+
 	def user_name
 		user.try(:name)
 	end
@@ -49,7 +49,7 @@ class Cp::Settlement < ApplicationRecord
   end
 
 	def payment_transations
-		balance = self.provider.try(:current_amount) - self.settlement_amount
+		balance = self.provider.try(:current_amount) #- self.settlement_amount
 		transation = self.transations.new(provider_id: self.provider_id,balance: balance,amount: self.settlement_amount,subject: '结算单金额')
 		ActiveRecord::Base.transaction do
 			transation.save!

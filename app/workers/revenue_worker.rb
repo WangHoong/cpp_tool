@@ -55,8 +55,7 @@ class RevenueWorker
       @settlement = Cp::Settlement.new(info)
       @settlement.settlement_date = Date.today
       @settlement.user_id = user_id
-      @settlement.save
-
+      @settlement.payment_transations if @settlement.save
     end
   end
 
