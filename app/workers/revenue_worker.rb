@@ -73,7 +73,7 @@ class RevenueWorker
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate', 'AmountDue']
+        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate','ProviderRate','AmountDue']
 
         value.each do |row|
           sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
@@ -123,27 +123,32 @@ class RevenueWorker
   def build_detail_row(row, start_date, end_date)
     dataset = {}
     date = row['note']['start_date'].try(:to_datetime)
-
+    track = Track.where(id: row['note']['track_id']).first
+    if track && track.authorize
+      business = track.authorize.authorized_businesses.first
+      divided_point = business.divided_point.to_i * 0.01
+    end
     dataset['RevenueStart'] = start_date
     dataset['RevenueEnd'] = end_date
     dataset['Year'] = date && date.strftime('%Y')
     dataset['Month'] = date && date.strftime('%m')
     dataset['Day'] = date && date.strftime('%d')
-    dataset['OwnerPropertyID'] = 'null'
+    dataset['PropertyID'] = row['note']['track_id']
     dataset['DSP'] = row['note']['dsp_name']
     dataset['ISRC'] = row['data']['isrc']
     dataset['UPC'] = row['data']['upc']
-    dataset['PropertyID'] = row['note']['track_id']
+    dataset['OwnerPropertyID'] = 'null'
     dataset['LabelName'] = row['note']['provider_name']
     dataset['Title'] = row['data']['title']
     dataset['Artist'] = row['data']['artist']
     dataset['Album'] = row['data']['album']
     dataset['TypeOfSales'] =  row['data']['sales_type']
     dataset['SalesUnit'] =  row['data']['sales_unit']
-    dataset['Total'] = row['note']['income']
+    dataset['Total'] =   row['note']['income']
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = row['data']['exchange_rate'].to_f
-    dataset['AmountDue'] = (dataset['Total'].to_f) * dataset['ExchangeRate']
+    dataset['ProviderRate'] =  divided_point.to_f   * row['note']['income']
+    dataset['AmountDue'] = dataset['Total'].to_f * dataset['ProviderRate'] * dataset['ExchangeRate']
 
     dataset
   end
