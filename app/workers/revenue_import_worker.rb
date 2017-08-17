@@ -67,7 +67,11 @@ class RevenueImportWorker
                 next
                end
               business = track.authorize.authorized_businesses.first
-              divided_rate = business.divided_point.to_i * 0.01
+              if business
+                divided_rate = business.divided_point.to_i * 0.01
+              else
+                divided_rate = 1
+              end
               amount_due = income * divided_rate * row[15].to_f
 
               @note = hs_note.merge(track_id: track.id,provider_id: track.provider_id,provider_name: track.provider.try(:name),amount_due: amount_due,divided_rate: divided_rate)
