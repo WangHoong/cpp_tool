@@ -4,9 +4,9 @@ def gender_name(type)
     puts type,'type'
     case type
         when 'female'
-          return '男'
-        when 'male'
           return '女'
+        when 'male'
+          return '男'
         when 'female'
           return '男女组合'
         else

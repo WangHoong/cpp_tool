@@ -20,6 +20,7 @@ class Api::V1::TracksController < Api::V1::BaseController
 
   def create
     @track = Track.new track_params
+    puts track_params.to_json,'*'*100
     if @track.save
       render json: {track: @track}
     else
@@ -101,7 +102,7 @@ class Api::V1::TracksController < Api::V1::BaseController
   end
 
   def track_params
-    params.fetch(:track, {}).permit(
+    params.require(:track).permit(
         :title,
         :isrc,
         :genre_id,
@@ -129,7 +130,6 @@ class Api::V1::TracksController < Api::V1::BaseController
         image_resources: [:id, :url, :file_name, :_destroy],
         track_composers: [:id, :name, :op_type, :point, :_destroy],
         multi_languages_attributes: [:id, :name, :language_id, :_destroy]
-        #track_resources_attributes: [:id, :file_type, :file_name, :url, :_destroy]
     )
   end
 

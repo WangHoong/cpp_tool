@@ -1,15 +1,16 @@
 class Api::V1::ArtistsController < Api::V1::BaseController
 
-  before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums,:multis]
+  before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums, :multis]
   # Get /artists
   def index
     page = params.fetch(:page, 1).to_i
     size = params[:size]
-    @artists = Artist.includes(:tracks, :country, :audits,:albums).recent
-    @artists = @artists.db_query(:name,params[:name]) if params[:name].present?
+    @artists = Artist.includes(:tracks, :country, :audits, :albums).recent
+    @artists = @artists.db_query(:name, params[:name]) if params[:name].present?
+    @artists = @artists.where(name: params[:check_name]) if params[:check_name].present?
     @artists = @artists.where(status: params[:status]) if params[:status].present?
     @artists = @artists.page(page).per(size)
-    render json: {artists: @artists.as_json(Artist.as_list_json_options),meta: page_info(@artists)}
+    render json: {artists: @artists.as_json(Artist.as_list_json_options), meta: page_info(@artists)}
   end
 
   # Get /artists/:id
@@ -51,38 +52,39 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   end
 
   def multis
-      @languages = @artist.multi_languages
-      render json: {multi_languages: @languages.as_json({only: [:name],methods: :language_name})}
+    @languages = @artist.multi_languages
+    render json: {multi_languages: @languages.as_json({only: [:name], methods: :language_name})}
   end
 
-#批量审核通过
- def accept
-     @artists = get_artist_by_ids.limit(20)
-     comment = '审核通过'
-     @artists.each do |artist|
-       artist.without_auditing do
-         artist.accept!
-       end
-       if artist.previous_changes.present?
-        changes = {status: artist.previous_changes['status']}
-        artist.create_auditables(current_user,'accept',comment,changes)
-       end
-     end
-     head :ok
- end
-#拒绝通过
- def reject
-    comment =  params['not_through_reason'] || '审核未通过'
-     @artist = get_artist
-     @artist.without_auditing do
-       @artist.reject!(comment)
-     end
-     if @artist.previous_changes.present?
-        changes = {status: @artist.previous_changes['status']}
-        @artist.create_auditables(current_user,'reject',comment,changes)
+  #批量审核通过
+  def accept
+    @artists = get_artist_by_ids.limit(20)
+    comment = '审核通过'
+    @artists.each do |artist|
+      artist.without_auditing do
+        artist.accept!
       end
-      head :ok
- end
+      if artist.previous_changes.present?
+        changes = {status: artist.previous_changes['status']}
+        artist.create_auditables(current_user, 'accept', comment, changes)
+      end
+    end
+    head :ok
+  end
+
+  #拒绝通过
+  def reject
+    comment = params['not_through_reason'] || '审核未通过'
+    @artist = get_artist
+    @artist.without_auditing do
+      @artist.reject!(comment)
+    end
+    if @artist.previous_changes.present?
+      changes = {status: @artist.previous_changes['status']}
+      @artist.create_auditables(current_user, 'reject', comment, changes)
+    end
+    head :ok
+  end
 
   def tracks
     page = params.fetch(:page, 1).to_i
@@ -108,7 +110,7 @@ class Api::V1::ArtistsController < Api::V1::BaseController
     @albums = @artist.albums.recent.page(page).per(size)
     render json: {albums: @albums, meta: page_info(@albums)}
   end
- 
+
 
   private
 
@@ -122,22 +124,22 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   def artist_params
     params
-        .require(:artist)
-        .permit(
-            :id,
-            :name,
-            :country_id,
-            :gender_type,
-            :description,
-            :label_id,
-            :label_name,
-            :website,
-            :not_through_reason,
-            :status,
-            :audit_comment,
-            songs_attributes: [:id, :url, :native_name, :_destroy],
-            images_attributes: [:id, :url, :native_name, :_destroy],
-            multi_languages_attributes: [:id, :name, :language_id, :_destroy]
-        )
+      .require(:artist)
+      .permit(
+        :id,
+        :name,
+        :country_id,
+        :gender_type,
+        :description,
+        :label_id,
+        :label_name,
+        :website,
+        :not_through_reason,
+        :status,
+        :audit_comment,
+        songs_attributes: [:id, :url, :native_name, :_destroy],
+        images_attributes: [:id, :url, :native_name, :_destroy],
+        multi_languages_attributes: [:id, :name, :language_id, :_destroy]
+      )
   end
 end
