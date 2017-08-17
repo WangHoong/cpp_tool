@@ -55,6 +55,10 @@ class Api::V1::Albums::TaskSerializer < Api::V1::AlbumSerializer
       language: a.language,
       genre: a.genre,
       pline: a.pline,
+      label: a.label,
+      primary_artists: a.primary_artists,
+      featuring_artists: a.featuring_artists,
+      sub_genre: a.sub_genre,
       track_resources: a.track_resources,
       multi_languages: a.multi_languages.map { |m| {
         name: m.name,

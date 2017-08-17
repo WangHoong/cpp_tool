@@ -22,7 +22,7 @@ class Api::V1::TasksController < Api::V1::BaseController
         next
       end
 
-      if @album.status == "rejected"
+      if @album.status != "accepted"
         result << {
           id: id,
           success: false,
