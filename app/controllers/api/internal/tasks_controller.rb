@@ -10,10 +10,8 @@ class Api::Internal::TasksController < ApplicationController
   def update
     status = params[:status] || 2
     @task = Task.find(params[:id])
-    if (status != 3)
-      @task.album.sync_status = status
-    end
-
+    @task.album.sync_status = status
+    @task.album.sync_time = DateTime.now
     if @task.update({ status: status})
       render json: @task
     else
