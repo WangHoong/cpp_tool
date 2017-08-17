@@ -1,7 +1,7 @@
 require 'roo'
 class RevenueImportWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue_import, retry: 3
+  sidekiq_options queue: :revenue_import, retry: false
 
   HEADER = ["日期", "代理商", "分发渠道", "歌曲id", "ISRC", "UPC ", "歌曲名", "专辑名", "艺人", "业务模式", "单价", "数量", "国家", "报表货币", "结算货币", "汇率"]
 
@@ -67,7 +67,11 @@ class RevenueImportWorker
                 next
                end
               business = track.authorize.authorized_businesses.first
-              divided_rate = business.divided_point.to_i * 0.01
+              if business
+                divided_rate = business.divided_point.to_i * 0.01
+              else
+                divided_rate = 1
+              end
               amount_due = income * divided_rate * row[15].to_f
 
               @note = hs_note.merge(track_id: track.id,provider_id: track.provider_id,provider_name: track.provider.try(:name),amount_due: amount_due,divided_rate: divided_rate)

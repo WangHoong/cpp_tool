@@ -90,12 +90,11 @@ class RevenueWorker
         value.each do |row|
           type = row['data']['sales_type']
           if set[type].blank?
-            set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income').merge! row['data'].slice('sales_type','sales_unit', 'exchange_rate'))
+            set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income','amount_due').merge! row['data'].slice('sales_type','sales_unit', 'exchange_rate'))
             next
           end
-           
           set[type]['income'] += row['note']['income']
-          #set[type]['amount_due'] += row['note']['amount_due']
+          set[type]['amount_due'] += row['note']['amount_due']
         end
 
         set.each do |key, value|
@@ -162,7 +161,7 @@ class RevenueWorker
     dataset['Total'] = value['income'].to_f
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = value['exchange_rate'] #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
-    dataset['AmountDue'] = value['income'].to_f
+    dataset['AmountDue'] = value['amount_due'].to_f
 
     dataset
   end
