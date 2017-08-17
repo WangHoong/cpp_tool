@@ -20,4 +20,18 @@ class Api::Internal::TasksController < ApplicationController
       render json: @task.errors, status: :unprocessable_entity
     end
   end
+
+  # Post /tasks/patch
+  def patch
+    status = params[:status] || 2
+    @task = Task.find_by(patch_no: params[:patch_no])
+    @task.album.sync_status = params[:status] if params[:status].present?
+    @task.album.sync_time = DateTime.now if params[:status].present?
+    @task.status = params[:status] if params[:status].present?
+    if @task.save
+      render json: @task
+    else
+      render json: @task.errors, status: :unprocessable_entity
+    end
+  end
 end
