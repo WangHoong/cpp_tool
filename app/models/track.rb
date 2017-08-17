@@ -40,6 +40,7 @@ class Track < ApplicationRecord
 
   before_save :add_audit_comment
   after_save :add_authorizes_track_count
+  after_save :execute_sql_dat
   before_destroy :dec_tracks_count
   after_create :inc_tracks_count
 
@@ -199,5 +200,13 @@ class Track < ApplicationRecord
     end
   end
 
+  def execute_sql_dat
+    sql_artist = "update artists set tracks_count =(select count(*) from artist_tracks join tracks on artist_tracks.track_id = tracks.id and tracks.deleted=0  where artist_tracks.artist_id=artists.id),
+    albums_count =(select count(*) from artist_albums join albums on artist_albums.`album_id`=albums.id and albums.deleted=0  where artist_albums.artist_id=artists.id) "
+    ActiveRecord::Base.connection.execute(sql_artist)
+
+    sql_blubms = "update albums set tracks_count =(select count(*) from albums_tracks join tracks on albums_tracks.`track_id`=tracks.id and tracks.deleted=0  where albums_tracks.album_id=albums.id)"
+    ActiveRecord::Base.connection.execute(sql_blubms)
+  end
 
 end
