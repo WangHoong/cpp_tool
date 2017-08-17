@@ -60,12 +60,12 @@ class RevenueImportWorker
                 analysis_revenue_save(result)
                 next
               end
-              puts "start...."
+              #puts "start...."
               @note = hs_note.merge(track_id: track.id,provider_id: track.provider_id,provider_name: track.provider.try(:name))
               data = {date: row[0],title: row[6],album: row[7],artist: row[8],dsp: row[2],isrc: row[4],upc: row[5],sales_type: row[9],unit_price: row[10],sales_unit: row[11], currancy: row[14],exchange_rate: row[15].to_f}
               result = {data: data,note: @note, err_message: '匹配成功',category: 1,created_at: Time.now}
               analysis_revenue_save(result,SETTINGS['analysis_success_type'])
-              puts '.......end'
+              #puts '.......end'
             end
             revenue.processed!
           end
