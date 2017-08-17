@@ -1,5 +1,4 @@
 default: &default
-  elasticsearch_server: '127.0.0.1:9200'
   donkey_index: 'donkey_dev'
   analysis_error_type: 'analysis_error'
   analysis_success_type: 'analysis_result'
@@ -12,11 +11,11 @@ default: &default
 
 development:
   <<: *default
-  elasticsearch_server: '54.222.151.166:9200'
-  remote_servers: ['127.0.0.1','54.223.86.5','54.223.222.214']
+  elasticsearch_server: '54.223.52.77:9200'
 
 production:
   <<: *default
+  elasticsearch_server: '54.223.52.77:9200'
   donkey_index: 'donkey'
 
 test:
