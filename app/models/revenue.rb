@@ -11,7 +11,7 @@ class Revenue < ApplicationRecord
   validates :dsp_id, presence: true
   before_save :update_files
   after_create :import_revenues
-
+  scope :recent, -> { order('id DESC') }
   scope :date_between, lambda {|start_time, end_time| where("start_time >= ? AND end_time <= ?", start_time, end_time )}
 
   workflow_column :status
@@ -162,7 +162,7 @@ class Revenue < ApplicationRecord
           response = EsClient.instance.scroll(scroll_id: response['_scroll_id'],scroll: '1m')
           res += response['hits']['hits'].map { |r| r['_source']}
         end while response['hits']['hits'].present?
-   
+
         res
       end
 

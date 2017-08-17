@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :internal do
       resources :tasks, only: [:index, :update]
+      resources :albums, only: [:index]
     end
     namespace :v1 do
           namespace :cp do

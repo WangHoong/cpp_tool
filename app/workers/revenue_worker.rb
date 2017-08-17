@@ -45,7 +45,7 @@ class RevenueWorker
       info['file_url'] = res[key][0]
 
       value.each do |row|
-        amount += row['note']['income'].to_f
+        amount += row['note']['amount_due'].to_f
       end
 
       info['settlement_amount'] = amount
@@ -73,7 +73,7 @@ class RevenueWorker
       res[key] = Axlsx::Package.new do |p|
         sheet_name = "详情表"
         sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
-        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate','ProviderRate','AmountDue']
+        sheet.add_row ['RevenueStart', 'RevenueEnd', 'Year', 'Month', 'Day', 'PropertyID', 'DSP','ISRC', 'UPC', 'OwnerPropertyID', 'LabelName', 'Title', 'Artist', 'Album', 'TypeOfSales', 'SalesUnit', 'Total', 'Currency', 'ExchangeRate','DividedRate','AmountDue']
 
         value.each do |row|
           sheet = find_or_create_sheet_by_name(p.workbook, sheet_name)
@@ -93,7 +93,9 @@ class RevenueWorker
             set[type] = (row['note'].slice('dsp_name', 'start_date', 'end_date', 'income').merge! row['data'].slice('sales_type','sales_unit', 'exchange_rate'))
             next
           end
+           
           set[type]['income'] += row['note']['income']
+          #set[type]['amount_due'] += row['note']['amount_due']
         end
 
         set.each do |key, value|
@@ -123,11 +125,7 @@ class RevenueWorker
   def build_detail_row(row, start_date, end_date)
     dataset = {}
     date = row['note']['start_date'].try(:to_datetime)
-    track = Track.where(id: row['note']['track_id']).first
-    if track && track.authorize
-      business = track.authorize.authorized_businesses.first
-      divided_point = business.divided_point.to_i * 0.01
-    end
+
     dataset['RevenueStart'] = start_date
     dataset['RevenueEnd'] = end_date
     dataset['Year'] = date && date.strftime('%Y')
@@ -144,11 +142,11 @@ class RevenueWorker
     dataset['Album'] = row['data']['album']
     dataset['TypeOfSales'] =  row['data']['sales_type']
     dataset['SalesUnit'] =  row['data']['sales_unit']
-    dataset['Total'] =   row['note']['income']
+    dataset['Total'] =  row['note']['income']
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = row['data']['exchange_rate'].to_f
-    dataset['ProviderRate'] =  divided_point.to_f || 1
-    dataset['AmountDue'] = dataset['Total'].to_f * dataset['ProviderRate'] * dataset['ExchangeRate']
+    dataset['DividedRate'] =  row['note']['divided_rate']
+    dataset['AmountDue'] =  dataset['Total'] * dataset['DividedRate'] * dataset['ExchangeRate']
 
     dataset
   end
@@ -164,7 +162,7 @@ class RevenueWorker
     dataset['Total'] = value['income'].to_f
     dataset['Currency'] = 'CNY'
     dataset['ExchangeRate'] = value['exchange_rate'] #(value['汇率'].to_f == 0)? 1 : value['汇率'].to_f
-    dataset['AmountDue'] = dataset['Total'].to_f * dataset['ExchangeRate']
+    dataset['AmountDue'] = value['income'].to_f
 
     dataset
   end
