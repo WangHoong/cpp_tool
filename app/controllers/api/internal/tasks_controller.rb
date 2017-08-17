@@ -14,7 +14,7 @@ class Api::Internal::TasksController < ApplicationController
     @task.album.sync_time = DateTime.now if params[:status].present?
     @task.batch_no = params[:batch_no] if params[:batch_no].present?
     @task.status = params[:status] if params[:status].present?
-    if @task.save)
+    if @task.save
       render json: @task
     else
       render json: @task.errors, status: :unprocessable_entity
