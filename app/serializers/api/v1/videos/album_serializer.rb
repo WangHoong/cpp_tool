@@ -5,6 +5,8 @@ class Api::V1::Videos::AlbumSerializer < ActiveModel::Serializer
              :label,
              :updated_at,
              :tracks_count,
+             :sync_status,
+             :sync_time,
              :multi_languages
   def multi_languages
     @multi_languages = object.multi_languages
