@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :internal do
       resources :tasks, only: [:index, :update] do
         collection do
-          post :patch
+          post :batch
         end
       end
       resources :albums, only: [:index]

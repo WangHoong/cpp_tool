@@ -21,10 +21,10 @@ class Api::Internal::TasksController < ApplicationController
     end
   end
 
-  # Post /tasks/patch
-  def patch
+  # Post /tasks/batch
+  def batch
     status = params[:status] || 2
-    @task = Task.find_by(patch_no: params[:patch_no])
+    @task = Task.find_by(batch_no: params[:batch_no])
     @task.album.sync_status = params[:status] if params[:status].present?
     @task.album.sync_time = DateTime.now if params[:status].present?
     @task.status = params[:status] if params[:status].present?
