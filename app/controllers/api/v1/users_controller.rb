@@ -63,16 +63,16 @@ class Api::V1::UsersController < Api::V1::BaseController
       accepted_tracks = @tracks.where(status: :accepted).count
       rejected_tracks = @tracks.where(status: :rejected).count
       tracks_info = {new_tracks: @tracks.count, pending_tracks: pending_tracks,accepted_tracks: accepted_tracks,rejected_tracks: rejected_tracks}
-      @tracks = @tracks.limit(20)
+      @tracks = @tracks.recent.limit(10)
       render json: {tracks: @tracks.as_json(Track.as_list_json_options),tracks_info: tracks_info }
   end
   #最新同步专辑
   def albums
-    @albums = Album.joins("LEFT JOIN tasks ON tasks.album_id=albums.id").where("tasks.updated_at >=?",Time.now-2.day)
+    @albums = Album.joins("LEFT JOIN tasks ON tasks.album_id=albums.id").where("tasks.updated_at >=?",Time.now-2.day).recent
     accepted_albums = @albums.where("tasks.status =?",1).count
     rejected_albums = @albums.where("tasks.status =?",-1).count
     albums_info = {new_albums: @albums.count, accepted_albums: accepted_albums,rejected_albums: rejected_albums }
-    @albums = @albums.includes(:tracks,:primary_artists,:audits,:multi_languages).limit(20)
+    @albums = @albums.includes(:tracks,:primary_artists,:audits,:multi_languages).limit(10)
     render json: @albums, each_serializer: Api::V1::Albums::IndexSerializer, albums_info: albums_info
   end
 
@@ -82,7 +82,7 @@ class Api::V1::UsersController < Api::V1::BaseController
       processed_revenues = @revenues.where(status: :processed).count
       confirmed_revenues = @revenues.where(status: :confirmed).count
       revenues_info = {new_revenues: @revenues.count, processed_revenues: processed_revenues,confirmed_revenues: confirmed_revenues }
-      @revenues = @revenues.limit(10)
+      @revenues = @revenues.recent.limit(10)
       render json: {revenues: @revenues.as_json(Revenue.as_list_json_options),revenues_info: revenues_info}
   end
 
@@ -92,7 +92,7 @@ class Api::V1::UsersController < Api::V1::BaseController
      confirmed_settlements = @settlements.where(status: :confirmed).count
      paymented_settlements = @settlements.where(status: :paymented).count
      settlements_info = {new_settlements: @settlements.count, paymented_settlements: paymented_settlements,confirmed_settlements: confirmed_settlements }
-     @settlements = @settlements.limit(20)
+     @settlements = @settlements.limit(10)
      render json: {settlements: @settlements.as_json(::Cp::Settlement.as_list_json_options),settlements_info: settlements_info}
   end
 
