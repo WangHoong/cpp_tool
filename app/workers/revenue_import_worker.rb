@@ -1,7 +1,7 @@
 require 'roo'
 class RevenueImportWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :revenue_import, retry: 2
+  sidekiq_options queue: :revenue_import, retry: false
 
   HEADER = ["日期", "代理商", "分发渠道", "歌曲id", "ISRC", "UPC ", "歌曲名", "专辑名", "艺人", "业务模式", "单价", "数量", "国家", "报表货币", "结算货币", "汇率"]
 
@@ -91,8 +91,8 @@ class RevenueImportWorker
         "event": "/dsp/data/status_changed",
         "to": "*",
         "payload":{
-          "revenue_id": revenue.id,
-          "status": revenue.status,
+          "revenue_id": revenue.try(:id),
+          "status": revenue.try(:status),
           "message": "系统消息",
           "description": "数据解析完成"
         }

@@ -10,7 +10,7 @@ class Revenue < ApplicationRecord
   accepts_nested_attributes_for :revenue_files, :allow_destroy => true
   validates :dsp_id, presence: true
   before_save :update_files
-  after_create :import_revenues
+  #after_create :import_revenues
   scope :recent, -> { order('id DESC') }
   scope :date_between, lambda {|start_time, end_time| where("start_time >= ? AND end_time <= ?", start_time, end_time )}
 
