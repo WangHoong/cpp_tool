@@ -55,6 +55,4 @@ test:
 #
 production:
   <<: *default
-  database: cpp_tool
-  username: cpp_tool
-  password: <%= ENV['ARYA-API_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>

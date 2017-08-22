@@ -10,7 +10,7 @@ development:
 
 production:
   <<: *default
-  elasticsearch_server: '54.223.52.77:9200'
+  elasticsearch_server: <%= ENV['ELASTICSEARCH_SERVER'] %>
   donkey_index: 'donkey'
 
 test:

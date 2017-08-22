@@ -16,13 +16,9 @@ RUN mkdir -p /app
 WORKDIR /app
 ADD . $app
 
-# 用户配置数据存储目录
 EXPOSE 3000
 
 # 系统环境变量
-ENV RAILS_ENV production
-ENV app /app
-ENV ARYA-API_DATABASE_PASSWORD $%windows2010
 ENV SECRET_KEY_BASE b203283e743d6dcaadbeeef4e0da4fbe91afb7893c623eaf3e994769727a2978912e930766636b8ce246187de17382e10ca702677caa734143714dcb141c5f14
 
 # 启动入口

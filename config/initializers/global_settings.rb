@@ -1,1 +1,1 @@
-SETTINGS = YAML.load_file(File.join(Rails.root, 'config', 'settings.yml'))[Rails.env]
+SETTINGS = YAML.load(ERB.new(File.read("#{Rails.root}/config/settings.yml")).result)[Rails.env]
