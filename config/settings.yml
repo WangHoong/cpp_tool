@@ -3,11 +3,6 @@ default: &default
   analysis_error_type: 'analysis_error'
   analysis_success_type: 'analysis_result'
   analysis_info_type: 'analysis_info'
-  distribution_type: 'distributions'
-  remote_servers: ['127.0.0.1','54.223.86.5','54.223.222.214']
-  upload_category:
-    cp_settlement: 'settlement'
-    sp_revenues: 'revenues'
 
 development:
   <<: *default

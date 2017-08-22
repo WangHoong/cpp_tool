@@ -18,7 +18,7 @@ Bundler.require(*Rails.groups)
 
 module CppTool
   class Application < Rails::Application
-    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
+    #config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
     config.time_zone = 'Beijing'
     config.active_record.default_timezone = :local
     config.active_record.time_zone_aware_types = [:datetime, :time]
