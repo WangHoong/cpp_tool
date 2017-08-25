@@ -71,7 +71,6 @@ gem 'acts_as_paranoid', '~> 0.5.0'
 #日志输出
 #gem 'awesome_print'
 #gem 'rails_semantic_logger'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -101,3 +100,5 @@ gem 'awesome_nested_set'
 
 #add sentry exception log service
 gem 'sentry-raven'
+
+gem 'typhoeus'

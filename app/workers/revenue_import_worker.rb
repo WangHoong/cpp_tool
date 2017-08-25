@@ -12,11 +12,12 @@ class RevenueImportWorker
     begin
       if url && revenue
         spreadsheet = Roo::Spreadsheet.open(url)
-        header = spreadsheet.row(1)
+        header = spreadsheet.row(1).map{|m| m.strip}
         if header != HEADER
           msg = '文件格式不正确'
           result = {data: nil, note: nil, err_message: msg,category: 0,created_at: Time.now}
           analysis_revenue_save(result)
+          puts msg
           revenue.update(status: :error)
         else
           (2..spreadsheet.last_row).each  do |i|

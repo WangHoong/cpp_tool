@@ -2,7 +2,18 @@ class Api::V1::ArtistsController < Api::V1::BaseController
 
   before_action :get_artist, only: [:show, :update, :destroy, :tracks, :albums, :multis]
   # Get /artists
+  #before_action  :config_bos_client, only: [:index]
+
   def index
+
+    @bucket = BosClient::Bucket.new(name: Rails.application.secrets.dmc_ro)
+
+   
+    ret = BosClient::Object.upload(path: 'settlements',
+                              file: '/Users/bjlx/testttt.txt',
+                              filename: "#{Time.now.to_i}-#{SecureRandom.hex(8)}",
+                              bucket: @bucket)
+    return false
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @artists = Artist.includes(:tracks, :country, :audits, :albums).recent
@@ -141,5 +152,17 @@ class Api::V1::ArtistsController < Api::V1::BaseController
         images_attributes: [:id, :url, :native_name, :_destroy],
         multi_languages_attributes: [:id, :name, :language_id, :_destroy]
       )
+  end
+
+  def config_bos_client
+    BosClient.configure do |config|
+          config.scheme = 'http'
+          config.url = 'bcebos.com'
+          config.location = 'bj'
+          config.expiration_in_seconds = 1800
+          config.access_key_id = Rails.application.secrets.bos_ak
+          config.secret_access_key = Rails.application.secrets.bos_sk
+    end
+    p '===============ss'
   end
 end
