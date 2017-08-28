@@ -17,7 +17,7 @@ class UploadUtil
         temp.close
         path = temp.path
       end
-      filename = "#{Time.now.to_i}-#{SecureRandom.hex(8)}.xlsx"
+      filename = "#{Time.now.to_i}#{SecureRandom.hex(8)}.xlsx"
       @bucket = BosClient::Bucket.new(name: Rails.application.secrets.dmc_ro)
       ret = BosClient::Object.upload(path: dir,
                                 file: path,

@@ -49,11 +49,9 @@ class Cp::Settlement < ApplicationRecord
   end
 
 	def payment_transations
-		balance = self.provider.try(:current_amount) #- self.settlement_amount
-		transation = self.transations.new(provider_id: self.provider_id,balance: balance,amount: self.settlement_amount,subject: '结算单金额')
+		transation = self.transations.new(provider_id: self.provider_id, sort: -1,amount: self.settlement_amount,subject: '结算单金额')
 		ActiveRecord::Base.transaction do
 			transation.save!
-			provider.update!(current_amount: balance)
 			self.update!(status: :confirmed,settlement_date: Time.now.to_date)
 		end
 	end

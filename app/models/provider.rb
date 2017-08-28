@@ -19,15 +19,16 @@ class Provider < ApplicationRecord
   def copyright_name
 		final_provider.name
 	end
-
+ #预付总金额
  def prepay_amount_total
 	 transations_prepay_amount.sum(:amount).to_f
  end
-
+#结算总金额
  def settlement_amount_total
 	 transations_settlement_amount.sum(:amount).to_f
  end
 
+ #需支付金额
  def final_amount_total
 	  settlement_amount_total > 0 ? current_amount - settlement_amount_total : 0
  end

@@ -9,9 +9,10 @@ class Transation < ApplicationRecord
 	end
 
 	def final_amount
-		return  0 if balance.to_f > amount.to_f
-		return  (balance - amount) * sort if balance.to_f < amount.to_f
+		return  0 
 	end
+
+
 
 	def self.as_list_json_options
 		 as_list_json = {

@@ -112,12 +112,8 @@ class Cp::Contract < ApplicationRecord
 
   def set_prepay_amounts
     if prepay_amount.to_i > 0
-      balance = provider.current_amount + prepay_amount
-      transation = transations.new(provider_id: provider_id, balance: balance, amount: prepay_amount, status: :paymented, subject: '合约预付款', pay_time: Time.now)
-      ActiveRecord::Base.transaction do
-        transation.save!
-        provider.update!(current_amount: balance)
-      end
+      transation = transations.new(provider_id: provider_id, amount: prepay_amount, status: :paymented, subject: '合约预付款', pay_time: Time.now)
+      transation.save!
     end
   end
 
