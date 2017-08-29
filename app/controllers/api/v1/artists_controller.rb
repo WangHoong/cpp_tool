@@ -5,15 +5,6 @@ class Api::V1::ArtistsController < Api::V1::BaseController
   #before_action  :config_bos_client, only: [:index]
 
   def index
-
-    @bucket = BosClient::Bucket.new(name: Rails.application.secrets.dmc_ro)
-
-   
-    ret = BosClient::Object.upload(path: 'settlements',
-                              file: '/Users/bjlx/testttt.txt',
-                              filename: "#{Time.now.to_i}-#{SecureRandom.hex(8)}",
-                              bucket: @bucket)
-    return false
     page = params.fetch(:page, 1).to_i
     size = params[:size]
     @artists = Artist.includes(:tracks, :country, :audits, :albums).recent
