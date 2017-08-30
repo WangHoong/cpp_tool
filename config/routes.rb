@@ -8,7 +8,7 @@ Rails.application.routes.draw do
           post :batch
         end
       end
-      resources :tracks, only: [:index]
+      resources :tracks, only: [:create]
     end
     namespace :v1 do
           namespace :cp do

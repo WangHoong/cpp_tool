@@ -154,6 +154,5 @@ class Api::V1::ArtistsController < Api::V1::BaseController
           config.access_key_id = Rails.application.secrets.bos_ak
           config.secret_access_key = Rails.application.secrets.bos_sk
     end
-    p '===============ss'
   end
 end

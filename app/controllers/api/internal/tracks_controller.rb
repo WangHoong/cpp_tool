@@ -1,6 +1,6 @@
 class Api::Internal::TracksController < ApplicationController
 
-   def index
+   def create
       tracks = params[:tracks]
       if tracks.present?
         tracks.each do |track|
@@ -12,5 +12,6 @@ class Api::Internal::TracksController < ApplicationController
         render json: {status: 404 }, status: :unprocessable_entity
       end
    end
+ 
 
 end
