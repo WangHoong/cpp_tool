@@ -45,18 +45,20 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "catalog_tier",                                                     comment: "价格分级，0: Budget, 1: Back, 2: Mid, 3: Front, 4: Premium"
     t.integer  "language_id",                                                      comment: "语言"
     t.integer  "genre_id",                            default: 1,                  comment: "曲风"
+    t.integer  "sub_genre_id",                                                     comment: "子曲风"
     t.string   "label",                                                            comment: "唱片公司"
     t.datetime "original_release_date",                                            comment: "最初发行日期"
     t.datetime "release_date",                                                     comment: "发行日期"
     t.string   "original_label_number",                                            comment: "原唱片公司编号"
     t.string   "p_line_copyright",                                                 comment: "℗ "
     t.string   "c_line_copyright",                                                 comment: "©"
-    t.integer  "has_explict",                                                      comment: "是否包含限制内容，0:no,1:yes,2:clean"
+    t.integer  "has_explict",                         default: 0,                  comment: "是否包含限制内容，0:no,1:yes,2:clean"
     t.integer  "provider",                                                         comment: "版权方ID"
     t.datetime "uploaded_at"
     t.integer  "upload_method",                                                    comment: "上传方式,0: user_upload, 1: user_batch_upload, 2: op_upload, 3: DDEX, 4: other"
     t.integer  "uploader",                                                         comment: "版权方上传经手人"
     t.string   "release_version",                                                  comment: "发行版本"
+    t.integer  "sync_status",                         default: 0,                  comment: "同步状态 0: 还没有创建同步，1：同步成功，2：正在同步中， 3：已发送到太合，-1：同步失败"
     t.integer  "total_volume",                                                     comment: "专辑曲目数量"
     t.integer  "cd_volume",                                                        comment: "cd数量"
     t.string   "display_artist",                                                   comment: "艺人显示"
@@ -70,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.integer  "tracks_count",                        default: 0
+    t.datetime "sync_time",                                                        comment: "同步时间"
     t.index ["name"], name: "index_albums_on_name", using: :btree
     t.index ["status"], name: "index_albums_on_status", using: :btree
   end
@@ -232,14 +235,15 @@ ActiveRecord::Schema.define(version: 20170620101323) do
   end
 
   create_table "countries", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "continent_id",               comment: "对应七大陆continent表的id"
-    t.string  "name",         limit: 256,   comment: "英文常用标准名称，主要用于显示"
-    t.string  "lower_name",   limit: 256,   comment: "对应于英文标准名称的小写，主要用于搜索比较"
-    t.string  "country_code", limit: 64,    comment: "英文缩写名称，全大写"
-    t.string  "full_name",    limit: 256,   comment: "英文标准名称全称"
-    t.string  "cname",        limit: 256,   comment: "中文常用标准名称，通常简称"
-    t.string  "full_cname",   limit: 256,   comment: "中文全称名称，非缩写"
-    t.text    "remark",       limit: 65535, comment: "备注字段，保留"
+    t.integer "continent_id",                           comment: "对应七大陆continent表的id"
+    t.string  "name",         limit: 256,               comment: "英文常用标准名称，主要用于显示"
+    t.string  "lower_name",   limit: 256,               comment: "对应于英文标准名称的小写，主要用于搜索比较"
+    t.string  "country_code", limit: 64,                comment: "英文缩写名称，全大写"
+    t.string  "full_name",    limit: 256,               comment: "英文标准名称全称"
+    t.string  "cname",        limit: 256,               comment: "中文常用标准名称，通常简称"
+    t.string  "full_cname",   limit: 256,               comment: "中文全称名称，非缩写"
+    t.text    "remark",       limit: 65535,             comment: "备注字段，保留"
+    t.integer "sort",                       default: 0, comment: "排序"
   end
 
   create_table "cp_authorizes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -281,8 +285,10 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "status",                            default: 0, comment: "结算状态 0 待确认 1待支付2已支付"
     t.integer  "provider_id",                                   comment: "版权方"
     t.integer  "dsp_id",                                        comment: "渠道"
+    t.integer  "user_id",                                       comment: "用户ID"
     t.integer  "currency_id",                                   comment: "货币"
     t.string   "file_url",                                      comment: "文件URL"
+    t.datetime "pay_time",                                      comment: "支付时间"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -346,8 +352,9 @@ ActiveRecord::Schema.define(version: 20170620101323) do
   end
 
   create_table "genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name",    comment: "语言名称"
-    t.string "en_name", comment: "英文"
+    t.integer "parent_id", default: 0
+    t.string  "name",                  comment: "语言名称"
+    t.string  "en_name",               comment: "英文"
   end
 
   create_table "languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT" do |t|
@@ -472,11 +479,13 @@ ActiveRecord::Schema.define(version: 20170620101323) do
 
   create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer  "album_id",                            comment: "专辑 ID"
-    t.integer  "status",     default: 0,              comment: "状态 0：未处理，1：已完成，2：处理中，-1：失败"
+    t.integer  "status",     default: 0,              comment: "状态 0：未处理，1：已完成，2：处理中，3：已发送到太合，-1：失败"
     t.string   "message",                             comment: "失败原因"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "batch_no",                            comment: "任务批次"
     t.index ["album_id", "status"], name: "index_tasks_on_album_id_and_status", using: :btree
+    t.index ["batch_no"], name: "batch", length: { batch_no: 191 }, using: :btree
   end
 
   create_table "track_composers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -505,6 +514,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.integer  "status",                           default: 0
     t.integer  "language_id",                                                   comment: "语种"
     t.integer  "genre_id",                                                      comment: "曲风"
+    t.integer  "sub_genre_id",                                                  comment: "子曲风"
     t.datetime "uploaded_at"
     t.integer  "position",                                                      comment: "歌曲在专辑中的顺序"
     t.string   "ost"
@@ -524,7 +534,9 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.datetime "updated_at",                                       null: false
     t.string   "not_through_reason",                                            comment: "未通过原因"
     t.string   "release_version",                                               comment: "版本"
+    t.string   "th_id",                                                         comment: "太合ID"
     t.index ["authorize_id", "deleted"], name: "authorize_id_2", using: :btree
+    t.index ["contract_id", "deleted"], name: "contract_id", using: :btree
     t.index ["position"], name: "position", using: :btree
     t.index ["title"], name: "index_tracks_on_title", using: :btree
   end
@@ -538,8 +550,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
 
   create_table "transations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "provider_id"
-    t.decimal  "amount",      precision: 11, scale: 2, default: "0.0",              comment: "结算金额"
-    t.decimal  "balance",     precision: 11, scale: 2, default: "0.0",              comment: "当前余额"
+    t.decimal  "amount",      precision: 11, scale: 2, default: "0.0",              comment: "待结算金额"
     t.integer  "status",                               default: 0,                  comment: "待支付：0 已支付1"
     t.string   "subject",                                                           comment: "摘要"
     t.integer  "target_id"
@@ -558,7 +569,7 @@ ActiveRecord::Schema.define(version: 20170620101323) do
     t.string   "phone"
     t.text     "address",         limit: 65535
     t.string   "avatar_url"
-    t.integer  "status",                        default: 0,                  comment: "0:未审核1:审核通过2:未通过"
+    t.boolean  "status",                        default: false,              comment: "0:未启动1:启动"
     t.boolean  "deleted",                       default: false
     t.string   "password_digest"
     t.datetime "created_at",                                    null: false
