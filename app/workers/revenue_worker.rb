@@ -2,7 +2,6 @@ class RevenueWorker
   include Sidekiq::Worker
   sidekiq_options queue: :revenue, retry: false
 
-
   def perform(revenue_id,user_id)
     revenue = Revenue.find(revenue_id)
     response = revenue.analyses_data(:succeed)
