@@ -13,6 +13,7 @@ class Api::Internal::TasksController < ApplicationController
     @task.album.sync_status = params[:status] if params[:status].present?
     @task.album.sync_time = DateTime.now if params[:status].present?
     @task.batch_no = params[:batch_no] if params[:batch_no].present?
+    @task.message = params[:message] if params[:message].present?
     @task.status = params[:status] if params[:status].present?
     if @task.save
       render json: @task
