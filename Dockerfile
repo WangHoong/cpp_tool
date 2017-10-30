@@ -23,3 +23,4 @@ ENV SECRET_KEY_BASE b203283e743d6dcaadbeeef4e0da4fbe91afb7893c623eaf3e994769727a
 
 # 启动入口
 CMD rails s -b 0.0.0.0
+
