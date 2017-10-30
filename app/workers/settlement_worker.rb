@@ -1,6 +1,6 @@
 class SettlementWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :settlement, retry: 3
+  sidekiq_options queue: :settlement, retry: false
   include Sidetiq::Schedulable
 
   recurrence { monthly(1) }
@@ -11,8 +11,8 @@ class SettlementWorker
   end
 
   def perform(settlement_id)
-      @settlement = ::Cp::Settlement.find(settlement_id)
-      @settlement.payment_transations
+      #@settlement = ::Cp::Settlement.find(settlement_id)
+      #@settlement.payment_transations
 
   end
 
